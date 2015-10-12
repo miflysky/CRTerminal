@@ -1,2 +1,0 @@
-# CRTerminal
-conflict resolution terminal
