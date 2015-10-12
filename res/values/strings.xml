@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CRTerminal</string>
+
+    <string name="APSelectorDialog">Select One Host</string>
+    
+    <string name="usernamehint">Input your name here</string>
+    <string name="startashost">HOST</string>
+    <string name="startasguest">GUEST</string>
+    
+    <string name="action_settings">Settings</string>
+    <string name="terminal_server">TerminalServer</string>
+
+    <string name="get_connection_list">GetconnectionList</string>
+</resources>
