@@ -60,6 +60,9 @@ public class SearchFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+
+				mWifiUtils.connectToSSID(GROUPS.get(position).getGroupName());
+
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
 				PlayerFragment pf = new PlayerFragment();
@@ -205,11 +208,11 @@ public class SearchFragment extends Fragment {
 					continue;
 
 				// List host name in dialogFragment
-				if (apName.startsWith(GameActivity.APPREFIX)) {
-					Group group = new SearchFragment.Group(
-							searchFragment.groupImageList[i % 3], apName);
-					SearchFragment.GROUPS.add(group);
-				}
+				// if (apName.startsWith(GameActivity.APPREFIX)) {
+				Group group = new SearchFragment.Group(
+						searchFragment.groupImageList[i % 3], apName);
+				SearchFragment.GROUPS.add(group);
+				// }
 			}
 			Message msg = new Message();
 			msg.what = UIEVENT1;
