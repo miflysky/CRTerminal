@@ -5,11 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tieto.crterminal.R;
-import com.tieto.crterminal.R.drawable;
-import com.tieto.crterminal.R.id;
-import com.tieto.crterminal.R.layout;
-import com.tieto.crterminal.ui.GameActivity;
-import com.tieto.crterminal.ui.SearchFragment;
+import com.tieto.crterminal.model.wifi.WifiUtils;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -17,9 +13,13 @@ import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,12 +33,29 @@ import android.widget.TextView;
 public class SearchFragment extends Fragment {
 
 	private ListView mGameListView;
+	private GroupAdapter mGroupAdapter;
 
+	private ScanResultsReceiver mScanResultsReceiver;
+
+	private WifiUtils mWifiUtils;
+
+	private static List<Group> groups = new ArrayList<Group>();
 	private int[] groupImageList = new int[] { R.drawable.guest1,
 			R.drawable.guest7, R.drawable.guest8 };
+	
+	public static final int UIEVENT1 = 1;
+	
+	private Handler mUIEventHandler = new Handler() {
 
-	private String[] groupNameList = new String[] { "group one", "group two",
-			"group three", "group four" };
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case UIEVENT1:
+				mGroupAdapter.notifyDataSetChanged();
+				break;
+			}
+		}
+	};
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -46,9 +63,8 @@ public class SearchFragment extends Fragment {
 				.inflate(R.layout.fragment_search, container, false);
 		mGameListView = (ListView) view.findViewById(R.id.game_listview);
 
-		GroupAdapter groupAdapter = new GroupAdapter(getActivity(),
-				groupImageList, groupNameList);
-		mGameListView.setAdapter(groupAdapter);
+		mGroupAdapter = new GroupAdapter();
+		mGameListView.setAdapter(mGroupAdapter);
 
 		mGameListView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -64,24 +80,37 @@ public class SearchFragment extends Fragment {
 			}
 		});
 
+		WifiManager wifiManager = (WifiManager) getActivity().getSystemService(
+				Context.WIFI_SERVICE);
+		mWifiUtils = new WifiUtils(wifiManager);
+
+		mScanResultsReceiver = new ScanResultsReceiver(this);
+
 		return view;
+	}
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		getActivity().registerReceiver(mScanResultsReceiver,
+				new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+		mWifiUtils.startWifiScan();
+	}
+
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		getActivity().unregisterReceiver(mScanResultsReceiver);
 	}
 
 	class GroupAdapter extends BaseAdapter {
 
 		private LayoutInflater inflater;
-		private List<Group> groups;
 
-		public GroupAdapter(Context context, int[] groupImage,
-				String[] groupName) {
-
-			inflater = LayoutInflater.from(context);
-			groups = new ArrayList<Group>();
-
-			for (int i = 0; i < groupImage.length; i++) {
-				Group group = new Group(groupImage[i], groupName[i]);
-				groups.add(group);
-			}
+		public GroupAdapter() {
+			inflater = LayoutInflater.from(SearchFragment.this.getActivity());
 		}
 
 		@Override
@@ -128,34 +157,33 @@ public class SearchFragment extends Fragment {
 			public ImageView groupImageView;
 			public TextView groupName;
 		}
+	}
 
-		class Group {
-			private int groupImageId;
-			private String groupName;
+	static class Group {
+		private int groupImageId;
+		private String groupName;
 
-			public Group(int groupImageId, String groupName) {
-				super();
-				this.setGroupImageId(groupImageId);
-				this.setGroupName(groupName);
-			}
-
-			public int getGroupImageId() {
-				return groupImageId;
-			}
-
-			public void setGroupImageId(int groupImageId) {
-				this.groupImageId = groupImageId;
-			}
-
-			public String getGroupName() {
-				return groupName;
-			}
-
-			public void setGroupName(String groupName) {
-				this.groupName = groupName;
-			}
+		public Group(int groupImageId, String groupName) {
+			super();
+			this.setGroupImageId(groupImageId);
+			this.setGroupName(groupName);
 		}
 
+		public int getGroupImageId() {
+			return groupImageId;
+		}
+
+		public void setGroupImageId(int groupImageId) {
+			this.groupImageId = groupImageId;
+		}
+
+		public String getGroupName() {
+			return groupName;
+		}
+
+		public void setGroupName(String groupName) {
+			this.groupName = groupName;
+		}
 	}
 
 	// For get the wifi scan results
@@ -180,7 +208,6 @@ public class SearchFragment extends Fragment {
 					.getActivity().getSystemService(Context.WIFI_SERVICE);
 
 			List<ScanResult> wifiList = wifiManager.getScanResults();
-			//String[] apNameList = new 
 			for (int i = 0; i < wifiList.size(); i++) {
 				apName = wifiList.get(i).SSID;
 
@@ -189,12 +216,19 @@ public class SearchFragment extends Fragment {
 
 				// List host name in dialogFragment
 				if (apName.startsWith(GameActivity.APPREFIX)) {
-					//searchFragment.groupNameList[i]
+					Group group = new SearchFragment.Group(
+							searchFragment.groupImageList[i % 3], apName);
+					
+					if(!groups.contains(group)) {
+					SearchFragment.groups.add(group);
+					}
 				}
-
 			}
-
+			Message msg = new Message();
+			msg.what = UIEVENT1;
+			searchFragment.mUIEventHandler.sendMessage(msg);
 		}
 	}
 
 }
+
