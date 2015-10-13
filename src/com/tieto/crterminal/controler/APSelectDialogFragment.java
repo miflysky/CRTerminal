@@ -1,7 +1,10 @@
-package com.tieto.crterminal;
+package com.tieto.crterminal.controler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.tieto.crterminal.R;
+import com.tieto.crterminal.R.string;
 
 import android.app.Activity;
 import android.app.AlertDialog;

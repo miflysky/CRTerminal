@@ -1,4 +1,4 @@
-package com.tieto.crterminal;
+package com.tieto.crterminal.model.network;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-import com.tieto.crterminal.SocketMessage;
 
 public class CRTServer {
 
@@ -30,7 +29,7 @@ public class CRTServer {
 	// private ArrayList<SocketThread> mThreadList = new
 	// ArrayList<SocketThread>();
 
-	CRTServer() {
+	public CRTServer() {
 		// TODO: initialize...
 	}
 

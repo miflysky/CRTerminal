@@ -1,6 +1,6 @@
 // JanKenPon.java
 
-package com.tieto.crterminal;
+package com.tieto.crterminal.model;
 
 import java.util.*;
 

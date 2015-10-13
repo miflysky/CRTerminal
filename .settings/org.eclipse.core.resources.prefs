@@ -1,4 +1,4 @@
 eclipse.preferences.version=1
-encoding//src/com/tieto/crterminal/CRTServer.java=UTF-8
-encoding//src/com/tieto/crterminal/MainActivity.java=UTF-8
+encoding//src/com/tieto/crterminal/controler/MainActivity.java=UTF-8
+encoding//src/com/tieto/crterminal/model/network/CRTServer.java=UTF-8
 encoding/<project>=UTF-8

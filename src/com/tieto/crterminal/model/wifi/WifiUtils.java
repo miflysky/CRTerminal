@@ -1,4 +1,4 @@
-package com.tieto.crterminal;
+package com.tieto.crterminal.model.wifi;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,7 +17,7 @@ public class WifiUtils {
 
 	private static final String TAG = "CRTerminal";
 
-	WifiUtils(WifiManager wifiManager) {
+	public WifiUtils(WifiManager wifiManager) {
 		mWifiManager = wifiManager;
 	}
 

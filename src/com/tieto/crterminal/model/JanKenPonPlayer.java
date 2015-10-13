@@ -1,6 +1,6 @@
 // JanKenPonPlayer.java
 
-package com.tieto.crterminal;
+package com.tieto.crterminal.model;
 
 /*
  * 参与比赛者的信息，主要是用户名和其所出的值

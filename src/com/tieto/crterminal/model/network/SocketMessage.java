@@ -1,4 +1,4 @@
-package com.tieto.crterminal;
+package com.tieto.crterminal.model.network;
 
 public class SocketMessage {  
 	

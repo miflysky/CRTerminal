@@ -1,4 +1,10 @@
-package com.tieto.crterminal;
+package com.tieto.crterminal.controler;
+
+import com.tieto.crterminal.R;
+import com.tieto.crterminal.R.id;
+import com.tieto.crterminal.R.layout;
+import com.tieto.crterminal.model.network.CRTServer;
+import com.tieto.crterminal.model.wifi.WifiUtils;
 
 import android.content.Context;
 import android.content.Intent;
