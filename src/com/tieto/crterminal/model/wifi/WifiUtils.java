@@ -30,8 +30,9 @@ public class WifiUtils {
 	public boolean setApEnabled(boolean enabled, String ssid) {
 
 		// disable WiFi in any case
-		if (enabled) {
-			mWifiManager.setWifiEnabled(false);
+		mWifiManager.setWifiEnabled(false);
+		if (!enabled) {
+			return true;
 		}
 		try {
 

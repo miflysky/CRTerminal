@@ -13,14 +13,13 @@ import org.json.JSONObject;
 import android.util.Log;
 
 
-public class CRTServer {
+public class CRTServer implements SocketConnectiong {
 
 	private static final String TAG = "CRTerminal";
 
 	private static final int SOCKET_PORT = 2000;
 
 	private ServerSocket mServerSocket;
-
 	private boolean mIsStartServer;
 
 	private ArrayList<SocketMessage> mBroadcastMsgList = new ArrayList<SocketMessage>();
@@ -30,9 +29,20 @@ public class CRTServer {
 	// ArrayList<SocketThread>();
 
 	public CRTServer() {
-		// TODO: initialize...
+		
 	}
 
+	public void sendDataToAll(byte[] byte1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendData(byte[] byte1) {
+		sendDataToAll(byte1);
+	}
+
+	
 	public void startSocketServer() {
 		ServerThread thread = new ServerThread("ServerThread");
 		mIsStartServer = true;
@@ -195,4 +205,6 @@ public class CRTServer {
 
 		}
 	}
+
+
 }
