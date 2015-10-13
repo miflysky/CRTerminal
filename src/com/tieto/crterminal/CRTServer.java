@@ -30,7 +30,7 @@ public class CRTServer {
 	// private ArrayList<SocketThread> mThreadList = new
 	// ArrayList<SocketThread>();
 
-	CRTServer() {
+	public CRTServer() {
 		// TODO: initialize...
 	}
 

@@ -2,15 +2,19 @@
 <resources>
 
     <string name="app_name">CRTerminal</string>
-
     <string name="APSelectorDialog">Select One Host</string>
-    
     <string name="usernamehint">Input your name here</string>
     <string name="startashost">HOST</string>
     <string name="startasguest">GUEST</string>
-    
     <string name="action_settings">Settings</string>
     <string name="terminal_server">TerminalServer</string>
-
     <string name="get_connection_list">GetconnectionList</string>
+    <string name="btn_host">Host A Game</string>
+    <string name="btn_guest">Join A Game</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="introdution">Solve you confliction through a funny way.</string>
+    <string name="copy_right">Powered by: CPT hackathon team, just for internal</string>
+    <string name="name">User_name</string>
+    <string name="ready">Ready!</string>
+
 </resources>

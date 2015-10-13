@@ -17,7 +17,7 @@ public class WifiUtils {
 
 	private static final String TAG = "CRTerminal";
 
-	WifiUtils(WifiManager wifiManager) {
+	public WifiUtils(WifiManager wifiManager) {
 		mWifiManager = wifiManager;
 	}
 

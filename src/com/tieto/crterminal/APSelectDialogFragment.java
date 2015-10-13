@@ -100,8 +100,8 @@ public class APSelectDialogFragment extends DialogFragment implements
 				Log.i(TAG, "Searched ap: " + apName);
 
 				// List host name in dialogFragment
-				if (apName.startsWith(MainActivity.APPREFIX)) {
-					mArrayAdapterRec.add(apName.substring(MainActivity.APPREFIX
+				if (apName.startsWith(MainActivityDebug.APPREFIX)) {
+					mArrayAdapterRec.add(apName.substring(MainActivityDebug.APPREFIX
 							.length()));
 				}
 
@@ -113,15 +113,15 @@ public class APSelectDialogFragment extends DialogFragment implements
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 
-		String apname = MainActivity.APPREFIX + mArrayAdapter.getItem(which);
+		String apname = MainActivityDebug.APPREFIX + mArrayAdapter.getItem(which);
 		Log.i(TAG, "User select AP: " + apname);
 
 		// Send back the selected ap name
-		MainActivity mainActiviy = (MainActivity) getActivity();
+		MainActivityDebug mainActiviy = (MainActivityDebug) getActivity();
 
 		Handler handler = mainActiviy.getNoneUIEventHandler();
 
-		Message msg = handler.obtainMessage(MainActivity.GOTAPNAME);
+		Message msg = handler.obtainMessage(MainActivityDebug.GOTAPNAME);
 		msg.obj = apname;
 		handler.sendMessage(msg);
 
