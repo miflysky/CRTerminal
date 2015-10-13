@@ -1,26 +1,24 @@
 package com.tieto.crterminal.controler;
 
-import com.tieto.crterminal.R;
-import com.tieto.crterminal.R.id;
-import com.tieto.crterminal.R.layout;
-import com.tieto.crterminal.model.network.CRTServer;
-import com.tieto.crterminal.model.wifi.WifiUtils;
-
-import android.content.Context;
-import android.content.Intent;
-import android.net.wifi.WifiManager;
-
 import android.app.Activity;
-
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
-import android.util.Log;
+import com.tieto.crterminal.R;
+import com.tieto.crterminal.model.GamePlayerFactory;
+import com.tieto.crterminal.model.GameHostPlayer;
+import com.tieto.crterminal.model.GamePlayer;
+import com.tieto.crterminal.model.JanKenPonValue;
+import com.tieto.crterminal.model.network.CRTServer;
+import com.tieto.crterminal.model.wifi.WifiUtils;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -69,12 +67,15 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_debug);
 
+
+		initView();
+
+		
+		
 		mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		mWifiUtils = new WifiUtils(mWifiManager);
 
 		mCRTServer = new CRTServer();
-
-		initView();
 
 		// To handle None-UI event
 		startHandlerThread();
@@ -174,26 +175,70 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	public void startAsHost(boolean enabled) {
 
-		Log.i(TAG, "start as host");
-
-		boolean sucess = mWifiUtils.setApEnabled(true, APPREFIX
-				+ mNameText.getText().toString());
-
-		if (!sucess) {
-
-			Log.w(TAG, "start ap failed");
-
-			// TODO: need info user?
-		}
-
-		if (enabled == true) {
-			mCRTServer.startSocketServer();
-		} else {
-			mCRTServer.stopSocketServer();
-		}
+		
+//		Log.i(TAG, "start as host");
+//
+//		boolean sucess = mWifiUtils.setApEnabled(true, APPREFIX
+//				+ mNameText.getText().toString());
+//
+//		if (!sucess) {
+//
+//			Log.w(TAG, "start ap failed");
+//
+//			// TODO: need info user?
+//		}
+//
+//		if (enabled == true) {
+//			mCRTServer.startSocketServer();
+//		} else {
+//			mCRTServer.stopSocketServer();
+//		}
 		
 		//TODO: launch host activity
-
+		testHostObj();
+		
 	}
 
+	@SuppressWarnings("unused")
+	private void onDestory() {
+		// TODO Auto-generated method stub
+		mGameHost.unRegisterCallBack(mCallback);
+		super.onDestroy();
+	}
+
+	private GameHostPlayer mGameHost;
+	private void testHostObj() {
+		String userName = APPREFIX
+				+ mNameText.getText().toString();
+
+		mGameHost = GamePlayerFactory.createGameHost(getApplicationContext(),userName);
+		mGameHost.registerCallBack(mCallback);
+		mGameHost.startGame();
+		mGameHost.stopGame();
+		mGameHost.newRound();
+		mGameHost.endRound();
+		
+		GamePlayer player = (GamePlayer) mGameHost;
+		player.setFingerValue(JanKenPonValue.Paper);
+		player.getPlayers();
+	}
+
+	
+	
+	private static GameHostPlayer.GameHostCallback mCallback = new GameHostPlayer.GameHostCallback() {
+		
+		@Override
+		public void onUpdateUser() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
+		@Override
+		public void OnError(String errorMessage) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
 }

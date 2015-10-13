@@ -3,9 +3,6 @@ package com.tieto.crterminal.controler;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tieto.crterminal.R;
-import com.tieto.crterminal.R.string;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -22,6 +19,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+
+import com.tieto.crterminal.R;
 
 public class APSelectDialogFragment extends DialogFragment implements
 		DialogInterface.OnClickListener {
