@@ -35,11 +35,7 @@ public class WifiUtils {
 		}
 		try {
 
-			WifiConfiguration apConfig = new WifiConfiguration();
-
-			apConfig.SSID = ssid;
-
-			apConfig.preSharedKey = "12345678";
+			WifiConfiguration apConfig = createWifiHotConfig(ssid, "");
 
 			Method method = mWifiManager.getClass().getMethod(
 					"setWifiApEnabled", WifiConfiguration.class, Boolean.TYPE);
@@ -54,11 +50,39 @@ public class WifiUtils {
 		}
 	}
 
+	private WifiConfiguration createWifiHotConfig(String mSSID, String mPasswd) {
+
+		WifiConfiguration config = new WifiConfiguration();
+		config.allowedAuthAlgorithms.clear();
+		config.allowedGroupCiphers.clear();
+		config.allowedKeyManagement.clear();
+		config.allowedPairwiseCiphers.clear();
+		config.allowedProtocols.clear();
+
+		config.SSID = mSSID;
+		config.wepKeys[0] = mPasswd;
+		config.allowedAuthAlgorithms
+				.set(WifiConfiguration.AuthAlgorithm.SHARED);
+		config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+		config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+		config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+		config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
+		config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+		config.wepTxKeyIndex = 0;
+		config.priority = 0;
+
+		return config;
+	}
+
 	public boolean connectToSSID(String ssid) {
-		
+
+		if (!mWifiManager.isWifiEnabled()) {
+			mWifiManager.setWifiEnabled(true);
+		}
+
 		boolean success = false;
 		WifiConfiguration exsitConf = null;
-		
+
 		// Check whether the connection are exsit
 		List<WifiConfiguration> existingConfigs = mWifiManager
 				.getConfiguredNetworks();
@@ -82,12 +106,12 @@ public class WifiUtils {
 		config.SSID = "\"" + ssid + "\"";
 		config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
 
-		//add the new WifiConfiguration
+		// add the new WifiConfiguration
 		int netid = mWifiManager.addNetwork(config);
-		
-		//connect to ssid
+
+		// connect to ssid
 		success = mWifiManager.enableNetwork(netid, true);
-		
+
 		return success;
 
 	}
