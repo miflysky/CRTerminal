@@ -4,9 +4,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tieto.crterminal.R;
-import com.tieto.crterminal.model.wifi.WifiUtils;
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -19,7 +16,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +26,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.tieto.crterminal.R;
+import com.tieto.crterminal.model.wifi.WifiUtils;
+
 public class SearchFragment extends Fragment {
 
 	private ListView mGameListView;
@@ -39,23 +38,13 @@ public class SearchFragment extends Fragment {
 
 	private WifiUtils mWifiUtils;
 
-	private static List<Group> groups = new ArrayList<Group>();
+	private static List<Group> GROUPS = new ArrayList<Group>();
 	private int[] groupImageList = new int[] { R.drawable.guest1,
 			R.drawable.guest7, R.drawable.guest8 };
-	
-	public static final int UIEVENT1 = 1;
-	
-	private Handler mUIEventHandler = new Handler() {
 
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case UIEVENT1:
-				mGroupAdapter.notifyDataSetChanged();
-				break;
-			}
-		}
-	};
+	public static final int UIEVENT1 = 1;
+
+	private UIEventHandler mUIEventHandler = new UIEventHandler(this);
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -116,13 +105,13 @@ public class SearchFragment extends Fragment {
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return (groups != null) ? groups.size() : 0;
+			return (GROUPS != null) ? GROUPS.size() : 0;
 		}
 
 		@Override
 		public Object getItem(int position) {
 			// TODO Auto-generated method stub
-			return groups.get(position);
+			return GROUPS.get(position);
 		}
 
 		@Override
@@ -146,9 +135,9 @@ public class SearchFragment extends Fragment {
 			} else {
 				viewHolder = (ViewHolder) convertView.getTag();
 			}
-			viewHolder.groupImageView.setImageResource(groups.get(position)
+			viewHolder.groupImageView.setImageResource(GROUPS.get(position)
 					.getGroupImageId());
-			viewHolder.groupName.setText(groups.get(position).getGroupName());
+			viewHolder.groupName.setText(GROUPS.get(position).getGroupName());
 
 			return convertView;
 		}
@@ -202,6 +191,8 @@ public class SearchFragment extends Fragment {
 				return;
 			}
 
+			SearchFragment.GROUPS.clear();
+
 			String apName;
 
 			WifiManager wifiManager = (WifiManager) searchFragment
@@ -210,7 +201,6 @@ public class SearchFragment extends Fragment {
 			List<ScanResult> wifiList = wifiManager.getScanResults();
 			for (int i = 0; i < wifiList.size(); i++) {
 				apName = wifiList.get(i).SSID;
-
 				if (apName == null)
 					continue;
 
@@ -218,10 +208,7 @@ public class SearchFragment extends Fragment {
 				if (apName.startsWith(GameActivity.APPREFIX)) {
 					Group group = new SearchFragment.Group(
 							searchFragment.groupImageList[i % 3], apName);
-					
-					if(!groups.contains(group)) {
-					SearchFragment.groups.add(group);
-					}
+					SearchFragment.GROUPS.add(group);
 				}
 			}
 			Message msg = new Message();
@@ -230,5 +217,26 @@ public class SearchFragment extends Fragment {
 		}
 	}
 
-}
+	private static class UIEventHandler extends Handler {
 
+		private WeakReference<SearchFragment> mWeakReference;
+
+		public UIEventHandler(SearchFragment searchFragment) {
+			mWeakReference = new WeakReference<SearchFragment>(searchFragment);
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+			SearchFragment searchFragment = mWeakReference.get();
+			if (searchFragment == null) {
+				return;
+			}
+			switch (msg.what) {
+			case UIEVENT1:
+				searchFragment.mGroupAdapter.notifyDataSetChanged();
+				break;
+			}
+		}
+	}
+
+}
