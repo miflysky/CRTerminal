@@ -1,11 +1,12 @@
 package com.tieto.crterminal.ui;
 
-import com.tieto.crterminal.CRTServer;
 import com.tieto.crterminal.R;
-import com.tieto.crterminal.WifiUtils;
+
 import com.tieto.crterminal.R.id;
 import com.tieto.crterminal.R.layout;
 import com.tieto.crterminal.R.menu;
+import com.tieto.crterminal.model.network.CRTServer;
+import com.tieto.crterminal.model.wifi.WifiUtils;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -62,9 +63,9 @@ public class GameActivity extends Activity {
 		// mTransaction.commit();
 
 		mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		mWifiUtils = new WifiUtils(mWifiManager);
+		mWifiUtils = new com.tieto.crterminal.model.wifi.WifiUtils(mWifiManager);
 
-		mCRTServer = new CRTServer();
+		mCRTServer = new com.tieto.crterminal.model.network.CRTServer();
 		if (mIsGameOwner) {
 			startGameAsHost();
 		} else

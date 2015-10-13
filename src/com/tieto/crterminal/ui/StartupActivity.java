@@ -1,10 +1,7 @@
 package com.tieto.crterminal.ui;
 
-import com.tieto.crterminal.MainActivityDebug;
 import com.tieto.crterminal.R;
-import com.tieto.crterminal.R.id;
-import com.tieto.crterminal.R.layout;
-import com.tieto.crterminal.R.menu;
+import com.tieto.crterminal.controler.MainActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -72,7 +69,7 @@ public class StartupActivity extends Activity implements View.OnClickListener{
 			startActivity(intent);
 			break;
 		case R.id.btn_debug:
-			intent = new Intent(this,MainActivityDebug.class);
+			intent = new Intent(this,MainActivity.class);
 			
 			startActivity(intent);
 			break;

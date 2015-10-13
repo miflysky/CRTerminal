@@ -1,3 +1,7 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=d1d0d246df8fd2cc1461c4aac713e7ee0c08b618
 eclipse.preferences.version=1
-encoding//src/com/tieto/crterminal/CRTServer.java=UTF-8
-encoding//src/com/tieto/crterminal/MainActivityDebug.java=UTF-8
+encoding//src/com/tieto/crterminal/controler/MainActivity.java=UTF-8
+encoding//src/com/tieto/crterminal/model/network/CRTServer.java=UTF-8
+encoding/<project>=UTF-8
