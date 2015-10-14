@@ -11,21 +11,23 @@
         android:orientation="horizontal" >
 
         <LinearLayout
+            android:id="@+id/player_1"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:layout_height="match_parent" >
-            
-                <include layout="@layout/player"/>
+            android:layout_weight="1" >
+
+            <include layout="@layout/player" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/player_2"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:layout_height="match_parent" >
-            
-            <include layout="@layout/player"/>
+            android:layout_weight="1" >
+
+            <include layout="@layout/player" />
         </LinearLayout>
     </LinearLayout>
 
@@ -36,21 +38,23 @@
         android:orientation="horizontal" >
 
         <LinearLayout
+            android:id="@+id/player_3"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:layout_height="match_parent" >
-            
-            <include layout="@layout/player"/>
+            android:layout_weight="1" >
+
+            <include layout="@layout/player" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/player_4"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_margin="8dp" >
-            
-            <include layout="@layout/player"/>
+            android:layout_margin="8dp"
+            android:layout_weight="1" >
+
+            <include layout="@layout/player" />
         </LinearLayout>
     </LinearLayout>
 

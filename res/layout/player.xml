@@ -3,8 +3,8 @@
     android:id="@+id/player_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/player_background" >
+    android:background="@drawable/player_background"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="16dp"
-            android:text="Lily"
+            android:text="nobody"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -39,8 +39,9 @@
                 android:id="@+id/player_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:src="@drawable/paper"
-                android:layout_gravity="center" />
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/player_status"
@@ -49,7 +50,8 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="16dp"
                 android:text="Ready!"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:visibility="invisible" />
         </FrameLayout>
     </LinearLayout>
 

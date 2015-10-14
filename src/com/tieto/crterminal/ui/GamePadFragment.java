@@ -2,6 +2,7 @@ package com.tieto.crterminal.ui;
 
 import com.tieto.crterminal.R;
 import com.tieto.crterminal.model.command.JsonCommadConstant;
+import com.tieto.crterminal.model.player.JanKenPonValue;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -29,10 +30,10 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	private ImageButton btnScissors;
 	private boolean mIsOwner;
 
-	
+	private GameActivity mActivity;
+
 	public static String GAME_READY_ACTION = "com.tieto.crterminal.game_ready";
-	
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -40,56 +41,55 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(GAME_READY_ACTION);
 		GameReadyBroadcastReceiver gameReadyBroadcastReceiver = new GameReadyBroadcastReceiver();
-		getActivity().registerReceiver(gameReadyBroadcastReceiver, intentFilter);
+		mActivity = (GameActivity) getActivity();
+		mActivity.registerReceiver(gameReadyBroadcastReceiver, intentFilter);
 	}
 
-    class GameReadyBroadcastReceiver extends BroadcastReceiver{
+	class GameReadyBroadcastReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
 			String action = intent.getAction();
 			if (action.equals(GAME_READY_ACTION)) {
-				
+
 				btnPaper.setVisibility(View.VISIBLE);
-	        	btnRock.setVisibility(View.VISIBLE);
-	        	btnScissors.setVisibility(View.VISIBLE);
+				btnRock.setVisibility(View.VISIBLE);
+				btnScissors.setVisibility(View.VISIBLE);
 			}
 		}
-    	
-    }
 
+	}
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,  
-            Bundle savedInstanceState)  
-    {  
-        View view = inflater.inflate(R.layout.fragment_gamepad, container, false);  
-       
-        
-        btnStart = (Button) view.findViewById(R.id.start_Btn);
-        btnStop = (Button) view.findViewById(R.id.stop_Btn);
-        btnConfirm = (Button) view.findViewById(R.id.confirm_Btn);
-        btnPaper = (ImageButton) view.findViewById(R.id.gamepad_paper);
-        btnRock = (ImageButton) view.findViewById(R.id.gamepad_rock);
-        btnScissors = (ImageButton) view.findViewById(R.id.gamepad_scissors);
-        
-        if (!mIsOwner) {
-        	btnStart.setVisibility(View.GONE);
-        	btnPaper.setVisibility(View.INVISIBLE);
-        	btnRock.setVisibility(View.INVISIBLE);
-        	btnScissors.setVisibility(View.INVISIBLE);
-        }
-        
-        btnStart.setOnClickListener(this);
-        btnStop.setOnClickListener(this);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_gamepad, container,
+				false);
 
-        btnConfirm.setOnClickListener(this);
-        btnPaper.setOnClickListener(this);
-        btnRock.setOnClickListener(this);
-        btnScissors.setOnClickListener(this);
-        
-        return view;  
-    } 
+		btnStart = (Button) view.findViewById(R.id.start_Btn);
+		btnStop = (Button) view.findViewById(R.id.stop_Btn);
+		btnConfirm = (Button) view.findViewById(R.id.confirm_Btn);
+		btnPaper = (ImageButton) view.findViewById(R.id.gamepad_paper);
+		btnRock = (ImageButton) view.findViewById(R.id.gamepad_rock);
+		btnScissors = (ImageButton) view.findViewById(R.id.gamepad_scissors);
+
+		if (!mIsOwner) {
+			btnStart.setVisibility(View.GONE);
+			btnPaper.setVisibility(View.INVISIBLE);
+			btnRock.setVisibility(View.INVISIBLE);
+			btnScissors.setVisibility(View.INVISIBLE);
+		}
+
+		btnStart.setOnClickListener(this);
+		btnStop.setOnClickListener(this);
+
+		btnConfirm.setOnClickListener(this);
+		btnPaper.setOnClickListener(this);
+		btnRock.setOnClickListener(this);
+		btnScissors.setOnClickListener(this);
+
+		return view;
+	}
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -98,22 +98,21 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 		mIsOwner = activity.getIntent().getBooleanExtra("OWNER", false);
 	}
 
-
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
 		Intent intent;
 		switch (id) {
 		case R.id.btn_host:
-			//TODO: start the game
-		    // send broadcast	    
+			// TODO: start the game
+			// send broadcast
 
 			break;
 		case R.id.stop_Btn:
-			// TODO: stop the game
+			getActivity().finish();
 			break;
 		case R.id.confirm_Btn:
-			
+			btnConfirmOnClick();
 			break;
 		case R.id.gamepad_paper:
 			btnPaperOnClick();
@@ -128,17 +127,38 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 		}
 
 	}
-	
-	private void btnPaperOnClick(){
-		//TODO: update UI event
+
+	private void btnConfirmOnClick() {
+		getReady();
 	}
-	
-	private void btnRockOnClick(){
-		//TODO: update UI event
+
+	private void btnPaperOnClick() {
+		setMyChoice(JanKenPonValue.Paper);
 	}
-	
-	private void btnScissorsOnClick(){
-		//TODO: update UI event
+
+	private void btnRockOnClick() {
+		setMyChoice(JanKenPonValue.Rock);
+	}
+
+	private void btnScissorsOnClick() {
+		setMyChoice(JanKenPonValue.Scissors);
+	}
+
+	private void setMyChoice(int value) {
+		Fragment fragment = mActivity.getFragmentManager().findFragmentById(
+				R.id.main_fragment);
+		if (fragment instanceof PlayerFragment) {
+			((PlayerFragment) fragment).playMakeChoice(mActivity.getUserName(),
+					value);
+		}
+	}
+
+	private void getReady() {
+		Fragment fragment = mActivity.getFragmentManager().findFragmentById(
+				R.id.main_fragment);
+		if (fragment instanceof PlayerFragment) {
+			((PlayerFragment) fragment).playerReady(mActivity.getUserName());
+		}
 	}
 
 }

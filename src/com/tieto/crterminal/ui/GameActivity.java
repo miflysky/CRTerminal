@@ -48,7 +48,7 @@ public class GameActivity extends Activity {
 	private boolean mGuestFirstConnectted;
 
 	CRTServer mCRTServer;
-	//CRTConnectionServer crtConnectionServer = null;
+	// CRTConnectionServer crtConnectionServer = null;
 	CRTServer2 mCRTServer2 = null;
 	CRTClient2 mCRTClient2 = null;
 
@@ -58,7 +58,7 @@ public class GameActivity extends Activity {
 	private SearchFragment mSearchFragment;
 
 	private String mMyName;
-	
+
 	private Intent mIntent;
 
 	FragmentManager mFragmentManager;
@@ -97,7 +97,6 @@ public class GameActivity extends Activity {
 
 	}
 
-
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -116,16 +115,16 @@ public class GameActivity extends Activity {
 	}
 
 	private void endGameAsGuest() {
-		
+
 		mGuestFirstConnectted = false;
 		unregisterReceiver(mNetworkConnectChangedReceiver);
-		
+
 		mWifiUtils.disableWifi();
 
 	}
 
 	// get the default user name
-	private String getUserName() {
+	public String getUserName() {
 
 		String androidID = android.provider.Settings.System.getString(
 				getContentResolver(), "android_id");
@@ -154,14 +153,12 @@ public class GameActivity extends Activity {
 			return;
 		}
 
+		// mCRTServer.startSocketServer();
 
-		//mCRTServer.startSocketServer();
-		
 		// added by lujun - begin
 		mCRTServer2 = new CRTServer2();
 		mCRTServer2.startServer(null);
 		// added by lujun - end
-
 
 		createGame();
 
@@ -213,7 +210,6 @@ public class GameActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-
 	public class NetworkConnectChangedReceiver extends BroadcastReceiver {
 
 		@Override
@@ -234,19 +230,19 @@ public class GameActivity extends Activity {
 						String apaddr = mWifiUtils.getAPAddress();
 
 						Log.i(TAG, apaddr);
-						
+
 						mGuestFirstConnectted = true;
 						// TODO: set status connected
-						
+
 						// added by lujun - begin
 						try {
-						    mCRTClient2 = new CRTClient2(apaddr,3333);
-	                        //mCRTClient2.sendMsg("how are you, server!");
-                        } catch (Exception e) {
-                            // TODO: handle exception
-                            Log.e("GameActivity", e.getMessage());
-                        }
-						
+							mCRTClient2 = new CRTClient2(apaddr, 3333);
+							// mCRTClient2.sendMsg("how are you, server!");
+						} catch (Exception e) {
+							// TODO: handle exception
+							Log.e("GameActivity", e.getMessage());
+						}
+
 						// added by lujun - end
 
 					}
