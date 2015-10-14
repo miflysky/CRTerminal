@@ -1,6 +1,6 @@
 // JanKenPonResult.java
 
-package com.tieto.crterminal.model;
+package com.tieto.crterminal.model.player;
 
 /*
  * 本次比赛的结果

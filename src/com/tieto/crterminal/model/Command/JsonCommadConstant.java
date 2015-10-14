@@ -1,4 +1,4 @@
-package com.tieto.crterminal.model;
+package com.tieto.crterminal.model.Command;
 
 public class JsonCommadConstant {
 
@@ -25,12 +25,14 @@ public class JsonCommadConstant {
 	public static final int FROM_SERVER_EVENT_INT_NEWROUND = FROM_SERVER_EVENT_BASE + 10;
 	//server inform client game round end
 	public static final int FROM_SERVER_EVENT_INT_ENDROUND = FROM_SERVER_EVENT_BASE + 11;
-	
-	
-	
+
 	
 	//server inform client user list
 	public static final int FROM_SERVER_EVENT_STR_USERLIST = FROM_SERVER_EVENT_BASE + 20;	
+	
+	
+	
+	
 	
 	/****************************** The event from client *****************************/
 	private static final int FROM_CLIENT_EVENT_BASE = 100;

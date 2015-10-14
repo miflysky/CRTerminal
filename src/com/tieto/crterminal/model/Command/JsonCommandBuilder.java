@@ -1,4 +1,4 @@
-package com.tieto.crterminal.model;
+package com.tieto.crterminal.model.Command;
 
 public class JsonCommandBuilder {
 	

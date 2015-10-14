@@ -1,4 +1,4 @@
-package com.tieto.crterminal.model;
+package com.tieto.crterminal.model.player;
 
 import com.tieto.crterminal.model.wifi.WifiUtils;
 
@@ -16,7 +16,7 @@ public class GamePlayerFactory {
 		//create db 
 		
 		//create game owner
-		return new GameHostPlayer(context,wifiUtils,userName) ;
+		return new GameHostPlayer(userName) ;
 	}
 
 	public static GameGuestPlayer createGameGuest(Context context, String userName) {
@@ -27,7 +27,7 @@ public class GamePlayerFactory {
 		//create db 
 		
 		//create game owner
-		return new GameGuestPlayer(context,wifiUtils,userName) ;
+		return new GameGuestPlayer(userName) ;
 	}
 
 }

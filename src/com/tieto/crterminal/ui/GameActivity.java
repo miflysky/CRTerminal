@@ -145,7 +145,7 @@ public class GameActivity extends Activity {
 			return;
 		}
 
-		mCRTServer.startSocketServer();
+		//mCRTServer.startSocketServer();
 
 		createGame();
 
