@@ -48,8 +48,16 @@
             android:layout_margin="16dp"
             android:layout_weight="1"
             android:background="@drawable/button_theme"
-            android:text="start" />
+            android:text="Start" />
 
+        <Button
+            android:id="@+id/confirm_Btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_theme"
+            android:text="Confirm" />
         <Button
             android:id="@+id/stop_Btn"
             android:layout_width="0dp"
@@ -57,7 +65,7 @@
             android:layout_margin="16dp"
             android:layout_weight="1"
             android:background="@drawable/button_theme"
-            android:text="stop" />
+            android:text="Exit" />
     </LinearLayout>
 
 </LinearLayout>

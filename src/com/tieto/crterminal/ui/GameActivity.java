@@ -52,6 +52,8 @@ public class GameActivity extends Activity {
 	private SearchFragment mSearchFragment;
 
 	private String mMyName;
+	
+	private Intent mIntent;
 
 	FragmentManager mFragmentManager;
 	FragmentTransaction mTransaction;
@@ -67,9 +69,9 @@ public class GameActivity extends Activity {
 		mMyName = getUserName();
 		nameText.setText(mMyName);
 
-		Intent intent = getIntent();
+		mIntent = getIntent();
 
-		mIsGameOwner = intent.getBooleanExtra("OWNER", true);
+		mIsGameOwner = mIntent.getBooleanExtra("OWNER", true);
 		mFragmentManager = getFragmentManager();
 		mTransaction = mFragmentManager.beginTransaction();
 
@@ -88,6 +90,7 @@ public class GameActivity extends Activity {
 		}
 
 	}
+
 
 	@Override
 	protected void onDestroy() {
