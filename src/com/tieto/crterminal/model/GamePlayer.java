@@ -1,12 +1,12 @@
 package com.tieto.crterminal.model;
 
-import com.tieto.crterminal.model.network.SocketConnectiong;
+import com.tieto.crterminal.model.network.SocketConnection;
 
 abstract public class GamePlayer extends JanKenPonPlayer{
 
 	public void setFingerValue(JanKenPonValue paper) {
 		JsonCRTCommand command = JsonCommandBuilder.buildSetFingerValueCommand(paper);
-		getConnecting().sendData(command.getByte());
+		getConnection().sendData(command.getByte());
 		value = paper;
 	}
 
@@ -15,7 +15,7 @@ abstract public class GamePlayer extends JanKenPonPlayer{
 		//TODO: get players
 	}
 
-	protected SocketConnectiong getConnecting() {
+	protected SocketConnection getConnection() {
 		return null;
 	}
 

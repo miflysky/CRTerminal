@@ -42,20 +42,22 @@
         android:orientation="horizontal" >
 
         <Button
+            android:id="@+id/start_Btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="16dp"
             android:layout_weight="1"
             android:background="@drawable/button_theme"
-            android:text="aaaaa" />
+            android:text="start" />
 
         <Button
+            android:id="@+id/stop_Btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="16dp"
             android:layout_weight="1"
             android:background="@drawable/button_theme"
-            android:text="bbbbb" />
+            android:text="stop" />
     </LinearLayout>
 
 </LinearLayout>

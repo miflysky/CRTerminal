@@ -1,7 +1,8 @@
 package com.tieto.crterminal.model.network;
 
-public interface SocketConnectiong {
+public interface SocketConnection {
 
 	void sendData(byte[] byte1);
 
+	
 }

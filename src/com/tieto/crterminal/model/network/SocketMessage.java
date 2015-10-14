@@ -29,9 +29,14 @@ public class SocketMessage {
     //what is the event
     public int event;
     
-    //message content
-    public String msg; 
+    //message type
+    public String msgName; 
     
+    //message content
+    public String msgContent; 
+    
+    
+    public String msg; 
     //message receive/send time
     public String time;
     

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 
 import com.tieto.crterminal.model.network.CRTServer;
-import com.tieto.crterminal.model.network.SocketConnectiong;
+import com.tieto.crterminal.model.network.SocketConnection;
 import com.tieto.crterminal.model.wifi.WifiUtils;
 
 
@@ -40,8 +40,8 @@ public class GameHostPlayer extends GamePlayer{
 	}
 	
 	@Override
-	protected SocketConnectiong getConnecting() {
-		return mSocketServer;
+	protected SocketConnection getConnection() {
+		return (SocketConnection)mSocketServer;
 	}
 	
 	//start the game,  when start game other unit can join

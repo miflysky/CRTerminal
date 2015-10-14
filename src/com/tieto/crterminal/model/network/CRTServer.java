@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import android.util.Log;
 
 
-public class CRTServer implements SocketConnectiong {
+public class CRTServer implements SocketConnection {
 
 	private static final String TAG = "CRTerminal";
 
