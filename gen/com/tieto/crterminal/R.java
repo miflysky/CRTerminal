@@ -55,26 +55,27 @@ public final class R {
     public static final class id {
         public static final int Guest_Btn=0x7f080002;
         public static final int Host_Btn=0x7f080001;
-        public static final int action_settings=0x7f080016;
+        public static final int action_settings=0x7f080017;
         public static final int background=0x7f080003;
         public static final int btn_guest=0x7f080008;
         public static final int btn_host=0x7f080007;
-        public static final int game_listview=0x7f08000e;
+        public static final int confirm_Btn=0x7f08000d;
+        public static final int game_listview=0x7f08000f;
         public static final int gamepad_fragment=0x7f080006;
         public static final int gamepad_paper=0x7f080009;
         public static final int gamepad_rock=0x7f08000a;
         public static final int gamepad_scissors=0x7f08000b;
-        public static final int group_icn=0x7f08000f;
-        public static final int group_name=0x7f080010;
+        public static final int group_icn=0x7f080010;
+        public static final int group_name=0x7f080011;
         public static final int main_fragment=0x7f080005;
-        public static final int player_card=0x7f080014;
-        public static final int player_icon=0x7f080012;
-        public static final int player_layout=0x7f080011;
+        public static final int player_card=0x7f080015;
+        public static final int player_icon=0x7f080013;
+        public static final int player_layout=0x7f080012;
         public static final int player_me=0x7f080004;
-        public static final int player_name=0x7f080013;
-        public static final int player_status=0x7f080015;
+        public static final int player_name=0x7f080014;
+        public static final int player_status=0x7f080016;
         public static final int start_Btn=0x7f08000c;
-        public static final int stop_Btn=0x7f08000d;
+        public static final int stop_Btn=0x7f08000e;
         public static final int username=0x7f080000;
     }
     public static final class layout {

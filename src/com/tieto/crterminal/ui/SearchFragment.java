@@ -67,6 +67,8 @@ public class SearchFragment extends Fragment {
 				mWifiUtils.connectToSSID(GameActivity.APPREFIX
 						+ GROUPS.get(position).getGroupName());
 
+				//TODO: join game
+				
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
 				PlayerFragment pf = new PlayerFragment();
