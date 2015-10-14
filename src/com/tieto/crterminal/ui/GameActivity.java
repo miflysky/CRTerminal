@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class GameActivity extends Activity {
 
@@ -42,6 +44,8 @@ public class GameActivity extends Activity {
 	private GamePadFragment mGamePadFragment;
 	private SearchFragment mSearchFragment;
 
+	private String mMyName;
+
 	FragmentManager mFragmentManager;
 	FragmentTransaction mTransaction;
 
@@ -49,7 +53,15 @@ public class GameActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
+
+		// Set the default user name
+		TextView nameText = (TextView) findViewById(R.id.player_me);
+
+		mMyName = getUserName();
+		nameText.setText(mMyName);
+
 		Intent intent = getIntent();
+
 		mIsGameOwner = intent.getBooleanExtra("OWNER", true);
 		mFragmentManager = getFragmentManager();
 		mTransaction = mFragmentManager.beginTransaction();
@@ -59,22 +71,77 @@ public class GameActivity extends Activity {
 		// mTransaction.commit();
 
 		mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		mWifiUtils = new com.tieto.crterminal.model.wifi.WifiUtils(mWifiManager);
+		mWifiUtils = new WifiUtils(mWifiManager);
 
-		mCRTServer = new com.tieto.crterminal.model.network.CRTServer();
+		mCRTServer = new CRTServer();
 		if (mIsGameOwner) {
 			startGameAsHost();
-		} else
+		} else {
 			startGameAsGuest();
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		if (mIsGameOwner) {
+			endGameAsHost();
+		} else {
+			endGameAsGuest();
+		}
+
+	}
+
+	private void endGameAsHost() {
+		mWifiUtils.disableAP();
+
+	}
+
+	private void endGameAsGuest() {
+
+		mWifiUtils.disableWifi();
+
+	}
+
+	// get the default user name
+	private String getUserName() {
+
+		String androidID = android.provider.Settings.System.getString(
+				getContentResolver(), "android_id");
+		String userName;
+
+		if (androidID.length() > 4) {
+			userName = USERPREFIX + androidID.substring(0, 4);
+		} else {
+			userName = USERPREFIX;
+		}
+
+		return userName;
 	}
 
 	private void startGameAsHost() {
+
+		Log.i(TAG, "start as host");
+
+		// start ap
+		boolean success = mWifiUtils.enableAP(APPREFIX + mMyName);
+		if (!success) {
+
+			Log.w(TAG, "start ap failed");
+
+			// TODO: need info user?
+			return;
+		}
+
+		mCRTServer.startSocketServer();
+
 		createGame();
-		startAsHost(true);
+
 	}
 
 	private void startGameAsGuest() {
-		startAsGuest();
+		mWifiUtils.startWifiScan();
 		findGameOwner();
 	}
 
@@ -111,31 +178,6 @@ public class GameActivity extends Activity {
 
 	private void startAsHost(boolean enabled) {
 
-		Log.i(TAG, "start as host");
-
-		boolean sucess = mWifiUtils.setApEnabled(true, APPREFIX
-				+ getIntent().getStringExtra("name"));
-
-		if (!sucess) {
-
-			Log.w(TAG, "start ap failed");
-
-			// TODO: need info user?
-		}
-
-		if (enabled == true) {
-			mCRTServer.startSocketServer();
-		} else {
-			mCRTServer.stopSocketServer();
-		}
-
-		// TODO: launch host activity
-
 	}
 
-	// start AP selector fragment
-	private void startAsGuest() {
-		Log.i(TAG, "start as guest");
-		mWifiUtils.startWifiScan();
-	}
 }

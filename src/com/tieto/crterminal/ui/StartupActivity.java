@@ -1,8 +1,6 @@
 package com.tieto.crterminal.ui;
 
 import com.tieto.crterminal.R;
-import com.tieto.crterminal.controler.MainActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,8 +14,6 @@ public class StartupActivity extends Activity implements View.OnClickListener{
 	private Button btnHost;
 	private Button btnGuest;
 	
-	//temp
-	private Button btnDebug;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +22,9 @@ public class StartupActivity extends Activity implements View.OnClickListener{
 		
 		btnHost = (Button) findViewById(R.id.btn_host);
 		btnGuest = (Button) findViewById(R.id.btn_guest);
-		btnDebug = (Button) findViewById(R.id.btn_debug);
 
 		btnHost.setOnClickListener(this);
 		btnGuest.setOnClickListener(this);
-		btnDebug.setOnClickListener(this);
 		
 	}
 
@@ -68,11 +62,7 @@ public class StartupActivity extends Activity implements View.OnClickListener{
 			intent.putExtra("OWNER", false);
 			startActivity(intent);
 			break;
-		case R.id.btn_debug:
-			intent = new Intent(this,MainActivity.class);
-			
-			startActivity(intent);
-			break;
+
 		}
 		
 	}

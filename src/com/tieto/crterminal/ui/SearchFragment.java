@@ -16,6 +16,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ import com.tieto.crterminal.R;
 import com.tieto.crterminal.model.wifi.WifiUtils;
 
 public class SearchFragment extends Fragment {
+
+	private static final String TAG = "CRTerminal";
 
 	private ListView mGameListView;
 	private GroupAdapter mGroupAdapter;
@@ -61,7 +64,8 @@ public class SearchFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 
-				mWifiUtils.connectToSSID(GROUPS.get(position).getGroupName());
+				mWifiUtils.connectToSSID(GameActivity.APPREFIX
+						+ GROUPS.get(position).getGroupName());
 
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
@@ -207,12 +211,15 @@ public class SearchFragment extends Fragment {
 				if (apName == null)
 					continue;
 
+				Log.i(TAG, "Searched ap: " + apName);
+
 				// List host name in dialogFragment
-				// if (apName.startsWith(GameActivity.APPREFIX)) {
-				Group group = new SearchFragment.Group(
-						searchFragment.groupImageList[i % 3], apName);
-				SearchFragment.GROUPS.add(group);
-				// }
+				if (apName.startsWith(GameActivity.APPREFIX)) {
+					Group group = new SearchFragment.Group(
+							searchFragment.groupImageList[i % 3],
+							apName.substring(GameActivity.APPREFIX.length()));
+					SearchFragment.GROUPS.add(group);
+				}
 			}
 			Message msg = new Message();
 			msg.what = UIEVENT1;

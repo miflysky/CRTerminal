@@ -26,7 +26,7 @@ public class GameHostPlayer extends GamePlayer{
     private GameStatus mGameStatus = GameStatus.NOT_START;
 	private WifiUtils mWifiUtils;
 	private CRTServer mSocketServer;
-	private ArrayList<GameHostCallback> mCallbacks = new ArrayList<>();
+	private ArrayList<GameHostCallback> mCallbacks = new ArrayList<GameHostCallback>();
 	private int mCurrentRound;
 	
 	public GameHostPlayer(Context context, WifiUtils wifiUtils, String userName) {
@@ -46,9 +46,7 @@ public class GameHostPlayer extends GamePlayer{
 	
 	//start the game,  when start game other unit can join
 	public void startGame() {
-		if(!mWifiUtils.setApEnabled(true,name)){
-			notifyCallbackError("start Wifi error");
-		}
+
 		mSocketServer.startSocketServer();
 		mGameStatus = GameStatus.STARTED;
 	}
@@ -56,7 +54,7 @@ public class GameHostPlayer extends GamePlayer{
 	//stop the game
 	public void stopGame() {
 		mSocketServer.stopSocketServer();
-		mWifiUtils.setApEnabled(false, null);
+
 	}
 
 	public void newRound() {

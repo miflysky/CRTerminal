@@ -85,15 +85,6 @@
                 android:textAllCaps="false"
                 android:textSize="14sp" />
             
-            <Button
-                android:id="@+id/btn_debug"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:text="temp btn"
-                android:textAllCaps="false" />
         </LinearLayout>
     </LinearLayout>
 

@@ -16,6 +16,8 @@ public class WifiUtils {
 	private WifiManager mWifiManager;
 
 	private static final String TAG = "CRTerminal";
+	
+	private String mEnableAPname;
 
 	public WifiUtils(WifiManager wifiManager) {
 		mWifiManager = wifiManager;
@@ -27,13 +29,12 @@ public class WifiUtils {
 		mWifiManager.startScan();
 	}
 
-	public boolean setApEnabled(boolean enabled, String ssid) {
+	public boolean enableAP(String ssid) {
 
+		mEnableAPname = ssid;
 		// disable WiFi in any case
 		mWifiManager.setWifiEnabled(false);
-		if (!enabled) {
-			return true;
-		}
+
 		try {
 
 			WifiConfiguration apConfig = createWifiHotConfig(ssid, "");
@@ -42,15 +43,48 @@ public class WifiUtils {
 					"setWifiApEnabled", WifiConfiguration.class, Boolean.TYPE);
 
 			boolean success = (Boolean) method.invoke(mWifiManager, apConfig,
-					enabled);
+					true);
 
 			return success;
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
 
+	
+	public boolean disableAP() {
+
+		// disable WiFi in any case
+		mWifiManager.setWifiEnabled(false);
+
+		try {
+
+			WifiConfiguration apConfig = createWifiHotConfig(mEnableAPname, "");
+
+			Method method = mWifiManager.getClass().getMethod(
+					"setWifiApEnabled", WifiConfiguration.class, Boolean.TYPE);
+
+			boolean success = (Boolean) method.invoke(mWifiManager, apConfig,
+					false);
+
+			return success;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public void disableWifi() {
+
+		// disable WiFi
+		mWifiManager.setWifiEnabled(false);
+
+	}
+	
+	
 	private WifiConfiguration createWifiHotConfig(String mSSID, String mPasswd) {
 
 		WifiConfiguration config = new WifiConfiguration();
