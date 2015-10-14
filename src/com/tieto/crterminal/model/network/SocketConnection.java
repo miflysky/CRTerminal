@@ -2,9 +2,7 @@ package com.tieto.crterminal.model.network;
 
 public interface SocketConnection {
 
-	void sendData(byte[] data);
+	void sendData(byte[] byte1);
 
-	void openConnection();
 	
-	void closeConnection();
 }

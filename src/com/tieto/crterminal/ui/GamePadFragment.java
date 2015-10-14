@@ -6,6 +6,7 @@ import com.tieto.crterminal.model.Command.JsonCommadConstant;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 
 	private Button btnStart;
 	private Button btnStop;
+
 
 	public Handler mGamePadHandler = new Handler() {
 		@Override
@@ -53,20 +55,25 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 		return mGamePadHandler;
 	}
 	
+
+	private GameActivity gameActivity;
 	
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_gamepad, container,
-				false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,  
+            Bundle savedInstanceState)  
+    {  
+        View view = inflater.inflate(R.layout.fragment_gamepad, container, false);  
+       
+        
+        btnStart = (Button) view.findViewById(R.id.start_Btn);
+        btnStop = (Button) view.findViewById(R.id.stop_Btn);
 
-		btnStart = (Button) view.findViewById(R.id.start_Btn);
-		btnStop = (Button) view.findViewById(R.id.stop_Btn);
+        btnStart.setOnClickListener(this);
+        btnStop.setOnClickListener(this);
+        
+        gameActivity = (GameActivity) getActivity();
+        return view;  
+    } 	 
 
-		btnStart.setOnClickListener(this);
-		btnStop.setOnClickListener(this);
-
-		return view;
-	}
 
 	@Override
 	public void onClick(View v) {
@@ -74,7 +81,9 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 		Intent intent;
 		switch (id) {
 		case R.id.btn_host:
-			// TODO: start the game
+			//TODO: start the game
+		    // send broadcast	    
+
 			break;
 		case R.id.stop_Btn:
 			// TODO: stop the game

@@ -1,7 +1,10 @@
 package com.tieto.crterminal.ui;
 
 import com.tieto.crterminal.R;
+import com.tieto.crterminal.model.network.CRTClient2;
 import com.tieto.crterminal.model.network.CRTServer;
+import com.tieto.crterminal.model.network.CRTServer2;
+import com.tieto.crterminal.model.network.CRTServer2Thread;
 import com.tieto.crterminal.model.wifi.WifiUtils;
 
 import android.app.Activity;
@@ -45,6 +48,9 @@ public class GameActivity extends Activity {
 	private boolean mGuestFirstConnectted;
 
 	CRTServer mCRTServer;
+	//CRTConnectionServer crtConnectionServer = null;
+	CRTServer2 mCRTServer2 = null;
+	CRTClient2 mCRTClient2 = null;
 
 	private boolean mIsGameOwner;
 	private PlayerFragment mPlayerFragment;
@@ -145,7 +151,14 @@ public class GameActivity extends Activity {
 			return;
 		}
 
+
 		//mCRTServer.startSocketServer();
+		
+		// added by lujun - begin
+		mCRTServer2 = new CRTServer2();
+		mCRTServer2.startServer(null);
+		// added by lujun - end
+
 
 		createGame();
 
@@ -221,6 +234,17 @@ public class GameActivity extends Activity {
 						
 						mGuestFirstConnectted = true;
 						// TODO: set status connected
+						
+						// added by lujun - begin
+						try {
+						    mCRTClient2 = new CRTClient2(apaddr,3333);
+	                        //mCRTClient2.sendMsg("how are you, server!");
+                        } catch (Exception e) {
+                            // TODO: handle exception
+                            Log.e("GameActivity", e.getMessage());
+                        }
+						
+						// added by lujun - end
 
 					}
 
