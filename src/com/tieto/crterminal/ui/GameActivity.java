@@ -7,14 +7,18 @@ import com.tieto.crterminal.model.wifi.WifiUtils;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.TextView;
 
 public class GameActivity extends Activity {
@@ -36,6 +40,9 @@ public class GameActivity extends Activity {
 
 	private WifiManager mWifiManager;
 	private WifiUtils mWifiUtils;
+	private NetworkConnectChangedReceiver mNetworkConnectChangedReceiver;
+
+	private boolean mGuestFirstConnectted;
 
 	CRTServer mCRTServer;
 
@@ -79,6 +86,7 @@ public class GameActivity extends Activity {
 		} else {
 			startGameAsGuest();
 		}
+
 	}
 
 	@Override
@@ -99,7 +107,10 @@ public class GameActivity extends Activity {
 	}
 
 	private void endGameAsGuest() {
-
+		
+		mGuestFirstConnectted = false;
+		unregisterReceiver(mNetworkConnectChangedReceiver);
+		
 		mWifiUtils.disableWifi();
 
 	}
@@ -141,6 +152,16 @@ public class GameActivity extends Activity {
 	}
 
 	private void startGameAsGuest() {
+
+		// register a receive to get the connection event
+		IntentFilter filter = new IntentFilter();
+
+		filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+		mNetworkConnectChangedReceiver = new NetworkConnectChangedReceiver();
+		registerReceiver(mNetworkConnectChangedReceiver, filter);
+
+		mGuestFirstConnectted = false;
+
 		mWifiUtils.startWifiScan();
 		findGameOwner();
 	}
@@ -176,7 +197,37 @@ public class GameActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void startAsHost(boolean enabled) {
+
+	public class NetworkConnectChangedReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+
+			if (!mGuestFirstConnectted) {
+				String action = intent.getAction();
+
+				if (TextUtils.equals(action,
+						ConnectivityManager.CONNECTIVITY_ACTION)) {
+
+					ConnectivityManager connectivityManager = (ConnectivityManager) context
+							.getSystemService(Context.CONNECTIVITY_SERVICE);
+					NetworkInfo wifiNetworkInfo = connectivityManager
+							.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+					if (wifiNetworkInfo.isConnected()) {
+
+						String apaddr = mWifiUtils.getAPAddress();
+
+						Log.i(TAG, apaddr);
+						
+						mGuestFirstConnectted = true;
+						// TODO: set status connected
+
+					}
+
+				}
+			}
+			return;
+		}
 
 	}
 

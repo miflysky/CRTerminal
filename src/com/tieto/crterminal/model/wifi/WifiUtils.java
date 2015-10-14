@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.net.DhcpInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -16,7 +17,7 @@ public class WifiUtils {
 	private WifiManager mWifiManager;
 
 	private static final String TAG = "CRTerminal";
-	
+
 	private String mEnableAPname;
 
 	public WifiUtils(WifiManager wifiManager) {
@@ -53,7 +54,6 @@ public class WifiUtils {
 		}
 	}
 
-	
 	public boolean disableAP() {
 
 		// disable WiFi in any case
@@ -76,16 +76,15 @@ public class WifiUtils {
 			return false;
 		}
 	}
-	
+
 	public void disableWifi() {
 
 		// disable WiFi
 		mWifiManager.setWifiEnabled(false);
 
 	}
-	
-	
-	private WifiConfiguration createWifiHotConfig(String mSSID, String mPasswd) {
+
+	private WifiConfiguration createWifiHotConfig(String ssid, String passwd) {
 
 		WifiConfiguration config = new WifiConfiguration();
 		config.allowedAuthAlgorithms.clear();
@@ -94,8 +93,8 @@ public class WifiUtils {
 		config.allowedPairwiseCiphers.clear();
 		config.allowedProtocols.clear();
 
-		config.SSID = mSSID;
-		config.wepKeys[0] = mPasswd;
+		config.SSID = ssid;
+		config.wepKeys[0] = passwd;
 		config.allowedAuthAlgorithms
 				.set(WifiConfiguration.AuthAlgorithm.SHARED);
 		config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
@@ -107,6 +106,29 @@ public class WifiUtils {
 		config.priority = 0;
 
 		return config;
+	}
+
+	public String getAPAddress() {
+
+		String gateway;
+
+		DhcpInfo di = mWifiManager.getDhcpInfo();
+		long getewayIpL = di.gateway;
+		gateway = long2ip(getewayIpL);
+
+		return gateway;
+	}
+
+	private String long2ip(long ip) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(String.valueOf((int) (ip & 0xff)));
+		sb.append('.');
+		sb.append(String.valueOf((int) ((ip >> 8) & 0xff)));
+		sb.append('.');
+		sb.append(String.valueOf((int) ((ip >> 16) & 0xff)));
+		sb.append('.');
+		sb.append(String.valueOf((int) ((ip >> 24) & 0xff)));
+		return sb.toString();
 	}
 
 	public boolean connectToSSID(String ssid) {
