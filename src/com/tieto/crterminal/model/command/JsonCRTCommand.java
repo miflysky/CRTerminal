@@ -1,4 +1,4 @@
-package com.tieto.crterminal.model.Command;
+package com.tieto.crterminal.model.command;
 
 import org.json.JSONObject;
 
@@ -42,10 +42,8 @@ public class JsonCRTCommand {
 
 			mJSONObject.put(JsonCommadConstant.EVENTSTRING, mEvent);
 
-			if (mEvent < JsonCommadConstant.FROM_SERVER_EVENT_NULL_END) {
-				if ((mMsgType != null) && (mMsgString != null)) {
-					mJSONObject.put(mMsgType, mMsgString);
-				}
+			if ((mMsgType != null) && (mMsgString != null)) {
+				mJSONObject.put(mMsgType, mMsgString);
 			}
 
 			String jsonString = mJSONObject.toString();

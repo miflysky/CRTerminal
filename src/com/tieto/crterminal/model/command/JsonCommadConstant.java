@@ -1,4 +1,4 @@
-package com.tieto.crterminal.model.Command;
+package com.tieto.crterminal.model.command;
 
 public class JsonCommadConstant {
 
@@ -38,11 +38,12 @@ public class JsonCommadConstant {
 	private static final int FROM_CLIENT_EVENT_BASE = 100;
 	
 	//client inform server I'm login
-	public static final int FROM_CLIENT_EVENT_NULL_LOGIN = FROM_CLIENT_EVENT_BASE + 1;
+	public static final int FROM_CLIENT_EVENT_STR_JOIN = FROM_CLIENT_EVENT_BASE + 10;
 	//client inform server I'm login out
-	public static final int FROM_CLIENT_EVENT_NULL_LOGOUT = FROM_CLIENT_EVENT_BASE + 2;
+	public static final int FROM_CLIENT_EVENT_STR_LEAVE = FROM_CLIENT_EVENT_BASE + 11;
 
+	
 	//client inform server what is his choice
-	public static final int FROM_CLIENT_EVENT_CHOICE = FROM_CLIENT_EVENT_BASE + 10;
+	public static final int FROM_CLIENT_EVENT_INT_CHOICE = FROM_CLIENT_EVENT_BASE + 20;
 	
 }

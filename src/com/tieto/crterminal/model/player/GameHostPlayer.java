@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import android.content.Context;
 
-import com.tieto.crterminal.model.Command.JsonCRTCommand;
-import com.tieto.crterminal.model.Command.JsonCommandBuilder;
+import com.tieto.crterminal.model.command.JsonCRTCommand;
+import com.tieto.crterminal.model.command.JsonCommandBuilder;
 import com.tieto.crterminal.model.network.CRTServer;
 import com.tieto.crterminal.model.network.SocketConnection;
 import com.tieto.crterminal.model.wifi.WifiUtils;

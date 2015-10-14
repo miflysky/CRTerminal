@@ -2,8 +2,8 @@
 
 package com.tieto.crterminal.model.player;
 
-import com.tieto.crterminal.model.Command.JsonCRTCommand;
-import com.tieto.crterminal.model.Command.JsonCommandBuilder;
+import com.tieto.crterminal.model.command.JsonCRTCommand;
+import com.tieto.crterminal.model.command.JsonCommandBuilder;
 import com.tieto.crterminal.model.network.SocketConnection;
 
 /*

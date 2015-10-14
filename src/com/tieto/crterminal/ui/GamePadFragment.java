@@ -1,7 +1,7 @@
 package com.tieto.crterminal.ui;
 
 import com.tieto.crterminal.R;
-import com.tieto.crterminal.model.Command.JsonCommadConstant;
+import com.tieto.crterminal.model.command.JsonCommadConstant;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -20,41 +20,6 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	private Button btnStop;
 
 
-	public Handler mGamePadHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-
-			switch (msg.what) {
-			case JsonCommadConstant.FROM_SERVER_EVENT_NULL_STARTGAME:
-
-				break;
-
-			case JsonCommadConstant.FROM_SERVER_EVENT_NULL_GAMERESULT:
-
-				break;
-
-			case JsonCommadConstant.FROM_SERVER_EVENT_INT_NEWROUND:
-
-				break;
-
-			case JsonCommadConstant.FROM_SERVER_EVENT_INT_ENDROUND:
-
-				break;
-
-			case JsonCommadConstant.FROM_SERVER_EVENT_STR_USERLIST:
-
-				break;
-			}
-		}
-
-	};
-
-	
-	public Handler getHandler(){
-		
-		return mGamePadHandler;
-	}
-	
 
 	private GameActivity gameActivity;
 	
