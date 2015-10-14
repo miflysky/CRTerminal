@@ -15,12 +15,12 @@ public class JanKenPonPlayer
     }
 
     // 构造函数
-    public JanKenPonPlayer(String username, JanKenPonValue move)
+    public JanKenPonPlayer(String username, int move)
     {
         name = username;
         value = move;
     }
 
     public String name;            // user id or name    
-    public JanKenPonValue value;   // his/her value of current match
+    public int value;   // his/her value of current match
 }

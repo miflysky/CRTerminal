@@ -2,12 +2,10 @@
 
 package com.tieto.crterminal.model;
 
-/*
- * 参与者所出的值
- */
-public enum JanKenPonValue
+
+public class JanKenPonValue
 {
-    Scissors,
-    Rock,    
-    Paper
+	public static final int Scissors = 1;
+	public static final int Rock = 2;
+	public static final int Paper = 3;
 }

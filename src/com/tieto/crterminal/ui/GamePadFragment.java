@@ -1,7 +1,6 @@
 package com.tieto.crterminal.ui;
 
 import com.tieto.crterminal.R;
-import com.tieto.crterminal.R.layout;
 
 import android.app.Fragment;
 import android.content.Intent;

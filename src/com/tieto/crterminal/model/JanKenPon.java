@@ -205,13 +205,13 @@ public class JanKenPon
             for (int i = 0; i < winners.size(); ++ i)
             {
                 JanKenPonPlayer player = winners.get(i);
-                System.out.println("\t name:" + player.name + ", move:" + player.value.toString() + "\tWINNER");
+                System.out.println("\t name:" + player.name + ", move:" + player.value + "\tWINNER");
             }
             
             for (int i = 0; i < losers.size(); ++ i)
             {
                 JanKenPonPlayer player = losers.get(i);
-                System.out.println("\t name:" + player.name + ", move:" + player.value.toString() + "\tLOSER");
+                System.out.println("\t name:" + player.name + ", move:" + player.value + "\tLOSER");
             }
         }        
     }
@@ -245,13 +245,13 @@ public class JanKenPon
             for (int i = 0; i < winners.size(); ++ i)
             {
                 JanKenPonPlayer player = winners.get(i);
-                System.out.println("\t name:" + player.name + ", move:" + player.value.toString() + "\tWINNER");
+                System.out.println("\t name:" + player.name + ", move:" + player.value + "\tWINNER");
             }
             
             for (int i = 0; i < losers.size(); ++ i)
             {
                 JanKenPonPlayer player = losers.get(i);
-                System.out.println("\t name:" + player.name + ", move:" + player.value.toString() + "\tLOSER");
+                System.out.println("\t name:" + player.name + ", move:" + player.value + "\tLOSER");
             }
         }        
     }
@@ -285,13 +285,13 @@ public class JanKenPon
             for (int i = 0; i < winners.size(); ++ i)
             {
                 JanKenPonPlayer player = winners.get(i);
-                System.out.println("\t name:" + player.name + ", move:" + player.value.toString() + "\tWINNER");
+                System.out.println("\t name:" + player.name + ", move:" + player.value + "\tWINNER");
             }
             
             for (int i = 0; i < losers.size(); ++ i)
             {
                 JanKenPonPlayer player = losers.get(i);
-                System.out.println("\t name:" + player.name + ", move:" + player.value.toString() + "\tLOSER");
+                System.out.println("\t name:" + player.name + ", move:" + player.value + "\tLOSER");
             }
         }        
     }

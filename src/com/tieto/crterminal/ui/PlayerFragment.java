@@ -19,8 +19,14 @@ public class PlayerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_all_player, container, false);  
        
         
+        
+        
+        
         return view;  
     } 
 	 
+	
+	
+	
 
 }
