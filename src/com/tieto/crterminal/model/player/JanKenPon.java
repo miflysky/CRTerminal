@@ -1,8 +1,9 @@
 // JanKenPon.java
 
-package com.tieto.crterminal.model;
+package com.tieto.crterminal.model.player;
 
 import java.util.*;
+
 
 
 /*
@@ -36,15 +37,15 @@ public class JanKenPon
         for (int i = 0; i < playersCount; ++ i)
         {
             JanKenPonPlayer player = players.get(i);
-            if ( JanKenPonValue.Scissors == player.value)
+            if ( JanKenPonValue.Scissors == player.mValue)
             {
                 scissorsList.add(player);
             }
-            else if (JanKenPonValue.Rock == player.value)
+            else if (JanKenPonValue.Rock == player.mValue)
             {
                 rockList.add(player);
             }
-            else if (JanKenPonValue.Paper == player.value)
+            else if (JanKenPonValue.Paper == player.mValue)
             {
                 paperList.add(player);
             }
@@ -112,6 +113,8 @@ public class JanKenPon
         return result;
     }
     
+    
+    /*
     private static void testJudger1()
     {
         System.out.println("testJudger1() >>> ");
@@ -308,4 +311,6 @@ public class JanKenPon
         JanKenPon.testJudger6();
         return;
     }
+    
+    */
 }

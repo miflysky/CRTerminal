@@ -1,4 +1,4 @@
-package com.tieto.crterminal.model;
+package com.tieto.crterminal.model.command;
 
 public class JsonCommandBuilder {
 	
@@ -16,7 +16,7 @@ public class JsonCommandBuilder {
 	}
 
 	public static JsonCRTCommand buildJanKenPonValueCommand(int value) {
-		JsonCRTCommand command = new JsonCRTCommand(JsonCommadConstant.FROM_CLIENT_EVENT_CHOICE);	
+		JsonCRTCommand command = new JsonCRTCommand(JsonCommadConstant.FROM_CLIENT_EVENT_INT_CHOICE);	
 		command.setValue(value);
 		return command;
 	}
@@ -31,6 +31,21 @@ public class JsonCommandBuilder {
 		JsonCRTCommand command = new JsonCRTCommand(JsonCommadConstant.FROM_SERVER_EVENT_NULL_GAMERESULT);
 		return command;
 	}
+	
+	
+	
+	public static JsonCRTCommand buildJoinGameCommand(String name) {
+		JsonCRTCommand command = new JsonCRTCommand(JsonCommadConstant.FROM_CLIENT_EVENT_STR_JOIN);
+		command.setValue(name);
+		return command;
+	}
+	
+	public static JsonCRTCommand buildLeaveGameCommand(String name) {
+		JsonCRTCommand command = new JsonCRTCommand(JsonCommadConstant.FROM_CLIENT_EVENT_STR_LEAVE);
+		command.setValue(name);
+		return command;
+	}
+	
 	
 	
 	

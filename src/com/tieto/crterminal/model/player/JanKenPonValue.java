@@ -1,6 +1,6 @@
 // JanKenPonValue.java
 
-package com.tieto.crterminal.model;
+package com.tieto.crterminal.model.player;
 
 
 public class JanKenPonValue

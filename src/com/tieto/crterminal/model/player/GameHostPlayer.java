@@ -1,20 +1,32 @@
-package com.tieto.crterminal.model;
+package com.tieto.crterminal.model.player;
 
 import java.util.ArrayList;
 
 import android.content.Context;
 
+import com.tieto.crterminal.model.command.JsonCRTCommand;
+import com.tieto.crterminal.model.command.JsonCommandBuilder;
 import com.tieto.crterminal.model.network.CRTServer;
 import com.tieto.crterminal.model.network.SocketConnection;
 import com.tieto.crterminal.model.wifi.WifiUtils;
 
 
 
-public class GameHostPlayer extends GamePlayer{
+public class GameHostPlayer extends JanKenPonPlayer{
 
+	
 	public interface GameHostCallback{
 		void onUpdateUser();
 		void OnError(String errorMessage);
+	}
+	
+	public GameHostPlayer(String name){
+		super(name);
+	}
+	
+	public void HostGamestart(){
+		
+		
 	}
 	
 	public enum GameStatus {
@@ -22,7 +34,23 @@ public class GameHostPlayer extends GamePlayer{
 		STARTED,
 		PLAYING
 	}
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
     private GameStatus mGameStatus = GameStatus.NOT_START;
 	private WifiUtils mWifiUtils;
 	private CRTServer mSocketServer;
@@ -85,5 +113,7 @@ public class GameHostPlayer extends GamePlayer{
 			callback.OnError(string);
 		}
 	}
+	
+	*/
 
 }

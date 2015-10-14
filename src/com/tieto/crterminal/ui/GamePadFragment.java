@@ -1,6 +1,7 @@
 package com.tieto.crterminal.ui;
 
 import com.tieto.crterminal.R;
+import com.tieto.crterminal.model.command.JsonCommadConstant;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -9,13 +10,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class GamePadFragment extends Fragment implements View.OnClickListener{
+public class GamePadFragment extends Fragment implements View.OnClickListener {
 
 	private Button btnStart;
 	private Button btnStop;
@@ -24,6 +28,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener{
 	private ImageButton btnRock;
 	private ImageButton btnScissors;
 	private boolean mIsOwner;
+
 	
 	public static String GAME_READY_ACTION = "com.tieto.crterminal.game_ready";
 	
@@ -77,6 +82,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener{
         
         btnStart.setOnClickListener(this);
         btnStop.setOnClickListener(this);
+
         btnConfirm.setOnClickListener(this);
         btnPaper.setOnClickListener(this);
         btnRock.setOnClickListener(this);
@@ -84,10 +90,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener{
         
         return view;  
     } 
-	
-	
-	 
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
@@ -100,12 +103,14 @@ public class GamePadFragment extends Fragment implements View.OnClickListener{
 	public void onClick(View v) {
 		int id = v.getId();
 		Intent intent;
-		switch(id){
+		switch (id) {
 		case R.id.btn_host:
 			//TODO: start the game
+		    // send broadcast	    
+
 			break;
 		case R.id.stop_Btn:
-			//TODO: stop the game
+			// TODO: stop the game
 			break;
 		case R.id.confirm_Btn:
 			
@@ -121,7 +126,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener{
 			break;
 
 		}
-		
+
 	}
 	
 	private void btnPaperOnClick(){
