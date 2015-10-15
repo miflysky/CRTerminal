@@ -8,7 +8,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
 
-public class CRTClient2 implements SocketConnectionBase {
+public class CRTClient2 implements SocketConnectionClient {
 
     private final String TAG = "CRTClient2";
     private Selector selector;    
@@ -81,6 +81,13 @@ public class CRTClient2 implements SocketConnectionBase {
     @Override
     public void closeConnection() {
         stopConnection();        
+    }
+
+
+    @Override
+    public void sendMsgToServer(String msg) {
+        // TODO Auto-generated method stub
+        
     }     
     
 }
