@@ -36,7 +36,7 @@ public class JsonCRTCommand {
 		mMsgString = value;
 	}
 
-	public byte[] getByte() {
+	public String toString() {
 		try {
 			mJSONObject = new JSONObject();
 
@@ -46,12 +46,15 @@ public class JsonCRTCommand {
 				mJSONObject.put(mMsgType, mMsgString);
 			}
 
-			String jsonString = mJSONObject.toString();
-			return jsonString.getBytes("UTF-8");
+			// if get string
+			// String jsonString = mJSONObject.toString()
+			// return jsonString.getBytes("UTF-8");
+
+			return mJSONObject.toString();
+
 		} catch (Exception e) {
 			Log.w(TAG, e.toString());
 		}
 		return null;
 	}
-
 }

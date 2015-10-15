@@ -1,10 +1,11 @@
 package com.tieto.crterminal.model.network;
 
-public interface SocketConnection {
+public interface SocketConnectionBase {
 
-	public void sendData(byte[] data);
+	public static final int CONNECTIONPORT = 2000;
+
 
 	public void openConnection();
-	
 	public void closeConnection();
+	
 }
