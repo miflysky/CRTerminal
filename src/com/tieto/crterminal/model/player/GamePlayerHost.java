@@ -50,7 +50,7 @@ public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBa
 	@Override
 	public void sendJanKenPonValue(int value){
 		JsonCRTCommand command = JsonCommandBuilder
-				.buildJanKenPonValueCommand(value);
+				.buildJanKenPonValueCommand(mName,value);
 		mConnection.broadcastMessage(command.toString());
 	}
 	
@@ -62,8 +62,8 @@ public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBa
 		playersMap.put(mName, this);
 	}
 
-	public void endRound() {
-		JsonCRTCommand command = JsonCommandBuilder.buildEndRoundCommand(mCurrentRound);
+	public void endRound(ArrayList<GamePlayer> winers, ArrayList<GamePlayer> loser) {
+		JsonCRTCommand command = JsonCommandBuilder.buildEndRoundCommand(mCurrentRound,winers,loser);
 		mConnection.broadcastMessage(command.toString());
 		playersMap.clear();
 	}
@@ -85,12 +85,8 @@ public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBa
 		switch (event) {
 		case JsonCommadConstant.EVENT_STR_JOIN:
 			//send to all join
-			mConnection.broadcastMessage(command.getStrData());
-			GamePlayer player = new GamePlayer(command.getValue());
-			player.status = GamePlayer.NOT_READY;
-			playersMap.put(command.getValue(), player);
-			//send to all current plays
-			
+			JsonCRTCommand playerListCommand = JsonCommandBuilder.buildPlayerListCommandplayersMap(playersMap);
+			mConnection.broadcastMessage(playerListCommand.toString());			
 			break;			
 		case JsonCommadConstant.EVENT_STR_LEAVE:
 			mConnection.broadcastMessage(command.getStrData());
@@ -123,11 +119,12 @@ public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBa
 			}
 		}
 		//all player is set calculate
-		ArrayList<GamePlayer> winers = new ArrayList<>();
-		ArrayList<GamePlayer> loser = new ArrayList<>();
-		JanKenPon.judgeCurrentMatchResult(players, winers, loser);
-		
-		endRound();
+		winArrayList.clear();
+		lostArrayList.clear();
+		JanKenPon.judgeCurrentMatchResult(players, winArrayList, lostArrayList);
+		endRound(winArrayList, lostArrayList);
+		JsonCRTCommand command = new JsonCRTCommand(JsonCommadConstant.EVENT_INT_ENDROUND);
+		sendMessageToUI(command);
 	}
 
 	private void sendMessageToUI(JsonCRTCommand command) {
