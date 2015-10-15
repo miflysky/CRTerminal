@@ -23,6 +23,7 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks {
 
 		try {
 			mConnection = new CRTClient2(serverIP);
+			mConnection.openConnection();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -49,6 +50,7 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks {
 		JsonCRTCommand command = JsonCommandBuilder
 				.buildLeaveGameCommand(mName);
 		mConnection.sendMsgToServer(command.toString());
+		mConnection.closeConnection();
 	}
 
 	

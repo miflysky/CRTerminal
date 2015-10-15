@@ -28,7 +28,7 @@ public class CRTClient2 implements SocketConnectionClient {
 		this.hostIp = HostIp;
 		this.hostListenningPort = SocketConnectionBase.CONNECTIONPORT;
 
-		initialize();
+		//initialize();
 	}
 	
 	
@@ -70,11 +70,11 @@ public class CRTClient2 implements SocketConnectionClient {
 
     @Override
     public void openConnection() {
-//        try {
-//            initialize();
-//        } catch (Exception e) {
-//            Log.e(TAG, "Exception:" + e.getMessage());
-//        }        
+        try {
+            initialize();
+        } catch (Exception e) {
+            Log.e(TAG, "Exception:" + e.getMessage());
+        }        
     }
 
 

@@ -43,7 +43,7 @@ public class SearchFragment extends Fragment {
 
 	private WifiUtils mWifiUtils;
 
-	private static List<Group> GROUPS = new ArrayList<Group>();
+	private List<Group> mGroups = new ArrayList<Group>();
 	private int[] groupImageList = new int[] { R.drawable.guest1, R.drawable.guest7, R.drawable.guest8 };
 
 	public static final int UIEVENT1 = 1;
@@ -63,7 +63,7 @@ public class SearchFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				mWifiUtils.connectToSSID(BaseGameActivity.APPREFIX + GROUPS.get(position).getGroupName());
+				mWifiUtils.connectToSSID(BaseGameActivity.APPREFIX + mGroups.get(position).getGroupName());
 
 				// TODO: join game
 
@@ -81,34 +81,24 @@ public class SearchFragment extends Fragment {
 
 		mScanResultsReceiver = new ScanResultsReceiver(this);
 
+		getActivity().registerReceiver(mScanResultsReceiver,
+				new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+		
+		mWifiUtils.startWifiScan();
+		
 		return view;
 	}
 	
-	
-
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		GROUPS.clear();
-	}
-
-
-
-
-	@Override
-	public void onResume() {
+	public void onDestroyView() {
+		
 		// TODO Auto-generated method stub
-		super.onResume();
-		getActivity().registerReceiver(mScanResultsReceiver,
-				new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-	}
+		super.onDestroyView();
 
-	@Override
-	public void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
 		getActivity().unregisterReceiver(mScanResultsReceiver);
 	}
+	
+
 
 	class GroupAdapter extends BaseAdapter {
 
@@ -121,13 +111,13 @@ public class SearchFragment extends Fragment {
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return (GROUPS != null) ? GROUPS.size() : 0;
+			return (mGroups != null) ? mGroups.size() : 0;
 		}
 
 		@Override
 		public Object getItem(int position) {
 			// TODO Auto-generated method stub
-			return GROUPS.get(position);
+			return mGroups.get(position);
 		}
 
 		@Override
@@ -149,8 +139,8 @@ public class SearchFragment extends Fragment {
 			} else {
 				viewHolder = (ViewHolder) convertView.getTag();
 			}
-			viewHolder.groupImageView.setImageResource(GROUPS.get(position).getGroupImageId());
-			viewHolder.groupName.setText(GROUPS.get(position).getGroupName());
+			viewHolder.groupImageView.setImageResource(mGroups.get(position).getGroupImageId());
+			viewHolder.groupName.setText(mGroups.get(position).getGroupName());
 
 			return convertView;
 		}
@@ -206,7 +196,7 @@ public class SearchFragment extends Fragment {
 			if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
 
 				mSearchingText.setVisibility(View.GONE);
-				SearchFragment.GROUPS.clear();
+				mGroups.clear();
 
 				String apName;
 
@@ -225,7 +215,7 @@ public class SearchFragment extends Fragment {
 					if (apName.startsWith(BaseGameActivity.APPREFIX)) {
 						Group group = new SearchFragment.Group(searchFragment.groupImageList[i % 3],
 								apName.substring(BaseGameActivity.APPREFIX.length()));
-						SearchFragment.GROUPS.add(group);
+						mGroups.add(group);
 					}
 				}
 				Message msg = new Message();
