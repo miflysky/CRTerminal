@@ -20,16 +20,50 @@ public class WifiUtils {
 
 	private String mEnableAPname;
 
+	private WifiConfiguration mOldAPconfig = null;
+
 	public WifiUtils(WifiManager wifiManager) {
 		mWifiManager = wifiManager;
 	}
 
 	public void startWifiScan() {
 
-		// first we should disconnect current wifi
-		int wifistate = mWifiManager.getWifiState();
-		if (wifistate == WifiManager.WIFI_STATE_ENABLING
-				|| wifistate == WifiManager.WIFI_STATE_ENABLED) {
+		// disable ap first
+		try {
+			Method method;
+
+			method = mWifiManager.getClass().getMethod("isWifiApEnabled");
+
+			boolean enabled = (Boolean) method.invoke(mWifiManager);
+
+			if (enabled) {
+
+				method = mWifiManager.getClass().getMethod(
+						"getWifiApConfiguration");
+
+				WifiConfiguration config = (WifiConfiguration) method
+						.invoke(mWifiManager);
+
+				method = mWifiManager.getClass().getMethod("setWifiApEnabled",
+						WifiConfiguration.class, Boolean.TYPE);
+
+				boolean success = (Boolean) method.invoke(mWifiManager, config,
+						false);
+				if (!success) {
+
+					Log.i(TAG, "startWifiScan() - disable ap failed");
+				}
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+
+		// we should disconnect current wifi
+		boolean wifiEnabled = mWifiManager.isWifiEnabled();
+		if (wifiEnabled) {
 
 			mWifiManager.setWifiEnabled(false);
 			try {
@@ -40,23 +74,37 @@ public class WifiUtils {
 			}
 		}
 
-		mWifiManager.setWifiEnabled(true);
+		//mWifiManager.setWifiEnabled(true);
 		mWifiManager.startScan();
 	}
 
 	public boolean enableAP(String ssid) {
+
+		Method method;
 
 		mEnableAPname = ssid;
 
 		// disable WiFi in any case
 		mWifiManager.setWifiEnabled(false);
 
+		// get the old config
+		try {
+			method = mWifiManager.getClass()
+					.getMethod("getWifiApConfiguration");
+
+			mOldAPconfig = (WifiConfiguration) method.invoke(mWifiManager);
+
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		try {
 
 			WifiConfiguration apConfig = createWifiHotConfig(ssid, "");
 
-			Method method = mWifiManager.getClass().getMethod(
-					"setWifiApEnabled", WifiConfiguration.class, Boolean.TYPE);
+			method = mWifiManager.getClass().getMethod("setWifiApEnabled",
+					WifiConfiguration.class, Boolean.TYPE);
 
 			boolean success = (Boolean) method.invoke(mWifiManager, apConfig,
 					true);
@@ -71,18 +119,21 @@ public class WifiUtils {
 
 	public boolean disableAP() {
 
-		// disable WiFi in any case
-		mWifiManager.setWifiEnabled(false);
-
 		try {
-
-			WifiConfiguration apConfig = createWifiHotConfig(mEnableAPname, "");
-
+			boolean success;
 			Method method = mWifiManager.getClass().getMethod(
 					"setWifiApEnabled", WifiConfiguration.class, Boolean.TYPE);
 
-			boolean success = (Boolean) method.invoke(mWifiManager, apConfig,
-					false);
+			if (mOldAPconfig != null) {
+				success = (Boolean) method
+						.invoke(mWifiManager, mOldAPconfig, false);
+
+			} else {
+				WifiConfiguration apConfig = createWifiHotConfig(mEnableAPname,
+						"");
+				success = (Boolean) method
+						.invoke(mWifiManager, apConfig, false);
+			}
 
 			return success;
 
