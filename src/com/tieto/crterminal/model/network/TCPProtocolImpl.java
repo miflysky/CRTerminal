@@ -10,6 +10,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.sql.Date;
+import java.util.ArrayList;
 
 import android.os.Handler;
 import android.os.Message;
@@ -19,10 +20,21 @@ public final class TCPProtocolImpl implements TCPProtocol {
    
     private int bufferSize;
     private Handler handler = null;
+    private ArrayList<SocketChannel> clientChannels = null;
    
     public TCPProtocolImpl(int bufferSize,Handler handler){
         this.bufferSize=bufferSize;
         this.handler = handler;
+        this.clientChannels = new ArrayList<SocketChannel>();
+    }
+    
+    protected void finalize()
+    {
+        for (int i = 0; i < clientChannels.size(); ++ i)
+        {
+            SocketChannel clientChannel = (SocketChannel) clientChannels.get(i);
+            clientChannel.close();
+        }
     }
 
     @Override
@@ -32,12 +44,13 @@ public final class TCPProtocolImpl implements TCPProtocol {
         clientChannel.configureBlocking(false);
         clientChannel.register(key.selector(), SelectionKey.OP_READ,ByteBuffer.allocate(bufferSize));
         
-        // 发送问候消息
-        ByteBuffer buffer=(ByteBuffer)key.attachment();
-        buffer.clear();
-        String sendString="你好,客户端. ";
-        buffer=ByteBuffer.wrap(sendString.getBytes("UTF-8"));
-        clientChannel.write(buffer);
+        // 发送问候消息        
+        String message="你好,客户端. ";
+        ByteBuffer writeBuffer=ByteBuffer.wrap(message.getBytes("UTF-8"));
+        clientChannel.write(writeBuffer);
+        
+        // 记入列表
+        this.clientChannels.add(clientChannel);
     }
 
     @Override
@@ -83,15 +96,28 @@ public final class TCPProtocolImpl implements TCPProtocol {
     }
 
     @Override
-    public void handleWrite(SelectionKey key) throws IOException {
+    public void handleWrite(SelectionKey key) throws IOException 
+    {
         String sendString = "Just a Test";
-        // TODO Auto-generated method stub
+        
         SocketChannel clientChannel=(SocketChannel)key.channel();
         ByteBuffer buffer=(ByteBuffer)key.attachment();
         buffer=ByteBuffer.wrap(sendString.getBytes("UTF-8"));
         clientChannel.write(buffer);
+        
         // 设置为下一次读取或是写入做准备
         key.interestOps(SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+    }
+    
+    @Override
+    public void handleBroadcast(String message)  throws IOException
+    {
+        for (int i = 0; i < clientChannels.size(); ++ i)
+        {
+            SocketChannel clientChannel = (SocketChannel) clientChannels.get(i);
+            ByteBuffer writeBuffer=ByteBuffer.wrap(message.getBytes("UTF-8"));
+            clientChannel.write(writeBuffer);
+        }
     }
 
 }

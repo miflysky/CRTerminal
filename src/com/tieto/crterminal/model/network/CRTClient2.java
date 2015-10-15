@@ -58,7 +58,7 @@ public class CRTClient2{
    * @throws IOException
    */
   public void sendMsg(String message) throws IOException{
-    ByteBuffer writeBuffer=ByteBuffer.wrap(message.getBytes("UTF-16"));
+    ByteBuffer writeBuffer=ByteBuffer.wrap(message.getBytes("UTF-8"));
     socketChannel.write(writeBuffer);
   }
   

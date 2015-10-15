@@ -24,4 +24,11 @@ public interface TCPProtocol{
      * @throws IOException
      */
     void handleWrite(SelectionKey key) throws IOException;
+    
+    /**
+     * 向所有的Client发送广播消息
+     * @param message : 要发送的广播内容
+     * @throws IOException
+     */
+    void handleBroadcast(String message)  throws IOException;
   }

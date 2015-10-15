@@ -17,6 +17,6 @@ public class CRTServer2 {
     
     public void stopServer()
     {
-        serverThread.stop();
+        serverThread.stop = true;
     }
 }

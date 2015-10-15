@@ -15,7 +15,7 @@ import android.util.Log;
 
 public class CRTServer2Thread extends Thread {
    
-   
+    private final String TAG = "CRTServer2Thread";
     private Handler handler = null;
     private int port = 0;
     private Selector selector = null;
@@ -24,6 +24,8 @@ public class CRTServer2Thread extends Thread {
     private TCPProtocol protocol = null;
     private static final int BufferSize=1024;
     private static final int TimeOut=3000;
+    
+    public boolean stop = false;
    
     public CRTServer2Thread(Handler handler,int port)
     {
@@ -55,7 +57,7 @@ public class CRTServer2Thread extends Thread {
    
     public void run()
     {
-        while(true){
+        while(!stop){
             // 等待某信道就绪(或超时)
             int iselect = 0;
             try {
@@ -108,6 +110,16 @@ public class CRTServer2Thread extends Thread {
                 keyIter.remove();
 
             }
+        }// end while
+        
+        // thread will exit here, cleanup
+        try {
+            listenerChannel.close();
+            selector.close();
+        } catch (Exception e2) {
+            // TODO: handle exception
+            Log.e(TAG, e2.getMessage());
         }
+        
     }
 }
