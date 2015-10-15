@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
 import android.view.View;
 
 public class StartupActivity extends Activity implements View.OnClickListener{
@@ -53,7 +54,9 @@ public class StartupActivity extends Activity implements View.OnClickListener{
 		Intent intent;
 		switch(id){
 		case R.id.btn_host:
+			Toast.makeText(this, "Opening AP...", Toast.LENGTH_LONG).show();
 			intent = new Intent(this,HostGameActivity.class);
+			
 			startActivity(intent);
 			break;
 		case R.id.btn_guest:

@@ -49,9 +49,6 @@ public class PlayerFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mActivity = (BaseGameActivity) getActivity();
-		Intent intent = new Intent();
-		intent.setAction(GamePadFragment.GAME_READY_ACTION);
-		mActivity.sendBroadcast(intent);
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,7 +132,7 @@ public class PlayerFragment extends Fragment {
 			if (player.mValue != 0 && (showResult || player.mName.equals(mActivity.mMyName)) && resId != 0) {
 				holder.player_card.setVisibility(View.VISIBLE);
 				holder.player_card.setImageResource(resId);
-				if (mActivity.isReady) {
+				if (mActivity.isConfirm) {
 					holder.player_status.setVisibility(View.VISIBLE);
 				}
 			} else if (player.mValue != 0 && !showResult) {
@@ -178,6 +175,10 @@ public class PlayerFragment extends Fragment {
 
 		public void playMakeChoice(String userName, int value) {
 			mNameMap.get(userName).mValue = value;
+			mAdapter.notifyDataSetChanged();
+		}
+		
+		public void notifyUIChange() {
 			mAdapter.notifyDataSetChanged();
 		}
 

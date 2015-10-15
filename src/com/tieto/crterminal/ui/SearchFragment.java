@@ -48,15 +48,9 @@ public class SearchFragment extends Fragment {
 	private List<Group> mGroups = new ArrayList<Group>();
 	private int[] groupImageList = new int[] { R.drawable.guest1, R.drawable.guest7, R.drawable.guest8 };
 
-	public static final int UIEVENT1 = 1;
+	public static final int UI_EVENT_FOUND_GROUP = 1;
 
 	private UIEventHandler mUIEventHandler = new UIEventHandler(this);
-
-	private GamePlayerGuest mGuestPlayer;
-
-	public SearchFragment(GamePlayerGuest guestPlayer) {
-		mGuestPlayer = guestPlayer;
-	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_search, container, false);
@@ -75,11 +69,7 @@ public class SearchFragment extends Fragment {
 
 				// TODO: join game
 
-				FragmentManager fm = getFragmentManager();
-				FragmentTransaction ft = fm.beginTransaction();
-				PlayerFragment pf = new PlayerFragment(mGuestPlayer);
-				ft.replace(R.id.main_fragment, pf);
-				ft.commit();
+				((GuestGameActivity) getActivity()).startPlayerFragment();
 
 			}
 		});
@@ -91,22 +81,20 @@ public class SearchFragment extends Fragment {
 
 		getActivity().registerReceiver(mScanResultsReceiver,
 				new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-		
+
 		mWifiUtils.startWifiScan();
-		
+
 		return view;
 	}
-	
+
 	@Override
 	public void onDestroyView() {
-		
+
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 
 		getActivity().unregisterReceiver(mScanResultsReceiver);
 	}
-	
-
 
 	class GroupAdapter extends BaseAdapter {
 
@@ -228,7 +216,7 @@ public class SearchFragment extends Fragment {
 					}
 				}
 				Message msg = new Message();
-				msg.what = UIEVENT1;
+				msg.what = UI_EVENT_FOUND_GROUP;
 				searchFragment.mUIEventHandler.sendMessage(msg);
 			}
 		}
@@ -249,7 +237,7 @@ public class SearchFragment extends Fragment {
 				return;
 			}
 			switch (msg.what) {
-			case UIEVENT1:
+			case UI_EVENT_FOUND_GROUP:
 				searchFragment.mGroupAdapter.notifyDataSetChanged();
 				break;
 			}

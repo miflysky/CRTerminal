@@ -20,12 +20,11 @@ public class HostGameActivity extends BaseGameActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		startGameAsHost();
-
+		startGame();
 	}
 
 	
-	public void startGameAsHost() {
+	public void startGame() {
 
 		Log.i(TAG, "start as host");
 
@@ -56,9 +55,11 @@ public class HostGameActivity extends BaseGameActivity {
 
 			switch (msg.what) {
 			case JsonCommadConstant.EVENT_STR_CHOOSE:
-                
+				String choose = msg.getData().getString(JsonCommadConstant.KEY_COMMAND_VALUE);
+				int value = Integer.decode(choose).intValue();
+				String userName = msg.getData().getString(JsonCommadConstant.KEY_USER_NAME);
+				mPlayerFragment.playMakeChoice(userName, value);
 				break;
-
 			case JsonCommadConstant.EVENT_STR_JOIN:
 				String nameAdd = msg.getData().getString(JsonCommadConstant.KEY_COMMAND_VALUE);
 				mPlayerFragment.playerAdd(nameAdd);

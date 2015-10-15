@@ -11,6 +11,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 
 @SuppressLint("CommitTransaction")
 public class BaseGameActivity extends Activity {
@@ -36,7 +37,7 @@ public class BaseGameActivity extends Activity {
 
 	public String mMyName;
 
-	public boolean isReady = false;
+	public boolean isConfirm = false;
 	
 	CRTServer2 mCRTServer;
 	// CRTConnectionServer crtConnectionServer = null;
@@ -45,9 +46,7 @@ public class BaseGameActivity extends Activity {
 
 	private static boolean isGameHost;
 	
-	public PlayerFragment mPlayerFragment;
 	public GamePadFragment mGamePadFragment;
-	public SearchFragment mSearchFragment;
 
 	private FragmentManager fragmentManager;
 
@@ -71,7 +70,9 @@ public class BaseGameActivity extends Activity {
 		setWifiUtils(new WifiUtils(mWifiManager));
 
 		if (!mWifiManager.isWifiEnabled()) {
-		    mWifiManager.setWifiEnabled(true);
+			boolean wifiEableStatus = mWifiManager.setWifiEnabled(true);
+			Log.i(TAG, "wifi eable Status : "+wifiEableStatus);
+		    
 		}
 	}
 

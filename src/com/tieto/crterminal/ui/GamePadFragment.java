@@ -30,21 +30,12 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 
 	private int mJanKenPonValue = 0;
 
-	public static String GAME_READY_ACTION = "com.tieto.crterminal.game_ready";
-
-	GameReadyBroadcastReceiver mGameReadyBroadcastReceiver;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
 		mActivity = (BaseGameActivity) getActivity();
-		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(GAME_READY_ACTION);
-		mGameReadyBroadcastReceiver = new GameReadyBroadcastReceiver();
-		getActivity().registerReceiver(mGameReadyBroadcastReceiver,
-				intentFilter);
 
 	}
 
@@ -52,23 +43,6 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	public void onDestroy() {
 
 		super.onDestroy();
-		getActivity().unregisterReceiver(mGameReadyBroadcastReceiver);
-
-	}
-
-	class GameReadyBroadcastReceiver extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
-			String action = intent.getAction();
-			if (action.equals(GAME_READY_ACTION)) {
-
-				btnPaper.setVisibility(View.VISIBLE);
-				btnRock.setVisibility(View.VISIBLE);
-				btnScissors.setVisibility(View.VISIBLE);
-			}
-		}
 
 	}
 
@@ -120,10 +94,8 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 		int id = v.getId();
 		// Intent intent;
 		switch (id) {
-		case R.id.btn_host:
-			// TODO: start the game
-			// send broadcast
-
+		case R.id.start_Btn:
+			((HostGameActivity) getActivity()).mHostPlayer.newRound();
 			break;
 		case R.id.stop_Btn:
 			getActivity().finish();
@@ -145,9 +117,15 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 
 	}
 
+	public void showGamepad() {
+		btnPaper.setVisibility(View.VISIBLE);
+		btnRock.setVisibility(View.VISIBLE);
+		btnScissors.setVisibility(View.VISIBLE);
+	}
+	
 	private void btnConfirmOnClick() {
 		if (mJanKenPonValue != 0) {
-			mActivity.isReady = true;
+			mActivity.isConfirm = true;
 			mPlayerFragment = mActivity.getFragmentManager().findFragmentById(
 					R.id.main_fragment);
 			if (mPlayerFragment instanceof PlayerFragment) {
