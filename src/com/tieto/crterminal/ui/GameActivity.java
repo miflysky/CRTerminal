@@ -225,6 +225,7 @@ public class GameActivity extends Activity {
 							.getSystemService(Context.CONNECTIVITY_SERVICE);
 					NetworkInfo wifiNetworkInfo = connectivityManager
 							.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+					
 					if (wifiNetworkInfo.isConnected()) {
 
 						String apaddr = mWifiUtils.getAPAddress();

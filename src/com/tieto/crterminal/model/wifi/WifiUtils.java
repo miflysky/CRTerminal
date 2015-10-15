@@ -26,6 +26,20 @@ public class WifiUtils {
 
 	public void startWifiScan() {
 
+		// first we should disconnect current wifi
+		int wifistate = mWifiManager.getWifiState();
+		if (wifistate == WifiManager.WIFI_STATE_ENABLING
+				|| wifistate == WifiManager.WIFI_STATE_ENABLED) {
+
+			mWifiManager.setWifiEnabled(false);
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		mWifiManager.setWifiEnabled(true);
 		mWifiManager.startScan();
 	}
@@ -33,6 +47,7 @@ public class WifiUtils {
 	public boolean enableAP(String ssid) {
 
 		mEnableAPname = ssid;
+
 		// disable WiFi in any case
 		mWifiManager.setWifiEnabled(false);
 

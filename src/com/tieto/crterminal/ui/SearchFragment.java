@@ -93,7 +93,6 @@ public class SearchFragment extends Fragment {
 		super.onResume();
 		getActivity().registerReceiver(mScanResultsReceiver,
 				new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-		mWifiUtils.startWifiScan();
 	}
 
 	@Override
