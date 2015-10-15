@@ -181,6 +181,10 @@ public class PlayerFragment extends Fragment {
 		public void notifyUIChange() {
 			mAdapter.notifyDataSetChanged();
 		}
+		
+		public void notifyResult(String result){
+			//TODO 
+		}
 
 	
 }

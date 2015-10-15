@@ -99,12 +99,13 @@ public class GuestGameActivity extends BaseGameActivity {
 
 			case JsonCommadConstant.EVENT_INT_NEWROUND:
 				Log.i(TAG, "Game new round.");
-				GamePadFragment gamePad = new GamePadFragment();
-				gamePad.showGamepad();
+				mGamePadFragment.showGamepad();
 				break;
 			
 			case JsonCommadConstant.EVENT_INT_ENDROUND:
 				Log.i(TAG, "Game end round.");
+				String result = msg.getData().getString(JsonCommadConstant.KEY_COMMAND_VALUE);
+				mPlayerFragment.notifyResult(result);
 				break;
 				
 			case JsonCommadConstant.EVENT_STR_JOIN:
