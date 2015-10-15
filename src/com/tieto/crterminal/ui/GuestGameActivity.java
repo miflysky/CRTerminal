@@ -1,7 +1,9 @@
 package com.tieto.crterminal.ui;
 
 import com.tieto.crterminal.R;
+import com.tieto.crterminal.model.command.JsonCommadConstant;
 import com.tieto.crterminal.model.network.CRTClient2;
+import com.tieto.crterminal.model.player.GamePlayerGuest;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +12,8 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -17,7 +21,8 @@ public class GuestGameActivity extends BaseGameActivity {
 
 	private boolean mGuestFirstConnectted;
 	private NetworkConnectChangedReceiver mNetworkConnectChangedReceiver;
-	
+	private GamePlayerGuest mGuestPlayer;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,17 +60,48 @@ public class GuestGameActivity extends BaseGameActivity {
 
 		getWifiUtils().startWifiScan();
 		findGameOwner();
+		
+		
 	}
 
 	private void findGameOwner() {
-		mSearchFragment = new SearchFragment();
+		mSearchFragment = new SearchFragment(mGuestPlayer);
 		getTransaction().replace(R.id.main_fragment, mSearchFragment);
 		getTransaction().commit();
 	}
 	
 
+	public static Handler mGamePlayerHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+
+			switch (msg.what) {
+			case JsonCommadConstant.FROM_SERVER_EVENT_INT_ENDROUND:
+
+				break;
+
+			case JsonCommadConstant.FROM_SERVER_EVENT_INT_NEWROUND:
+
+				break;
+
+			case JsonCommadConstant.FROM_SERVER_EVENT_NULL_GAMERESULT:
+
+				break;
+			
+			case JsonCommadConstant.FROM_SERVER_EVENT_STR_USERLIST:
+				
+				break;
+				
+			case JsonCommadConstant.FROM_SERVER_EVENT_NULL_STARTGAME:
+				
+				break;
+
+			}
+		}
+	};
 	
 	public class NetworkConnectChangedReceiver extends BroadcastReceiver {
+
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -93,6 +129,8 @@ public class GuestGameActivity extends BaseGameActivity {
 						// added by lujun - begin
 						try {
 							mCRTClient2 = new CRTClient2(apaddr, null);
+							mGuestPlayer = new GamePlayerGuest(mMyName, apaddr, mGamePlayerHandler);
+
 							// mCRTClient2.sendMsg("how are you, server!");
 						} catch (Exception e) {
 							// TODO: handle exception

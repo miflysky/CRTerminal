@@ -69,8 +69,8 @@ public class HostGameActivity extends BaseGameActivity {
 							
 			}
 		}
-
 	};
+	
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub

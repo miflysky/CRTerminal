@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -28,6 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.tieto.crterminal.R;
+import com.tieto.crterminal.model.player.GamePlayerGuest;
 import com.tieto.crterminal.model.wifi.WifiUtils;
 
 public class SearchFragment extends Fragment {
@@ -50,6 +52,12 @@ public class SearchFragment extends Fragment {
 
 	private UIEventHandler mUIEventHandler = new UIEventHandler(this);
 
+	private GamePlayerGuest mGuestPlayer;
+
+	public SearchFragment(GamePlayerGuest guestPlayer) {
+		mGuestPlayer = guestPlayer;
+	}
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_search, container, false);
 		mGameListView = (ListView) view.findViewById(R.id.game_listview);
@@ -69,7 +77,7 @@ public class SearchFragment extends Fragment {
 
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				PlayerFragment pf = new PlayerFragment(null);
+				PlayerFragment pf = new PlayerFragment(mGuestPlayer);
 				ft.replace(R.id.main_fragment, pf);
 				ft.commit();
 
@@ -126,6 +134,7 @@ public class SearchFragment extends Fragment {
 			return position;
 		}
 
+		@SuppressLint("InflateParams")
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder viewHolder;
