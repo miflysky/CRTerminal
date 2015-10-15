@@ -6,22 +6,34 @@ import android.content.Context;
 
 import com.tieto.crterminal.model.command.JsonCRTCommand;
 import com.tieto.crterminal.model.command.JsonCommandBuilder;
-import com.tieto.crterminal.model.network.CRTServer;
-import com.tieto.crterminal.model.network.SocketConnection;
-import com.tieto.crterminal.model.wifi.WifiUtils;
+import com.tieto.crterminal.model.network.CRTServer2;
+import com.tieto.crterminal.model.network.SocketConnectionBase;
+import com.tieto.crterminal.model.network.SocketConnectionServer;
 
 
 
-public class GameHostPlayer extends JanKenPonPlayer{
 
+public class GamePlayerHost extends GamePlayerBase{
+
+	
+	
+	SocketConnectionServer mConnection;
+	
+	
+	
 	
 	public interface GameHostCallback{
 		void onUpdateUser();
 		void OnError(String errorMessage);
 	}
 	
-	public GameHostPlayer(String name){
+	public GamePlayerHost(String name){
 		super(name);
+		
+		// added by lujun - begin
+		mConnection = new CRTServer2();
+		mConnection.openConnection();
+		// added by lujun - end	
 	}
 	
 	public void HostGamestart(){
@@ -36,17 +48,15 @@ public class GameHostPlayer extends JanKenPonPlayer{
 	}
 	
 	
+	@Override
+	public void sendJanKenPonValue(int value){
+		//TODO: add to local list
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	protected SocketConnectionBase getConnection() {
+		return mConnection;
+	}
 	
 	
 	
@@ -65,11 +75,6 @@ public class GameHostPlayer extends JanKenPonPlayer{
 	
 	public GameStatus getStatus() {
 		return mGameStatus;
-	}
-	
-	@Override
-	protected SocketConnection getConnection() {
-		return (SocketConnection)mSocketServer;
 	}
 	
 	//start the game,  when start game other unit can join

@@ -89,7 +89,7 @@ public class GuestGameActivity extends BaseGameActivity {
 
 						// added by lujun - begin
 						try {
-							mCRTClient2 = new CRTClient2(apaddr, 3333);
+							mCRTClient2 = new CRTClient2(apaddr);
 							// mCRTClient2.sendMsg("how are you, server!");
 						} catch (Exception e) {
 							// TODO: handle exception

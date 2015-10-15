@@ -18,7 +18,7 @@ public class JanKenPon
      * @param losers ： 如果本次比赛有人胜出，所有失败者放置在该列表中；如果为平局，则该List为空 (not null)
      * @return： JanKenPonResult，平局或者有人胜出
      */
-    public static JanKenPonResult judgeCurrentMatchResult(List<JanKenPonPlayer> players, List<JanKenPonPlayer> winners, List<JanKenPonPlayer> losers)
+    public static JanKenPonResult judgeCurrentMatchResult(List<GamePlayerBase> players, List<GamePlayerBase> winners, List<GamePlayerBase> losers)
     {
         JanKenPonResult result = JanKenPonResult.Draw;
         final int playersCount = players.size();
@@ -30,13 +30,13 @@ public class JanKenPon
         }
         
         // 遍历参与者信息，根据所出拳值分为三组
-        List<JanKenPonPlayer> scissorsList = new ArrayList<JanKenPonPlayer>();
-        List<JanKenPonPlayer> rockList     = new ArrayList<JanKenPonPlayer>();
-        List<JanKenPonPlayer> paperList    = new ArrayList<JanKenPonPlayer>();
+        List<GamePlayerBase> scissorsList = new ArrayList<GamePlayerBase>();
+        List<GamePlayerBase> rockList     = new ArrayList<GamePlayerBase>();
+        List<GamePlayerBase> paperList    = new ArrayList<GamePlayerBase>();
         
         for (int i = 0; i < playersCount; ++ i)
         {
-            JanKenPonPlayer player = players.get(i);
+            GamePlayerBase player = players.get(i);
             if ( JanKenPonValue.Scissors == player.mValue)
             {
                 scissorsList.add(player);

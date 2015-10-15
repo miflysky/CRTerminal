@@ -33,17 +33,30 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 
 	public static String GAME_READY_ACTION = "com.tieto.crterminal.game_ready";
 
+	GameReadyBroadcastReceiver mGameReadyBroadcastReceiver;
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(GAME_READY_ACTION);
-		GameReadyBroadcastReceiver gameReadyBroadcastReceiver = new GameReadyBroadcastReceiver();
-		mActivity = (BaseGameActivity) getActivity();
-		mActivity.registerReceiver(gameReadyBroadcastReceiver, intentFilter);
+		mGameReadyBroadcastReceiver = new GameReadyBroadcastReceiver();
+		getActivity().registerReceiver(mGameReadyBroadcastReceiver, intentFilter);
+
 	}
 
+	
+	@Override
+	public void onDestroy(){
+		
+		super.onDestroy();
+		getActivity().unregisterReceiver(mGameReadyBroadcastReceiver);
+		
+	}
+	
+	
 	class GameReadyBroadcastReceiver extends BroadcastReceiver {
 
 		@Override

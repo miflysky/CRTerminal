@@ -1,61 +1,51 @@
 package com.tieto.crterminal.model.network;
 
+import android.util.Log;
+
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
 
-public class CRTClient2{
+public class CRTClient2 implements SocketConnectionClient {
+
     private final String TAG = "CRTClient2";
-
-    // 信道选择器
-    private Selector selector;
-
-    // 与服务器通信的信道
+    private Selector selector;    
     SocketChannel socketChannel;
-
-    // 要连接的服务器Ip地址
     private String hostIp;
-
-    // 要连接的远程服务器在监听的端口
     private int hostListenningPort;
+    
+    private CRTClient2Thread clientConnectionThread = null;
 
     /**
-     * 构造函数
+     * 锟斤拷锟届函锟斤拷
      * @param HostIp
      * @param HostListenningPort
      * @throws IOException
      */
-    public CRTClient2(String HostIp,int HostListenningPort)throws IOException{
-        this.hostIp=HostIp;
-        this.hostListenningPort=HostListenningPort;   
+	public CRTClient2(String HostIp) throws IOException {
+		this.hostIp = HostIp;
+		this.hostListenningPort = SocketConnectionBase.CONNECTIONPORT;
 
-        initialize();
-    }
-
+		initialize();
+	}
+	
+	
     /**
-     * 初始化
+     * 锟斤拷始锟斤拷
      * @throws IOException
      */
     private void initialize() throws IOException{
-        // 打开监听信道并设置为非阻塞模式
-        //InetSocketAddress address = new InetSocketAddress(hostIp, hostListenningPort);
         socketChannel=SocketChannel.open();
-        socketChannel.configureBlocking(false);
-
-        // 打开并注册选择器到信道
+        socketChannel.configureBlocking(false);        
         selector = Selector.open();
-        //socketChannel.register(selector, SelectionKey.OP_READ);
+        clientConnectionThread = new CRTClient2Thread(selector, null, socketChannel, hostIp, hostListenningPort);
+   	}
 
-        // 启动读取线程
-        new CRTClient2Thread(selector, null, socketChannel, hostIp, hostListenningPort);
-    }
 
     /**
-     * 发送字符串到服务器
+     * 锟斤拷锟斤拷锟街凤拷锟斤拷锟斤拷锟斤拷
      * @param message
      * @throws IOException
      */
@@ -64,9 +54,44 @@ public class CRTClient2{
         socketChannel.write(writeBuffer);
     }
 
-    public static void main(String[] args) throws IOException{
-        CRTClient2 client=new CRTClient2("192.168.0.1",1978);
 
-        client.sendMsg("你好!Nio!醉里挑灯看剑,梦回吹角连营");
+    public void stopConnection()
+    {
+        clientConnectionThread.stop = true;        
+        
+        try {
+            socketChannel.close();
+        } catch (IOException e) {
+            Log.e(TAG, "Exception:" + e.getMessage());
+        }
     }
+
+
+
+    @Override
+    public void openConnection() {
+//        try {
+//            initialize();
+//        } catch (Exception e) {
+//            Log.e(TAG, "Exception:" + e.getMessage());
+//        }        
+    }
+
+
+    @Override
+    public void closeConnection() {
+        stopConnection();        
+    }
+
+
+    @Override
+    public void sendMsgToServer(String msg) {
+        try {
+            sendMsg(msg);
+        } catch (Exception e) {
+            Log.e(TAG, "sendMsgToServer exception: " + e.getMessage());
+        }
+        
+    }     
+    
 }

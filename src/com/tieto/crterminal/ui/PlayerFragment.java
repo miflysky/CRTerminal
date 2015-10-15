@@ -29,9 +29,9 @@ public class PlayerFragment extends Fragment {
 
 	private BaseGameActivity mActivity;
 
-	private List<Player> players = new ArrayList<Player>();
+	private List<Player> mPlayers = new ArrayList<Player>();
 
-	private Map<String, Player> nameMap = new HashMap<String, Player>();
+	private Map<String, Player> mNameMap = new HashMap<String, Player>();
 
 	private GridView players_grid;
 
@@ -87,12 +87,12 @@ public class PlayerFragment extends Fragment {
 
 		@Override
 		public int getCount() {
-			return players.size();
+			return mPlayers.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return players.get(position);
+			return mPlayers.get(position);
 		}
 
 		@Override
@@ -119,7 +119,7 @@ public class PlayerFragment extends Fragment {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			Player player = players.get(position);
+			Player player = mPlayers.get(position);
 
 			holder.player_name.setText(player.name);
 
@@ -180,13 +180,13 @@ public class PlayerFragment extends Fragment {
 
 	public void playerAdd(String name) {
 		Player player = new Player(name);
-		nameMap.put(name, player);
-		players.add(player);
+		mNameMap.put(name, player);
+		mPlayers.add(player);
 		mAdapter.notifyDataSetChanged();
 	}
 
 	public void playerLeave(String name) {
-		players.remove(nameMap.remove(name));
+		mPlayers.remove(mNameMap.remove(name));
 		mAdapter.notifyDataSetChanged();
 	}
 
@@ -195,12 +195,12 @@ public class PlayerFragment extends Fragment {
 	}
 
 	public void playMakeChoice(String name, int value) {
-		nameMap.get(name).value = value;
+		mNameMap.get(name).value = value;
 		mAdapter.notifyDataSetChanged();
 	}
 
 	public void playerReady(String name) {
-		nameMap.get(name).status = Player.READY;
+		mNameMap.get(name).status = Player.READY;
 		mAdapter.notifyDataSetChanged();
 	}
 

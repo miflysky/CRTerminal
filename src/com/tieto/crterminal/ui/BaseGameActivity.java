@@ -2,7 +2,6 @@ package com.tieto.crterminal.ui;
 
 import com.tieto.crterminal.R;
 import com.tieto.crterminal.model.network.CRTClient2;
-import com.tieto.crterminal.model.network.CRTServer;
 import com.tieto.crterminal.model.network.CRTServer2;
 import com.tieto.crterminal.model.wifi.WifiUtils;
 import android.annotation.SuppressLint;
@@ -35,7 +34,7 @@ public class BaseGameActivity extends Activity {
 	private WifiUtils mWifiUtils;
 
 
-	CRTServer mCRTServer;
+	CRTServer2 mCRTServer;
 	// CRTConnectionServer crtConnectionServer = null;
 	CRTServer2 mCRTServer2 = null;
 	CRTClient2 mCRTClient2 = null;
@@ -64,7 +63,7 @@ public class BaseGameActivity extends Activity {
 		mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		setWifiUtils(new WifiUtils(mWifiManager));
 
-		mCRTServer = new CRTServer();
+		mCRTServer = new CRTServer2();
 
 	}
 
