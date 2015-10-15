@@ -64,7 +64,7 @@ public class SearchFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 
-				mWifiUtils.connectToSSID(GameActivity.APPREFIX
+				mWifiUtils.connectToSSID(BaseGameActivity.APPREFIX
 						+ GROUPS.get(position).getGroupName());
 
 				//TODO: join game
@@ -215,10 +215,10 @@ public class SearchFragment extends Fragment {
 				Log.i(TAG, "Searched ap: " + apName);
 
 				// List host name in dialogFragment
-				if (apName.startsWith(GameActivity.APPREFIX)) {
+				if (apName.startsWith(BaseGameActivity.APPREFIX)) {
 					Group group = new SearchFragment.Group(
 							searchFragment.groupImageList[i % 3],
-							apName.substring(GameActivity.APPREFIX.length()));
+							apName.substring(BaseGameActivity.APPREFIX.length()));
 					SearchFragment.GROUPS.add(group);
 				}
 			}
