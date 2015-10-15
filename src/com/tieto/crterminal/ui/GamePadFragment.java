@@ -145,7 +145,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	}
 
 	private void btnConfirmOnClick() {
-		getReady();
+		
 	}
 
 	private void btnPaperOnClick() {
@@ -168,13 +168,4 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 					value);
 		}
 	}
-
-	private void getReady() {
-		Fragment fragment = mActivity.getFragmentManager().findFragmentById(
-				R.id.main_fragment);
-		if (fragment instanceof PlayerFragment) {
-			((PlayerFragment) fragment).playerReady(mActivity.getUserName());
-		}
-	}
-
 }

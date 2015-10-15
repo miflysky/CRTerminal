@@ -36,6 +36,8 @@ public class PlayerFragment extends Fragment {
 
 	private PlayersGridAdapter mAdapter;
 
+	private boolean showResult = false;
+
 	public PlayerFragment(GamePlayerBase player) {
 		mNameMap.put(player.mName, player);
 		mPlayers.add(player);
@@ -132,7 +134,10 @@ public class PlayerFragment extends Fragment {
 				holder.player_card.setImageResource(resId);
 			}
 
-			if (player.status == GamePlayerBase.READY) {
+			if (player.mValue != 0 && showResult) {
+				holder.player_card.setVisibility(View.VISIBLE);
+				holder.player_card.setImageResource(resId);
+			} else if (player.mValue != 0 && !showResult) {
 				holder.player_status.setVisibility(View.VISIBLE);
 			}
 
@@ -167,8 +172,8 @@ public class PlayerFragment extends Fragment {
 		mAdapter.notifyDataSetChanged();
 	}
 
-	public void playerReady(String name) {
-		mNameMap.get(name).status = GamePlayerBase.READY;
+	public void showResult() {
+		showResult = true;
 		mAdapter.notifyDataSetChanged();
 	}
 
