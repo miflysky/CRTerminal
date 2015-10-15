@@ -58,7 +58,6 @@ public class GuestGameActivity extends BaseGameActivity {
 
 		mGuestFirstConnectted = false;
 
-		getWifiUtils().startWifiScan();
 		findGameOwner();
 		
 		
