@@ -40,7 +40,7 @@ public class WifiUtils {
 			}
 		}
 
-		//mWifiManager.setWifiEnabled(true);
+		mWifiManager.setWifiEnabled(true);
 		mWifiManager.startScan();
 	}
 

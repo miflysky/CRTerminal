@@ -84,23 +84,25 @@ public class SearchFragment extends Fragment {
 
 		mScanResultsReceiver = new ScanResultsReceiver(this);
 
+		getActivity().registerReceiver(mScanResultsReceiver,
+				new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+		
+		mWifiUtils.startWifiScan();
+		
 		return view;
 	}
 
+	
 	@Override
-	public void onResume() {
+	public void onDestroyView() {
+		
 		// TODO Auto-generated method stub
-		super.onResume();
-		getActivity().registerReceiver(mScanResultsReceiver,
-				new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-	}
+		super.onDestroyView();
 
-	@Override
-	public void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
 		getActivity().unregisterReceiver(mScanResultsReceiver);
 	}
+	
+
 
 	class GroupAdapter extends BaseAdapter {
 
