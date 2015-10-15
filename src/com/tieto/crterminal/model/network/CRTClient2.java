@@ -22,6 +22,8 @@ public class CRTClient2{
 
     // 要连接的远程服务器在监听的端口
     private int hostListenningPort;
+    
+    private CRTClient2Thread clientConnectionThread = null;
 
     /**
      * 构造函数
@@ -51,7 +53,7 @@ public class CRTClient2{
         //socketChannel.register(selector, SelectionKey.OP_READ);
 
         // 启动读取线程
-        new CRTClient2Thread(selector, null, socketChannel, hostIp, hostListenningPort);
+        clientConnectionThread = new CRTClient2Thread(selector, null, socketChannel, hostIp, hostListenningPort);
     }
 
     /**
@@ -64,6 +66,19 @@ public class CRTClient2{
         socketChannel.write(writeBuffer);
     }
 
+    public void stopConnection()
+    {
+        clientConnectionThread.stop = true;
+        
+        
+        try {
+            socketChannel.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
     public static void main(String[] args) throws IOException{
         CRTClient2 client=new CRTClient2("192.168.0.1",1978);
 

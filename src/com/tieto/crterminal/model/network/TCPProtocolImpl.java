@@ -18,7 +18,8 @@ import android.util.Log;
 
 public final class TCPProtocolImpl implements TCPProtocol {
    
-    private final String TAG = "TCPProtocolImpl";
+    private final String TAG = "CRTServer2";
+    private final String TAG2 = "TCPProtocolImpl";
     private int bufferSize;
     private Handler handler = null;
     private ArrayList<SocketChannel> clientChannels = null;
@@ -46,13 +47,14 @@ public final class TCPProtocolImpl implements TCPProtocol {
 
     @Override
     public void handleAccept(SelectionKey key) throws IOException {
+        Log.i(TAG, TAG2 + " , a new client connected...");
         // TODO Auto-generated method stub
         SocketChannel clientChannel=((ServerSocketChannel)key.channel()).accept();
         clientChannel.configureBlocking(false);
         clientChannel.register(key.selector(), SelectionKey.OP_READ,ByteBuffer.allocate(bufferSize));
         
         // 发送问候消息        
-        String message="你好,客户端. ";
+        String message="Hello, Client";
         ByteBuffer writeBuffer=ByteBuffer.wrap(message.getBytes("UTF-8"));
         clientChannel.write(writeBuffer);
         
@@ -89,11 +91,11 @@ public final class TCPProtocolImpl implements TCPProtocol {
 //          msg.sendToTarget();
          
           // 控制台打印出来
-          Log.i("TCPProtocolImpl","接收到来自"+clientChannel.socket().getRemoteSocketAddress()+"的信息:"+receivedString);
-         
+          Log.i(TAG, TAG2 + " , receive message from" + clientChannel.socket().getRemoteSocketAddress()+", msg:"+receivedString);
+                   
           // 准备发送的文本
          
-          String sendString="你好,客户端. @已经收到你的信息"+receivedString;
+          String sendString="hello client, your msg received: "+receivedString;
           buffer=ByteBuffer.wrap(sendString.getBytes("UTF-8"));
           clientChannel.write(buffer);
          
@@ -114,11 +116,15 @@ public final class TCPProtocolImpl implements TCPProtocol {
         
         // 设置为下一次读取或是写入做准备
         key.interestOps(SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+        
+        Log.i(TAG, TAG2 + " , sendmessage:" + sendString);
     }
     
     @Override
     public void handleBroadcast(String message)  throws IOException
     {
+        Log.i(TAG, TAG2 + " , broadcast message:" + message);
+        
         for (int i = 0; i < clientChannels.size(); ++ i)
         {
             SocketChannel clientChannel = (SocketChannel) clientChannels.get(i);

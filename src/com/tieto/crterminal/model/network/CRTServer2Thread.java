@@ -15,7 +15,7 @@ import android.util.Log;
 
 public class CRTServer2Thread extends Thread {
    
-    private final String TAG = "CRTServer2Thread";
+    private final String TAG = "CRTServer2";
     //private Handler handler = null;
     private int port = 0;
     private Selector selector = null;
@@ -60,15 +60,16 @@ public class CRTServer2Thread extends Thread {
         while(!stop){
             // 等待某信道就绪(或超时)
             int iselect = 0;
+            
             try {
                 iselect = selector.select(TimeOut);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            if(iselect==0){
-                System.out.print("独自等待.");
-                Log.i("CRTServer2Thread", "继续等待...");
+            
+            if(iselect==0){                
+                Log.i(TAG, "iselect==0 wating continue...");
                 continue;
             }
             
@@ -106,6 +107,7 @@ public class CRTServer2Thread extends Thread {
                     keyIter.remove();
                     continue;
                 }
+                
                 // 移除处理过的键
                 keyIter.remove();
 
