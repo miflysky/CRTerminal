@@ -98,6 +98,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 			((HostGameActivity) getActivity()).mHostPlayer.newRound();
 			break;
 		case R.id.stop_Btn:
+			((GuestGameActivity) getActivity()).mGuestPlayer.leaveGame();
 			getActivity().finish();
 			break;
 		case R.id.confirm_Btn:

@@ -90,8 +90,7 @@ public class GuestGameActivity extends BaseGameActivity {
 			switch (msg.what) {
 			case JsonCommadConstant.EVENT_NULL_STARTGAME:
 				Log.i(TAG, "Game start.");
-				GamePadFragment gamePad = new GamePadFragment();
-				gamePad.showGamepad();
+
 				break;
 
 			case JsonCommadConstant.EVENT_NULL_ENDGAME:
@@ -100,6 +99,8 @@ public class GuestGameActivity extends BaseGameActivity {
 
 			case JsonCommadConstant.EVENT_INT_NEWROUND:
 				Log.i(TAG, "Game new round.");
+				GamePadFragment gamePad = new GamePadFragment();
+				gamePad.showGamepad();
 				break;
 			
 			case JsonCommadConstant.EVENT_INT_ENDROUND:
@@ -108,9 +109,16 @@ public class GuestGameActivity extends BaseGameActivity {
 				
 			case JsonCommadConstant.EVENT_STR_JOIN:
 				Log.i(TAG, "Join game success.");
+				String nameAdd = msg.getData().getString(JsonCommadConstant.KEY_COMMAND_VALUE);
+				mPlayerFragment.playerAdd(nameAdd);
 				
 				break;
-
+			case JsonCommadConstant.EVENT_STR_CHOOSE:
+				String choose = msg.getData().getString(JsonCommadConstant.KEY_COMMAND_VALUE);
+				int value = Integer.decode(choose).intValue();
+				String userName = msg.getData().getString(JsonCommadConstant.KEY_USER_NAME);
+				mPlayerFragment.playMakeChoice(userName, value);
+				break;
 			}
 		}
 	};

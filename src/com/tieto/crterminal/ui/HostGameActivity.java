@@ -69,6 +69,14 @@ public class HostGameActivity extends BaseGameActivity {
 				String nameLeave = msg.getData().getString(JsonCommadConstant.KEY_COMMAND_VALUE);
 				mPlayerFragment.playerLeave(nameLeave);
 				break;
+			case JsonCommadConstant.EVENT_INT_NEWROUND:
+				Log.i(TAG, "Game new round.");
+				mGamePadFragment.showGamepad();
+				break;
+			
+			case JsonCommadConstant.EVENT_INT_ENDROUND:
+				Log.i(TAG, "Game end round.");
+				break;
 							
 			}
 		}
