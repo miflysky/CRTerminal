@@ -40,6 +40,8 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		mActivity = (BaseGameActivity)getActivity();
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(GAME_READY_ACTION);
 		mGameReadyBroadcastReceiver = new GameReadyBroadcastReceiver();
