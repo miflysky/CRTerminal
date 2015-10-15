@@ -8,54 +8,70 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
 
-public class CRTClient2{
+public class CRTClient2 implements SocketConnectionClient {
+
     private final String TAG = "CRTClient2";
 
-    // ÐÅµÀÑ¡ÔñÆ÷
+    // ï¿½Åµï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½
     private Selector selector;
 
-    // Óë·þÎñÆ÷Í¨ÐÅµÄÐÅµÀ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½Åµï¿½ï¿½Åµï¿½
     SocketChannel socketChannel;
 
-    // ÒªÁ¬½ÓµÄ·þÎñÆ÷IpµØÖ·
+    // Òªï¿½ï¿½ï¿½ÓµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½Ipï¿½ï¿½Ö·
     private String hostIp;
 
-    // ÒªÁ¬½ÓµÄÔ¶³Ì·þÎñÆ÷ÔÚ¼àÌýµÄ¶Ë¿Ú
+    // Òªï¿½ï¿½ï¿½Óµï¿½Ô¶ï¿½Ì·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½Ä¶Ë¿ï¿½
     private int hostListenningPort;
 
     /**
-     * ¹¹Ôìº¯Êý
+     * ï¿½ï¿½ï¿½ìº¯ï¿½ï¿½
      * @param HostIp
      * @param HostListenningPort
      * @throws IOException
      */
-    public CRTClient2(String HostIp,int HostListenningPort)throws IOException{
-        this.hostIp=HostIp;
-        this.hostListenningPort=HostListenningPort;   
+	public CRTClient2(String HostIp) throws IOException {
+		this.hostIp = HostIp;
+		this.hostListenningPort = SocketConnectionBase.CONNECTIONPORT;
 
-        initialize();
-    }
+		initialize();
+	}
 
+	@Override
+	public void sendMsgToServer(String msg) {
+
+	}
+
+	@Override
+	public void openConnection() {
+
+	}
+
+	@Override
+	public void closeConnection() {
+
+	}
     /**
-     * ³õÊ¼»¯
+     * ï¿½ï¿½Ê¼ï¿½ï¿½
      * @throws IOException
      */
     private void initialize() throws IOException{
-        // ´ò¿ª¼àÌýÐÅµÀ²¢ÉèÖÃÎª·Ç×èÈûÄ£Ê½
+        // ï¿½ò¿ª¼ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
         //InetSocketAddress address = new InetSocketAddress(hostIp, hostListenningPort);
         socketChannel=SocketChannel.open();
         socketChannel.configureBlocking(false);
 
-        // ´ò¿ª²¢×¢²áÑ¡ÔñÆ÷µ½ÐÅµÀ
+        // ï¿½ò¿ª²ï¿½×¢ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½
         selector = Selector.open();
         //socketChannel.register(selector, SelectionKey.OP_READ);
 
-        // Æô¶¯¶ÁÈ¡Ïß³Ì
-        new CRTClient2Thread(selector, null, socketChannel, hostIp, hostListenningPort);
-    }
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ß³ï¿½
+		new CRTClient2Thread(selector, null, socketChannel, hostIp,
+				hostListenningPort);
+	}
 
     /**
-     * ·¢ËÍ×Ö·û´®µ½·þÎñÆ÷
+     * ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      * @param message
      * @throws IOException
      */
@@ -64,9 +80,9 @@ public class CRTClient2{
         socketChannel.write(writeBuffer);
     }
 
-    public static void main(String[] args) throws IOException{
-        CRTClient2 client=new CRTClient2("192.168.0.1",1978);
+	public static void main(String[] args) throws IOException {
+		CRTClient2 client = new CRTClient2("192.168.0.1");
 
-        client.sendMsg("ÄãºÃ!Nio!×íÀïÌôµÆ¿´½£,ÃÎ»Ø´µ½ÇÁ¬Óª");
+        client.sendMsg("ï¿½ï¿½ï¿½!Nio!ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¿ï¿½ï¿½ï¿½,ï¿½Î»Ø´ï¿½ï¿½ï¿½ï¿½ï¿½Óª");
     }
 }

@@ -1,10 +1,9 @@
 package com.tieto.crterminal.ui;
 
 import com.tieto.crterminal.R;
-import com.tieto.crterminal.model.network.CRTClient2;
-import com.tieto.crterminal.model.network.CRTServer;
-import com.tieto.crterminal.model.network.CRTServer2;
-import com.tieto.crterminal.model.network.CRTServer2Thread;
+import com.tieto.crterminal.model.player.GamePlayerGuest;
+import com.tieto.crterminal.model.player.GamePlayerHost;
+import com.tieto.crterminal.model.player.GamePlayerBase;
 import com.tieto.crterminal.model.wifi.WifiUtils;
 
 import android.app.Activity;
@@ -47,10 +46,11 @@ public class GameActivity extends Activity {
 
 	private boolean mGuestFirstConnectted;
 
-	CRTServer mCRTServer;
-	// CRTConnectionServer crtConnectionServer = null;
-	CRTServer2 mCRTServer2 = null;
-	CRTClient2 mCRTClient2 = null;
+	// if I'm a host
+	private GamePlayerBase mHostPlayer;
+
+	// if I'm a guest
+	private GamePlayerBase mGuestPlayer;
 
 	private boolean mIsGameOwner;
 	private PlayerFragment mPlayerFragment;
@@ -58,8 +58,6 @@ public class GameActivity extends Activity {
 	private SearchFragment mSearchFragment;
 
 	private String mMyName;
-
-	private Intent mIntent;
 
 	FragmentManager mFragmentManager;
 	FragmentTransaction mTransaction;
@@ -71,24 +69,24 @@ public class GameActivity extends Activity {
 
 		// Set the default user name
 		TextView nameText = (TextView) findViewById(R.id.player_me);
-
 		mMyName = getUserName();
 		nameText.setText(mMyName);
 
-		mIntent = getIntent();
-
-		mIsGameOwner = mIntent.getBooleanExtra("OWNER", true);
-		mFragmentManager = getFragmentManager();
-		mTransaction = mFragmentManager.beginTransaction();
-
-		mGamePadFragment = new GamePadFragment();
-		mTransaction.replace(R.id.gamepad_fragment, mGamePadFragment);
-		// mTransaction.commit();
-
+		// get default
 		mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		mWifiUtils = new WifiUtils(mWifiManager);
 
-		mCRTServer = new CRTServer();
+		// create the gamepad fragment, host & guest are the same
+		mFragmentManager = getFragmentManager();
+		mTransaction = mFragmentManager.beginTransaction();
+		mGamePadFragment = new GamePadFragment();
+		mTransaction.replace(R.id.gamepad_fragment, mGamePadFragment);
+
+		// Check if I'm a host or guest
+		Intent intent = getIntent();
+		mIsGameOwner = intent.getBooleanExtra("OWNER", true);
+
+		// do difference things ...
 		if (mIsGameOwner) {
 			startGameAsHost();
 		} else {
@@ -111,7 +109,6 @@ public class GameActivity extends Activity {
 
 	private void endGameAsHost() {
 		mWifiUtils.disableAP();
-
 	}
 
 	private void endGameAsGuest() {
@@ -153,14 +150,11 @@ public class GameActivity extends Activity {
 			return;
 		}
 
-		// mCRTServer.startSocketServer();
+		// Create the host player
+		mHostPlayer = new GamePlayerHost(mMyName);
 
-		// added by lujun - begin
-		mCRTServer2 = new CRTServer2();
-		mCRTServer2.startServer(null);
-		// added by lujun - end
-
-		createGame();
+		// create the player list
+		createPlayerList();
 
 	}
 
@@ -175,8 +169,10 @@ public class GameActivity extends Activity {
 
 		mGuestFirstConnectted = false;
 
-		mWifiUtils.startWifiScan();
 		findGameOwner();
+		
+		mWifiUtils.startWifiScan();
+		
 	}
 
 	private void findGameOwner() {
@@ -185,7 +181,7 @@ public class GameActivity extends Activity {
 		mTransaction.commit();
 	}
 
-	private void createGame() {
+	private void createPlayerList() {
 		mPlayerFragment = new PlayerFragment();
 		mTransaction.replace(R.id.main_fragment, mPlayerFragment);
 		mTransaction.commit();
@@ -225,7 +221,7 @@ public class GameActivity extends Activity {
 							.getSystemService(Context.CONNECTIVITY_SERVICE);
 					NetworkInfo wifiNetworkInfo = connectivityManager
 							.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-					
+
 					if (wifiNetworkInfo.isConnected()) {
 
 						String apaddr = mWifiUtils.getAPAddress();
@@ -233,18 +229,8 @@ public class GameActivity extends Activity {
 						Log.i(TAG, apaddr);
 
 						mGuestFirstConnectted = true;
-						// TODO: set status connected
 
-						// added by lujun - begin
-						try {
-							mCRTClient2 = new CRTClient2(apaddr, 3333);
-							// mCRTClient2.sendMsg("how are you, server!");
-						} catch (Exception e) {
-							// TODO: handle exception
-							Log.e("GameActivity", e.getMessage());
-						}
-
-						// added by lujun - end
+						mGuestPlayer = new GamePlayerGuest(mMyName, apaddr);
 
 					}
 
