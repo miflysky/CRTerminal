@@ -27,7 +27,7 @@ import com.tieto.crterminal.model.player.JanKenPonValue;
 
 public class PlayerFragment extends Fragment {
 
-	private GameActivity mActivity;
+	private BaseGameActivity mActivity;
 
 	private List<Player> mPlayers = new ArrayList<Player>();
 
@@ -41,7 +41,7 @@ public class PlayerFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		mActivity = (GameActivity) getActivity();
+		mActivity = (BaseGameActivity) getActivity();
 		Intent intent = new Intent();
 		intent.setAction(GamePadFragment.GAME_READY_ACTION);
 		mActivity.sendBroadcast(intent);

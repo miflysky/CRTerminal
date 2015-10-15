@@ -28,9 +28,8 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	private ImageButton btnPaper;
 	private ImageButton btnRock;
 	private ImageButton btnScissors;
-	private boolean mIsOwner;
 
-	private GameActivity mActivity;
+	private BaseGameActivity mActivity;
 
 	public static String GAME_READY_ACTION = "com.tieto.crterminal.game_ready";
 
@@ -44,8 +43,8 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(GAME_READY_ACTION);
 		mGameReadyBroadcastReceiver = new GameReadyBroadcastReceiver();
-		mActivity = (GameActivity) getActivity();
-		mActivity.registerReceiver(mGameReadyBroadcastReceiver, intentFilter);
+		getActivity().registerReceiver(mGameReadyBroadcastReceiver, intentFilter);
+
 	}
 
 	
@@ -53,7 +52,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	public void onDestroy(){
 		
 		super.onDestroy();
-		mActivity.unregisterReceiver(mGameReadyBroadcastReceiver);
+		getActivity().unregisterReceiver(mGameReadyBroadcastReceiver);
 		
 	}
 	
@@ -79,19 +78,23 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 		View view = inflater.inflate(R.layout.fragment_gamepad, container,
 				false);
 
+		initView(view, BaseGameActivity.isGameHost());
+
+		return view;
+	}
+	
+	private void initView(View view, boolean isHost) {
+		
 		btnStart = (Button) view.findViewById(R.id.start_Btn);
 		btnStop = (Button) view.findViewById(R.id.stop_Btn);
 		btnConfirm = (Button) view.findViewById(R.id.confirm_Btn);
 		btnPaper = (ImageButton) view.findViewById(R.id.gamepad_paper);
 		btnRock = (ImageButton) view.findViewById(R.id.gamepad_rock);
 		btnScissors = (ImageButton) view.findViewById(R.id.gamepad_scissors);
-
-		if (!mIsOwner) {
-			btnStart.setVisibility(View.GONE);
-			btnPaper.setVisibility(View.INVISIBLE);
-			btnRock.setVisibility(View.INVISIBLE);
-			btnScissors.setVisibility(View.INVISIBLE);
-		}
+		
+		btnPaper.setVisibility(View.INVISIBLE);
+		btnRock.setVisibility(View.INVISIBLE);
+		btnScissors.setVisibility(View.INVISIBLE);
 
 		btnStart.setOnClickListener(this);
 		btnStop.setOnClickListener(this);
@@ -100,15 +103,17 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 		btnPaper.setOnClickListener(this);
 		btnRock.setOnClickListener(this);
 		btnScissors.setOnClickListener(this);
-
-		return view;
+		
+		if (!isHost) {
+			btnStart.setVisibility(View.GONE);
+		}
+			
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
-		mIsOwner = activity.getIntent().getBooleanExtra("OWNER", false);
 	}
 
 	@Override

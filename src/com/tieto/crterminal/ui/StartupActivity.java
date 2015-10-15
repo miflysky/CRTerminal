@@ -53,13 +53,11 @@ public class StartupActivity extends Activity implements View.OnClickListener{
 		Intent intent;
 		switch(id){
 		case R.id.btn_host:
-			intent = new Intent(this,GameActivity.class);
-			intent.putExtra("OWNER", true);
+			intent = new Intent(this,HostGameActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.btn_guest:
-			intent = new Intent(this,GameActivity.class);
-			intent.putExtra("OWNER", false);
+			intent = new Intent(this,GuestGameActivity.class);
 			startActivity(intent);
 			break;
 

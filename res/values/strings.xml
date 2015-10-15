@@ -16,5 +16,8 @@
     <string name="copy_right">Powered by: CPT hackathon team, just for internal</string>
     <string name="name">User_name</string>
     <string name="ready">Ready!</string>
+    <string name="title_activity_guest_game">GuestGameActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_host_game">HostGameActivity</string>
 
 </resources>
