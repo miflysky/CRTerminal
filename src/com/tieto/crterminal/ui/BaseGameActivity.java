@@ -34,6 +34,9 @@ public class BaseGameActivity extends Activity {
 	private WifiUtils mWifiUtils;
 
 
+	public String mMyName;
+	
+	
 	CRTServer2 mCRTServer;
 	// CRTConnectionServer crtConnectionServer = null;
 	CRTServer2 mCRTServer2 = null;
@@ -54,6 +57,9 @@ public class BaseGameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base_game);
 
+		
+		mMyName = getUserName();
+		
 		fragmentManager = getFragmentManager();
 		transaction = fragmentManager.beginTransaction();
 
@@ -66,17 +72,7 @@ public class BaseGameActivity extends Activity {
 		if (!mWifiManager.isWifiEnabled()) {
 		    mWifiManager.setWifiEnabled(true);
 		}
-		mCRTServer = new CRTServer2();
-
 	}
-
-
-
-	public FragmentTransaction getTransaction() {
-		return transaction;
-	}
-
-
 
 	// get the default user name
 	public String getUserName() {
@@ -93,7 +89,11 @@ public class BaseGameActivity extends Activity {
 
 		return userName;
 	}
+	
 
+	public FragmentTransaction getTransaction() {
+		return transaction;
+	}
 
 	public WifiUtils getWifiUtils() {
 		return mWifiUtils;

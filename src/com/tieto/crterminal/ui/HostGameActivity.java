@@ -10,12 +10,14 @@ public class HostGameActivity extends BaseGameActivity {
 
 	
 	public PlayerFragment mPlayerFragment;
-	private String mMyName;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		startGameAsHost();
+
 	}
 
 	

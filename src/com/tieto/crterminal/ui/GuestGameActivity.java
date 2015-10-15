@@ -24,6 +24,7 @@ public class GuestGameActivity extends BaseGameActivity {
 		startGameAsGuest();
 	}
 
+
 	
 	@Override
 	protected void onDestroy() {
@@ -61,6 +62,8 @@ public class GuestGameActivity extends BaseGameActivity {
 		getTransaction().replace(R.id.main_fragment, mSearchFragment);
 		getTransaction().commit();
 	}
+	
+
 	
 	public class NetworkConnectChangedReceiver extends BroadcastReceiver {
 
@@ -106,4 +109,7 @@ public class GuestGameActivity extends BaseGameActivity {
 		}
 
 	}
+	
+	
+	
 }
