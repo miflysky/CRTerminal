@@ -55,15 +55,15 @@ public class HostGameActivity extends BaseGameActivity {
 		public void handleMessage(Message msg) {
 
 			switch (msg.what) {
-			case JsonCommadConstant.FROM_CLIENT_EVENT_INT_CHOICE:
+			case JsonCommadConstant.EVENT_STR_CHOOSE:
                 
 				break;
 
-			case JsonCommadConstant.FROM_CLIENT_EVENT_STR_JOIN:
+			case JsonCommadConstant.EVENT_STR_JOIN:
 
 				break;
 
-			case JsonCommadConstant.FROM_CLIENT_EVENT_STR_LEAVE:
+			case JsonCommadConstant.EVENT_STR_LEAVE:
 
 				break;
 							

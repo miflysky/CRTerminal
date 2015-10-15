@@ -75,23 +75,23 @@ public class GuestGameActivity extends BaseGameActivity {
 		public void handleMessage(Message msg) {
 
 			switch (msg.what) {
-			case JsonCommadConstant.FROM_SERVER_EVENT_INT_ENDROUND:
+			case JsonCommadConstant.EVENT_NULL_STARTGAME:
 
 				break;
 
-			case JsonCommadConstant.FROM_SERVER_EVENT_INT_NEWROUND:
+			case JsonCommadConstant.EVENT_NULL_ENDGAME:
 
 				break;
 
-			case JsonCommadConstant.FROM_SERVER_EVENT_NULL_GAMERESULT:
+			case JsonCommadConstant.EVENT_INT_NEWROUND:
 
 				break;
 			
-			case JsonCommadConstant.FROM_SERVER_EVENT_STR_USERLIST:
+			case JsonCommadConstant.EVENT_INT_ENDROUND:
 				
 				break;
 				
-			case JsonCommadConstant.FROM_SERVER_EVENT_NULL_STARTGAME:
+			case JsonCommadConstant.EVENT_STR_JOIN:
 				
 				break;
 

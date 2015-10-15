@@ -61,13 +61,13 @@ public class GamePlayerHost extends GamePlayerBase implements ServerConnectionCa
 	private void hanldeCommand(JsonCRTCommand command) {
 		int event = command.getEvent();
 		switch (event) {
-		case JsonCommadConstant.FROM_CLIENT_EVENT_STR_JOIN:
+		case JsonCommadConstant.EVENT_STR_CHOOSE:
 			//TODO: set status 
 			break;
-		case JsonCommadConstant.FROM_CLIENT_EVENT_INT_CHOICE:
+		case JsonCommadConstant.EVENT_STR_JOIN:
 			//TODO: set status
 			break;			
-		case JsonCommadConstant.FROM_CLIENT_EVENT_STR_LEAVE:
+		case JsonCommadConstant.EVENT_STR_LEAVE:
 			//TODO: set status 
 			break;
 		default:

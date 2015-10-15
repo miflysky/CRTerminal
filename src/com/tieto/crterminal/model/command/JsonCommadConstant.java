@@ -29,20 +29,4 @@ public class JsonCommadConstant {
 	public static final int EVENT_STR_CHOOSE = FROM_SERVER_EVENT_BASE + 14;
 
 	
-	
-	
-	
-	
-	/****************************** The event from client *****************************/
-	private static final int FROM_CLIENT_EVENT_BASE = 100;
-	
-	//client inform server I'm login
-	public static final int FROM_CLIENT_EVENT_STR_JOIN = FROM_CLIENT_EVENT_BASE + 10;
-	//client inform server I'm login out
-	public static final int FROM_CLIENT_EVENT_STR_LEAVE = FROM_CLIENT_EVENT_BASE + 11;
-
-	
-	//client inform server what is his choice
-	public static final int FROM_CLIENT_EVENT_INT_CHOICE = FROM_CLIENT_EVENT_BASE + 20;
-	
 }
