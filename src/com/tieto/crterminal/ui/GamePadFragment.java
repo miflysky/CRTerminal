@@ -1,9 +1,5 @@
 package com.tieto.crterminal.ui;
 
-import com.tieto.crterminal.R;
-import com.tieto.crterminal.model.command.JsonCommadConstant;
-import com.tieto.crterminal.model.player.JanKenPonValue;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
@@ -11,14 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import com.tieto.crterminal.R;
+import com.tieto.crterminal.model.player.JanKenPonValue;
 
 public class GamePadFragment extends Fragment implements View.OnClickListener {
 
@@ -121,7 +117,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
-		Intent intent;
+		//Intent intent;
 		switch (id) {
 		case R.id.btn_host:
 			// TODO: start the game

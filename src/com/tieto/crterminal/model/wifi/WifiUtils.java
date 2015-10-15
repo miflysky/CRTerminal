@@ -74,7 +74,7 @@ public class WifiUtils {
 			}
 		}
 
-		//mWifiManager.setWifiEnabled(true);
+		// mWifiManager.setWifiEnabled(true);
 		mWifiManager.startScan();
 	}
 
@@ -125,8 +125,8 @@ public class WifiUtils {
 					"setWifiApEnabled", WifiConfiguration.class, Boolean.TYPE);
 
 			if (mOldAPconfig != null) {
-				success = (Boolean) method
-						.invoke(mWifiManager, mOldAPconfig, false);
+				success = (Boolean) method.invoke(mWifiManager, mOldAPconfig,
+						false);
 
 			} else {
 				WifiConfiguration apConfig = createWifiHotConfig(mEnableAPname,
@@ -209,19 +209,20 @@ public class WifiUtils {
 		// Check whether the connection are exsit
 		List<WifiConfiguration> existingConfigs = mWifiManager
 				.getConfiguredNetworks();
-		for (WifiConfiguration existingConfig : existingConfigs) {
-			if (existingConfig.SSID.equals("\"" + ssid + "\"")) {
-				exsitConf = existingConfig;
-				break;
+		if (existingConfigs != null) {
+			for (WifiConfiguration existingConfig : existingConfigs) {
+				if (existingConfig.SSID.equals("\"" + ssid + "\"")) {
+					exsitConf = existingConfig;
+					break;
+				}
+			}
+
+			// if already exist, connect directly
+			if (exsitConf != null) {
+				success = mWifiManager.enableNetwork(exsitConf.networkId, true);
+				return success;
 			}
 		}
-
-		// if already exist, connect directly
-		if (exsitConf != null) {
-			success = mWifiManager.enableNetwork(exsitConf.networkId, true);
-			return success;
-		}
-
 		// ...seems we haven't connect to the ssid before
 
 		// create a WifiConfiguration

@@ -59,6 +59,8 @@ public class GuestGameActivity extends BaseGameActivity {
 
 		mGuestFirstConnectted = false;
 
+		mGuestPlayer = new GamePlayerGuest(mMyName, mGamePlayerHandler);
+				
 		findGameOwner();
 		
 		
@@ -78,23 +80,23 @@ public class GuestGameActivity extends BaseGameActivity {
 		public void handleMessage(Message msg) {
 
 			switch (msg.what) {
-			case JsonCommadConstant.FROM_SERVER_EVENT_INT_ENDROUND:
+			case JsonCommadConstant.EVENT_NULL_STARTGAME:
 
 				break;
 
-			case JsonCommadConstant.FROM_SERVER_EVENT_INT_NEWROUND:
+			case JsonCommadConstant.EVENT_NULL_ENDGAME:
 
 				break;
 
-			case JsonCommadConstant.FROM_SERVER_EVENT_NULL_GAMERESULT:
+			case JsonCommadConstant.EVENT_INT_NEWROUND:
 
 				break;
 			
-			case JsonCommadConstant.FROM_SERVER_EVENT_STR_USERLIST:
+			case JsonCommadConstant.EVENT_INT_ENDROUND:
 				
 				break;
 				
-			case JsonCommadConstant.FROM_SERVER_EVENT_NULL_STARTGAME:
+			case JsonCommadConstant.EVENT_STR_JOIN:
 				
 				break;
 
@@ -127,19 +129,13 @@ public class GuestGameActivity extends BaseGameActivity {
 
 						mGuestFirstConnectted = true;
 						// TODO: set status connected
-
-						// added by lujun - begin
+						
 						try {
-							//mCRTClient2 = new CRTClient2(apaddr, null);
-							mGuestPlayer = new GamePlayerGuest(mMyName, apaddr, mGamePlayerHandler);
-
-							// mCRTClient2.sendMsg("how are you, server!");
+							mGuestPlayer.ConnectToHost(apaddr);
 						} catch (Exception e) {
 							// TODO: handle exception
 							Log.e("GameActivity", e.getMessage());
-						}
-
-						// added by lujun - end
+						}						
 
 					}
 

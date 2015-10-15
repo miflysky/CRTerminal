@@ -88,7 +88,7 @@ public class CRTClient2Thread implements Runnable {
 						handleRead(sk);
 					}
 				} catch (Exception e) {
-					Log.e(TAG, e.getMessage());
+					e.printStackTrace();
 				}
 
 				keyIter.remove();

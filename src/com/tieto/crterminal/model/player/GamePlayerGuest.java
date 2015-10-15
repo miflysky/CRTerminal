@@ -32,18 +32,26 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 
 	private Handler mHandler;
 
-	public GamePlayerGuest(String userName, String serverIP, Handler handler) {
+	public GamePlayerGuest(String userName, Handler handler) {
 		super(userName);
 
+		mHandler = handler;
+		
+
+
+	}
+	
+	public void ConnectToHost(String serverIP){
 		try {
 			mConnection = new CRTClient2(serverIP,this);
 			mConnection.openConnection();
-			mHandler = handler;
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 	}
+
 
 	public ArrayList<String> getGameList() {
 		return null;
@@ -86,16 +94,19 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 	private void hanldeCommand(JsonCRTCommand command) {
 		int event = command.getEvent();
 		switch (event) {
-		case JsonCommadConstant.FROM_SERVER_EVENT_NULL_STARTGAME:
+		case JsonCommadConstant.EVENT_STR_JOIN:
+			if(command.getValue().endsWith(mName))
+				return;
+		case JsonCommadConstant.EVENT_STR_LEAVE:
+			if(command.getValue().endsWith(mName))
+				return;
+		case JsonCommadConstant.EVENT_STR_CHOOSE:
+			if(command.getValue().endsWith(mName))
+				return;
+		case JsonCommadConstant.EVENT_INT_NEWROUND:
 			//TODO: set status 
 			break;
-		case JsonCommadConstant.FROM_SERVER_EVENT_NULL_GAMERESULT:
-			//TODO: set status
-			break;			
-		case JsonCommadConstant.FROM_SERVER_EVENT_INT_NEWROUND:
-			//TODO: set status 
-			break;
-		case JsonCommadConstant.FROM_SERVER_EVENT_INT_ENDROUND:
+		case JsonCommadConstant.EVENT_INT_ENDROUND:
 			//TODO: set status 
 			break;
 		default:
