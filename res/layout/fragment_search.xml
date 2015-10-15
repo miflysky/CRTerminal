@@ -15,12 +15,19 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
              />
+        <TextView 
+            android:id="@+id/searching"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search Game..."
+            android:textSize="20sp"
+            android:gravity="center"
+             />
 
         <ListView
             android:id="@+id/game_listview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            
             android:smoothScrollbar="true" >
         </ListView>
     </LinearLayout>

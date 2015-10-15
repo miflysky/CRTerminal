@@ -33,10 +33,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.GameActivity"
-            android:label="@string/title_activity_game" >
-        </activity>
-        <activity
             android:name="com.tieto.crterminal.ui.GuestGameActivity"
             android:label="@string/title_activity_guest_game" >
         </activity>

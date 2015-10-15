@@ -35,25 +35,25 @@ public class SearchFragment extends Fragment {
 	private static final String TAG = "CRTerminal";
 
 	private ListView mGameListView;
+	private TextView mSearchingText;
 	private GroupAdapter mGroupAdapter;
+	private List<ScanResult> mWifiList;
 
 	private ScanResultsReceiver mScanResultsReceiver;
 
 	private WifiUtils mWifiUtils;
 
 	private static List<Group> GROUPS = new ArrayList<Group>();
-	private int[] groupImageList = new int[] { R.drawable.guest1,
-			R.drawable.guest7, R.drawable.guest8 };
+	private int[] groupImageList = new int[] { R.drawable.guest1, R.drawable.guest7, R.drawable.guest8 };
 
 	public static final int UIEVENT1 = 1;
 
 	private UIEventHandler mUIEventHandler = new UIEventHandler(this);
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater
-				.inflate(R.layout.fragment_search, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_search, container, false);
 		mGameListView = (ListView) view.findViewById(R.id.game_listview);
+		mSearchingText = (TextView) view.findViewById(R.id.searching);
 
 		mGroupAdapter = new GroupAdapter();
 		mGameListView.setAdapter(mGroupAdapter);
@@ -61,14 +61,12 @@ public class SearchFragment extends Fragment {
 		mGameListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				mWifiUtils.connectToSSID(BaseGameActivity.APPREFIX
-						+ GROUPS.get(position).getGroupName());
+				mWifiUtils.connectToSSID(BaseGameActivity.APPREFIX + GROUPS.get(position).getGroupName());
 
-				//TODO: join game
-				
+				// TODO: join game
+
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
 				PlayerFragment pf = new PlayerFragment();
@@ -78,14 +76,24 @@ public class SearchFragment extends Fragment {
 			}
 		});
 
-		WifiManager wifiManager = (WifiManager) getActivity().getSystemService(
-				Context.WIFI_SERVICE);
+		WifiManager wifiManager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
 		mWifiUtils = new WifiUtils(wifiManager);
 
 		mScanResultsReceiver = new ScanResultsReceiver(this);
 
 		return view;
 	}
+	
+	
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		GROUPS.clear();
+	}
+
+
+
 
 	@Override
 	public void onResume() {
@@ -134,17 +142,14 @@ public class SearchFragment extends Fragment {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.game_list_layout, null);
 				viewHolder = new ViewHolder();
-				viewHolder.groupImageView = (ImageView) convertView
-						.findViewById(R.id.group_icn);
-				viewHolder.groupName = (TextView) convertView
-						.findViewById(R.id.group_name);
+				viewHolder.groupImageView = (ImageView) convertView.findViewById(R.id.group_icn);
+				viewHolder.groupName = (TextView) convertView.findViewById(R.id.group_name);
 
 				convertView.setTag(viewHolder);
 			} else {
 				viewHolder = (ViewHolder) convertView.getTag();
 			}
-			viewHolder.groupImageView.setImageResource(GROUPS.get(position)
-					.getGroupImageId());
+			viewHolder.groupImageView.setImageResource(GROUPS.get(position).getGroupImageId());
 			viewHolder.groupName.setText(GROUPS.get(position).getGroupName());
 
 			return convertView;
@@ -184,7 +189,7 @@ public class SearchFragment extends Fragment {
 	}
 
 	// For get the wifi scan results
-	public static class ScanResultsReceiver extends BroadcastReceiver {
+	public class ScanResultsReceiver extends BroadcastReceiver {
 
 		WeakReference<SearchFragment> mWeakReference;
 
@@ -198,33 +203,35 @@ public class SearchFragment extends Fragment {
 			if (searchFragment == null) {
 				return;
 			}
+			if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
 
-			SearchFragment.GROUPS.clear();
+				mSearchingText.setVisibility(View.GONE);
+				SearchFragment.GROUPS.clear();
 
-			String apName;
+				String apName;
 
-			WifiManager wifiManager = (WifiManager) searchFragment
-					.getActivity().getSystemService(Context.WIFI_SERVICE);
+				WifiManager wifiManager = (WifiManager) searchFragment.getActivity()
+						.getSystemService(Context.WIFI_SERVICE);
 
-			List<ScanResult> wifiList = wifiManager.getScanResults();
-			for (int i = 0; i < wifiList.size(); i++) {
-				apName = wifiList.get(i).SSID;
-				if (apName == null)
-					continue;
+				mWifiList = wifiManager.getScanResults();
+				for (int i = 0; i < mWifiList.size(); i++) {
+					apName = mWifiList.get(i).SSID;
+					if (apName == null)
+						continue;
 
-				Log.i(TAG, "Searched ap: " + apName);
+					Log.i(TAG, "Searched ap: " + apName);
 
-				// List host name in dialogFragment
-				if (apName.startsWith(BaseGameActivity.APPREFIX)) {
-					Group group = new SearchFragment.Group(
-							searchFragment.groupImageList[i % 3],
-							apName.substring(BaseGameActivity.APPREFIX.length()));
-					SearchFragment.GROUPS.add(group);
+					// List host name in dialogFragment
+					if (apName.startsWith(BaseGameActivity.APPREFIX)) {
+						Group group = new SearchFragment.Group(searchFragment.groupImageList[i % 3],
+								apName.substring(BaseGameActivity.APPREFIX.length()));
+						SearchFragment.GROUPS.add(group);
+					}
 				}
+				Message msg = new Message();
+				msg.what = UIEVENT1;
+				searchFragment.mUIEventHandler.sendMessage(msg);
 			}
-			Message msg = new Message();
-			msg.what = UIEVENT1;
-			searchFragment.mUIEventHandler.sendMessage(msg);
 		}
 	}
 

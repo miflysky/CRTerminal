@@ -63,6 +63,9 @@ public class BaseGameActivity extends Activity {
 		mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		setWifiUtils(new WifiUtils(mWifiManager));
 
+		if (!mWifiManager.isWifiEnabled()) {
+		    mWifiManager.setWifiEnabled(true);
+		}
 		mCRTServer = new CRTServer2();
 
 	}
