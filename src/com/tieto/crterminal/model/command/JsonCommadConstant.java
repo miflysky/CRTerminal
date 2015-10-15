@@ -12,14 +12,18 @@ public class JsonCommadConstant {
 	/****************************** The event from server *****************************/
 	private static final int FROM_SERVER_EVENT_BASE = 1;
 	
+	///////
+	
+	private static final int FROM_SERVER_EVENT_NULL_START = FROM_SERVER_EVENT_BASE + 1;
+	
 	//server inform client game started
-	public static final int FROM_SERVER_EVENT_NULL_STARTGAME = FROM_SERVER_EVENT_BASE + 1;
+	public static final int FROM_SERVER_EVENT_NULL_STARTGAME = FROM_SERVER_EVENT_BASE + 2;
 	//server inform client game result
-	public static final int FROM_SERVER_EVENT_NULL_GAMERESULT = FROM_SERVER_EVENT_BASE + 2;
+	public static final int FROM_SERVER_EVENT_NULL_GAMERESULT = FROM_SERVER_EVENT_BASE + 3;
 	
 	
 	public static final int FROM_SERVER_EVENT_NULL_END = FROM_SERVER_EVENT_BASE + 9;
-	
+	////////
 	
 	//server inform client new round start
 	public static final int FROM_SERVER_EVENT_INT_NEWROUND = FROM_SERVER_EVENT_BASE + 10;
