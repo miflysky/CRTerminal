@@ -15,6 +15,7 @@ import android.util.Log;
 
 public class CRTClient2Thread implements Runnable {
 
+    private final String TAG = "CRTClient2Thread";
     private Selector selector;
    
     private Handler handler;
@@ -44,7 +45,7 @@ public class CRTClient2Thread implements Runnable {
         // TODO Auto-generated method stub
         try {                   
             boolean connected = socketChannel.connect(new InetSocketAddress(hostIpAddress, hostPort));            
-            Log.i("CRTClient2Thread", ""+connected);  
+            Log.i(TAG, ""+connected);  
             
             while (!socketChannel.finishConnect()){
                 // wait for connected;
@@ -63,7 +64,7 @@ public class CRTClient2Thread implements Runnable {
                         try {
                             sc.read(buffer);
                         } catch (Exception e) {
-                            Log.i("CRTClient2Thread", e.getMessage());
+                            Log.i(TAG, e.getMessage());
                         }
                         
                         buffer.flip();
@@ -74,7 +75,7 @@ public class CRTClient2Thread implements Runnable {
                         //msg.obj = "接收到来自服务器"+sc.socket().getRemoteSocketAddress()+"的信息:"+receivedString;
                         //msg.sendToTarget();
                         // 控制台打印出来
-                        Log.i("CRTClient2Thread", "接收到来自服务器"+sc.socket().getRemoteSocketAddress()+"的信息:"+receivedString);
+                        Log.i(TAG, "接收到来自服务器"+sc.socket().getRemoteSocketAddress()+"的信息:"+receivedString);
                    
                         // 为下一次读取作准备
                         sk.interestOps(SelectionKey.OP_READ);

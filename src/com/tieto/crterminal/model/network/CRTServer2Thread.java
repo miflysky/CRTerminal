@@ -16,20 +16,19 @@ import android.util.Log;
 public class CRTServer2Thread extends Thread {
    
     private final String TAG = "CRTServer2Thread";
-    private Handler handler = null;
+    //private Handler handler = null;
     private int port = 0;
     private Selector selector = null;
     private ServerSocketChannel listenerChannel = null;
    
     private TCPProtocol protocol = null;
-    private static final int BufferSize=1024;
+    //private static final int BufferSize=1024;
     private static final int TimeOut=3000;
     
     public boolean stop = false;
    
-    public CRTServer2Thread(Handler handler,int port)
-    {
-        this.handler = handler;
+    public CRTServer2Thread(int port, TCPProtocol protocol)
+    {        
         this.port = port;
         try {
             selector = Selector.open();
@@ -52,7 +51,8 @@ public class CRTServer2Thread extends Thread {
         }
         
         // 创建一个处理协议的实现类,由它来具体操作
-        protocol=new TCPProtocolImpl(BufferSize,handler);
+        //this.protocol= new TCPProtocolImpl(BufferSize,handler);
+        this.protocol = protocol;
     }
    
     public void run()

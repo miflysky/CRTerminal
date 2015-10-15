@@ -18,6 +18,7 @@ import android.util.Log;
 
 public final class TCPProtocolImpl implements TCPProtocol {
    
+    private final String TAG = "TCPProtocolImpl";
     private int bufferSize;
     private Handler handler = null;
     private ArrayList<SocketChannel> clientChannels = null;
@@ -33,7 +34,13 @@ public final class TCPProtocolImpl implements TCPProtocol {
         for (int i = 0; i < clientChannels.size(); ++ i)
         {
             SocketChannel clientChannel = (SocketChannel) clientChannels.get(i);
-            clientChannel.close();
+            
+            try {
+                clientChannel.close();
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+            
         }
     }
 
