@@ -21,22 +21,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tieto.crterminal.R;
-import com.tieto.crterminal.model.player.GamePlayerBase;
+import com.tieto.crterminal.model.player.GamePlayer;
 import com.tieto.crterminal.model.player.JanKenPonValue;
 
 public class PlayerFragment extends Fragment {
 
 	private BaseGameActivity mActivity;
 
-	private List<GamePlayerBase> mPlayers = new ArrayList<GamePlayerBase>();
+	private List<GamePlayer> mPlayers = new ArrayList<GamePlayer>();
 
-	private Map<String, GamePlayerBase> mNameMap = new HashMap<String, GamePlayerBase>();
+	private Map<String, GamePlayer> mNameMap = new HashMap<String, GamePlayer>();
 
 	private GridView players_grid;
 
 	private PlayersGridAdapter mAdapter;
 
-	public PlayerFragment(GamePlayerBase player) {
+	private boolean showResult = false;
+
+	public PlayerFragment(GamePlayer player) {
 		mNameMap.put(player.mName, player);
 		mPlayers.add(player);
 	}
@@ -102,6 +104,13 @@ public class PlayerFragment extends Fragment {
 			return position;
 		}
 
+		class ViewHolder {
+			ImageView player_icon;
+			TextView player_name;
+			ImageView player_card;
+			TextView player_status;
+		}
+		
 		@SuppressLint("InflateParams")
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -122,7 +131,7 @@ public class PlayerFragment extends Fragment {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			GamePlayerBase player = mPlayers.get(position);
+			GamePlayer player = mPlayers.get(position);
 
 			holder.player_name.setText(player.mName);
 
@@ -132,22 +141,18 @@ public class PlayerFragment extends Fragment {
 				holder.player_card.setImageResource(resId);
 			}
 
-			if (player.status == GamePlayerBase.READY) {
+			if (player.mValue != 0 && showResult) {
+				holder.player_card.setVisibility(View.VISIBLE);
+				holder.player_card.setImageResource(resId);
+			} else if (player.mValue != 0 && !showResult) {
+			if (player.status == GamePlayer.READY) {
 				holder.player_status.setVisibility(View.VISIBLE);
 			}
-
-			return convertView;
 		}
-
-		class ViewHolder {
-			ImageView player_icon;
-			TextView player_name;
-			ImageView player_card;
-			TextView player_status;
-		}
+		return convertView;
 	}
 
-	public void playerAdd(GamePlayerBase player) {
+	public void playerAdd(GamePlayer player) {
 		mNameMap.put(player.mName, player);
 		mPlayers.add(player);
 		mAdapter.notifyDataSetChanged();
@@ -162,14 +167,19 @@ public class PlayerFragment extends Fragment {
 		mAdapter.notifyDataSetChanged();
 	}
 
-	public void playMakeChoice(String name, int value) {
-		mNameMap.get(name).mValue = value;
-		mAdapter.notifyDataSetChanged();
-	}
 
+	public void showResult() {
+		showResult = true;
+	}
 	public void playerReady(String name) {
-		mNameMap.get(name).status = GamePlayerBase.READY;
+		mNameMap.get(name).status = GamePlayer.READY;
 		mAdapter.notifyDataSetChanged();
 	}
+	}
 
+	public void playMakeChoice(String userName, int value) {
+		mNameMap.get(userName).mValue = value;
+		mAdapter.notifyDataSetChanged();
+		
+	}
 }

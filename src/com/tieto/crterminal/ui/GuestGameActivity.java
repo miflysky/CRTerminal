@@ -1,10 +1,5 @@
 package com.tieto.crterminal.ui;
 
-import com.tieto.crterminal.R;
-import com.tieto.crterminal.model.command.JsonCommadConstant;
-import com.tieto.crterminal.model.network.CRTClient2;
-import com.tieto.crterminal.model.player.GamePlayerGuest;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +11,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.tieto.crterminal.R;
+import com.tieto.crterminal.model.command.JsonCommadConstant;
+import com.tieto.crterminal.model.player.GamePlayerGuest;
 
 public class GuestGameActivity extends BaseGameActivity {
 

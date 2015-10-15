@@ -2,9 +2,11 @@
 
 package com.tieto.crterminal.model.player;
 
+import java.util.HashMap;
+
 import com.tieto.crterminal.model.network.SocketConnectionBase;
 
-abstract public class GamePlayerBase {
+public class GamePlayer {
 
 	public String mName;
 	public int mValue;
@@ -12,15 +14,19 @@ abstract public class GamePlayerBase {
 
 	public final static int NOT_READY = 0;
 	public final static int READY = 1;
+	protected HashMap<String, GamePlayer> playersMap = new HashMap<String, GamePlayer>();
 
-	public GamePlayerBase(String username) {
+	public GamePlayer(String username) {
 		mName = username;
 	}
 
 	// get socket connection host & guest should implement its own function
-	abstract SocketConnectionBase getConnection();
+	SocketConnectionBase getConnection() {
+		return null;
+	}
 
 	// host & guest should implement its own function
-	abstract void sendJanKenPonValue(int value);
+	void sendJanKenPonValue(int value) {
+	}
 
 }
