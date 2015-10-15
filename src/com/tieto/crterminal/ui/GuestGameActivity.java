@@ -43,6 +43,7 @@ public class GuestGameActivity extends BaseGameActivity {
 		unregisterReceiver(mNetworkConnectChangedReceiver);
 
 		getWifiUtils().disableWifi();
+		mGuestPlayer.leaveGame();
 
 	}
 	
@@ -70,6 +71,8 @@ public class GuestGameActivity extends BaseGameActivity {
 	}
 	
 
+	
+	
 	public static Handler mGamePlayerHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -127,7 +130,7 @@ public class GuestGameActivity extends BaseGameActivity {
 
 						// added by lujun - begin
 						try {
-							mCRTClient2 = new CRTClient2(apaddr, null);
+							//mCRTClient2 = new CRTClient2(apaddr, null);
 							mGuestPlayer = new GamePlayerGuest(mMyName, apaddr, mGamePlayerHandler);
 
 							// mCRTClient2.sendMsg("how are you, server!");

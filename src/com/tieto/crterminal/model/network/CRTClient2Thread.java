@@ -46,8 +46,8 @@ public class CRTClient2Thread implements Runnable {
 		try {
 			boolean connected = socketChannel.connect(new InetSocketAddress(
 					hostIpAddress, hostPort));
-			Log.i(TAG, TAG2 + "IP:" + hostIpAddress + ", Port:" + hostPort
-					+ "connected:" + connected);
+			Log.i(TAG, TAG2 + ", IP:" + hostIpAddress + ", Port:" + hostPort
+					+ " connected:" + connected);
 
 			while (!socketChannel.finishConnect()) {
 				// wait for connected;
@@ -55,13 +55,13 @@ public class CRTClient2Thread implements Runnable {
 
 			mCallback.onConnect();
 			
-			Log.i(TAG, TAG2 + "IP:" + hostIpAddress + ", Port:" + hostPort
-					+ "connected finished");
+			Log.i(TAG, TAG2 + ", IP:" + hostIpAddress + ", Port:" + hostPort
+					+ " connected finished");
 
 			socketChannel.register(selector, SelectionKey.OP_READ);
 		} catch (IOException ex) {
 			Log.i(TAG, TAG2 + " connected exception");
-			Log.i(TAG, TAG2 + ex.getMessage());
+			Log.i(TAG, TAG2 + " " + ex.getMessage());
 			;
 		}
 
@@ -114,7 +114,7 @@ public class CRTClient2Thread implements Runnable {
 			Log.i(TAG, "Client receive message from: "
 					+ sc.socket().getRemoteSocketAddress() + " msg:"
 					+ receivedString);
-			if(mCallback != null){
+			if(receivedString.length() != 0 && mCallback != null){
 				mCallback.onReceiveMessage(receivedString);
 			}
 		} catch (CharacterCodingException e) {

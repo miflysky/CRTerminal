@@ -88,13 +88,15 @@ public class CRTClient2 implements SocketConnectionClient {
 
 
     @Override
-    public void sendMsgToServer(String msg) {
+    public void sendMsgToServer(String msg) {         
         try {
-            sendMsg(msg);
+            if (msg != null && msg.length() > 0)
+            {
+                sendMsg(msg);
+            }
         } catch (Exception e) {
             Log.e(TAG, "sendMsgToServer exception: " + e.getMessage());
-        }
-        
+        }        
     }     
     
 }
