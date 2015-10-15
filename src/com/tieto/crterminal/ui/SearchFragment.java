@@ -69,7 +69,7 @@ public class SearchFragment extends Fragment {
 
 				FragmentManager fm = getFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				PlayerFragment pf = new PlayerFragment();
+				PlayerFragment pf = new PlayerFragment(null);
 				ft.replace(R.id.main_fragment, pf);
 				ft.commit();
 

@@ -22,6 +22,9 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 	private static final String TAG = GamePlayerGuest.class.getSimpleName();
 
 
+	private static final int MSG_PLAYER_CONNECTED = 1000;
+
+
 	@SuppressWarnings("unused")
 	private WifiUtils mWifiUtils;
 
@@ -112,4 +115,15 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 		mHandler.sendMessage(message);
 	}
 
+	@Override
+	public void onConnect() {
+		//TODO: status on connect
+		
+		//send UI on connect
+		mHandler.sendEmptyMessage(MSG_PLAYER_CONNECTED);
+		
+		//send to server name
+		JsonCRTCommand command = JsonCommandBuilder.buildJoinGameCommand(mName);
+		mConnection.sendMsgToServer(command.toString());
+	}
 }

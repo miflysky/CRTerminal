@@ -53,6 +53,8 @@ public class CRTClient2Thread implements Runnable {
 				// wait for connected;
 			}
 
+			mCallback.onConnect();
+			
 			Log.i(TAG, TAG2 + "IP:" + hostIpAddress + ", Port:" + hostPort
 					+ "connected finished");
 

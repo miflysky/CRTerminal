@@ -1,15 +1,19 @@
 package com.tieto.crterminal.ui;
 
-import com.tieto.crterminal.R;
-import com.tieto.crterminal.model.network.CRTServer2;
-
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+
+import com.tieto.crterminal.R;
+import com.tieto.crterminal.model.command.JsonCommadConstant;
+import com.tieto.crterminal.model.player.GamePlayerHost;
 
 public class HostGameActivity extends BaseGameActivity {
 
 	
 	public PlayerFragment mPlayerFragment;
+	private GamePlayerHost mHostPlayer;
 	
 	
 	@Override
@@ -35,22 +39,38 @@ public class HostGameActivity extends BaseGameActivity {
 			// TODO: need info user?
 			return;
 		}
-
-		// mCRTServer.startSocketServer();
-
-		// added by lujun - begin
-		mCRTServer2 = new CRTServer2();
-		mCRTServer2.startServer(null);
-		// added by lujun - end
-
 		createGame();
 
 	}
 	private void createGame() {
-		mPlayerFragment = new PlayerFragment();
+		
+		mHostPlayer = new GamePlayerHost("", mGamePlayerHandler);
+		mPlayerFragment = new PlayerFragment(mHostPlayer);
 		getTransaction().replace(R.id.main_fragment, mPlayerFragment);
 		getTransaction().commit();
 	}
+	
+	public static Handler mGamePlayerHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+
+			switch (msg.what) {
+			case JsonCommadConstant.FROM_CLIENT_EVENT_INT_CHOICE:
+
+				break;
+
+			case JsonCommadConstant.FROM_CLIENT_EVENT_STR_JOIN:
+
+				break;
+
+			case JsonCommadConstant.FROM_CLIENT_EVENT_STR_LEAVE:
+
+				break;
+							
+			}
+		}
+
+	};
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub

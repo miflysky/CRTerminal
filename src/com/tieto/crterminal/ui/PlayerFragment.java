@@ -5,14 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tieto.crterminal.R;
-import com.tieto.crterminal.model.command.JsonCommadConstant;
+import com.tieto.crterminal.model.player.GamePlayerBase;
 import com.tieto.crterminal.model.player.JanKenPonValue;
 
 public class PlayerFragment extends Fragment {
@@ -36,6 +35,10 @@ public class PlayerFragment extends Fragment {
 	private GridView players_grid;
 
 	private PlayersGridAdapter mAdapter;
+
+	public PlayerFragment(GamePlayerBase player) {
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -100,6 +103,7 @@ public class PlayerFragment extends Fragment {
 			return position;
 		}
 
+		@SuppressLint("InflateParams")
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder holder = null;
@@ -142,40 +146,6 @@ public class PlayerFragment extends Fragment {
 			ImageView player_card;
 			TextView player_status;
 		}
-	}
-
-	public Handler mGamePlayerHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-
-			switch (msg.what) {
-			case JsonCommadConstant.FROM_SERVER_EVENT_NULL_STARTGAME:
-
-				break;
-
-			case JsonCommadConstant.FROM_SERVER_EVENT_NULL_GAMERESULT:
-
-				break;
-
-			case JsonCommadConstant.FROM_SERVER_EVENT_INT_NEWROUND:
-
-				break;
-
-			case JsonCommadConstant.FROM_SERVER_EVENT_INT_ENDROUND:
-
-				break;
-
-			case JsonCommadConstant.FROM_SERVER_EVENT_STR_USERLIST:
-
-				break;
-			}
-		}
-
-	};
-
-	public Handler getHandler() {
-
-		return mGamePlayerHandler;
 	}
 
 	public void playerAdd(String name) {
