@@ -33,18 +33,16 @@ public class GuestGameActivity extends BaseGameActivity {
 	
 	@Override
 	protected void onDestroy() {
-		super.onDestroy();
-		endGameAsGuest();
+	    endGameAsGuest();
+	    super.onDestroy();		
 	}
 	
 	private void endGameAsGuest() {
-
+	    mGuestPlayer.leaveGame();
 		mGuestFirstConnectted = false;
 		unregisterReceiver(mNetworkConnectChangedReceiver);
 
-		getWifiUtils().disableWifi();
-		mGuestPlayer.leaveGame();
-
+		getWifiUtils().disableWifi();	
 	}
 	
 	public void startGameAsGuest() {

@@ -53,20 +53,21 @@ public class CRTClient2 implements SocketConnectionClient {
      * @param message
      * @throws IOException
      */
-    public void sendMsg(String message) throws IOException{
-        ByteBuffer writeBuffer=ByteBuffer.wrap(message.getBytes("UTF-8"));
+    public void sendMsg(String message) throws IOException{   
+        ByteBuffer writeBuffer=ByteBuffer.wrap(message.getBytes("UTF-8"));        
         socketChannel.write(writeBuffer);
     }
 
 
     public void stopConnection()
-    {
-        clientConnectionThread.stop = true;        
+    {    
+        clientConnectionThread.stop = true; 
         try {
             socketChannel.close();
+            selector.close();
         } catch (IOException e) {
             Log.e(TAG, "Exception:" + e.getMessage());
-        }
+        }         
     }
 
 
@@ -95,7 +96,8 @@ public class CRTClient2 implements SocketConnectionClient {
                 sendMsg(msg);
             }
         } catch (Exception e) {
-            Log.e(TAG, "sendMsgToServer exception: " + e.getMessage());
+            //e.printStackTrace();
+            Log.e(TAG, "sendMsgToServer exception: " + e.toString());
         }        
     }     
     
