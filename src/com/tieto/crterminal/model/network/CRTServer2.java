@@ -5,7 +5,7 @@ import android.os.Handler;
 
 public class CRTServer2 implements SocketConnectionServer {
 	private CRTServer2Thread serverThread = null;
-	private final int port = 3333;
+	private final int port = SocketConnectionBase.CONNECTIONPORT;
 	private boolean isServerRunning = false;
 
 	private Handler handler = null;
