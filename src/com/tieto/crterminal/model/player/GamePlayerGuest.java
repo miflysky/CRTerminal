@@ -32,18 +32,26 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 
 	private Handler mHandler;
 
-	public GamePlayerGuest(String userName, String serverIP, Handler handler) {
+	public GamePlayerGuest(String userName, Handler handler) {
 		super(userName);
 
+		mHandler = handler;
+		
+
+
+	}
+	
+	public void ConnectToHost(String serverIP){
 		try {
 			mConnection = new CRTClient2(serverIP,this);
 			mConnection.openConnection();
-			mHandler = handler;
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 	}
+
 
 	public ArrayList<String> getGameList() {
 		return null;

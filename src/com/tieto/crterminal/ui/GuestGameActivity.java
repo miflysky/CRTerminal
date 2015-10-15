@@ -58,6 +58,8 @@ public class GuestGameActivity extends BaseGameActivity {
 
 		mGuestFirstConnectted = false;
 
+		mGuestPlayer = new GamePlayerGuest(mMyName, mGamePlayerHandler);
+				
 		findGameOwner();
 		
 		
@@ -127,10 +129,8 @@ public class GuestGameActivity extends BaseGameActivity {
 
 						// added by lujun - begin
 						try {
-							mCRTClient2 = new CRTClient2(apaddr, null);
-							mGuestPlayer = new GamePlayerGuest(mMyName, apaddr, mGamePlayerHandler);
 
-							// mCRTClient2.sendMsg("how are you, server!");
+							mGuestPlayer.ConnectToHost(apaddr);
 						} catch (Exception e) {
 							// TODO: handle exception
 							Log.e("GameActivity", e.getMessage());
