@@ -17,7 +17,7 @@ import com.tieto.crterminal.model.network.SocketConnectionBase;
 import com.tieto.crterminal.model.network.SocketConnectionClient;
 import com.tieto.crterminal.model.wifi.WifiUtils;
 
-public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks , ClientConnectionCallback{
+public class GamePlayerGuest extends GamePlayer implements PlayerCallbacks , ClientConnectionCallback{
 
 	private static final String TAG = GamePlayerGuest.class.getSimpleName();
 
@@ -66,6 +66,7 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 	public void joinGame() {
 		JsonCRTCommand command = JsonCommandBuilder.buildJoinGameCommand(mName);
 		mConnection.sendMsgToServer(command.toString());
+		playersMap.put(mName, this);
 	}
 
 	public void leaveGame() {
@@ -73,6 +74,7 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 				.buildLeaveGameCommand(mName);
 		mConnection.sendMsgToServer(command.toString());
 		mConnection.closeConnection();
+		playersMap.clear();
 	}
 
 	
@@ -95,13 +97,18 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 		int event = command.getEvent();
 		switch (event) {
 		case JsonCommadConstant.EVENT_STR_JOIN:
-			if(command.getValue().endsWith(mName))
+			if(playersMap.containsKey(command.getValue())){
+				//aleady in the user list
 				return;
+			}
 		case JsonCommadConstant.EVENT_STR_LEAVE:
-			if(command.getValue().endsWith(mName))
+			if(command.getValue().equalsIgnoreCase(mName)){
 				return;
+			}
+			GamePlayer player = new GamePlayer(command.getValue());
+			playersMap.put(command.getValue(), player);
 		case JsonCommadConstant.EVENT_STR_CHOOSE:
-			if(command.getValue().endsWith(mName))
+			if(command.getValue().equalsIgnoreCase(mName))
 				return;
 		case JsonCommadConstant.EVENT_INT_NEWROUND:
 			//TODO: set status 
