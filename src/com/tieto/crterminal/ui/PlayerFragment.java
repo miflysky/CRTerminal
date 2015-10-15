@@ -28,16 +28,17 @@ public class PlayerFragment extends Fragment {
 
 	private BaseGameActivity mActivity;
 
-	private List<Player> mPlayers = new ArrayList<Player>();
+	private List<GamePlayerBase> mPlayers = new ArrayList<GamePlayerBase>();
 
-	private Map<String, Player> mNameMap = new HashMap<String, Player>();
+	private Map<String, GamePlayerBase> mNameMap = new HashMap<String, GamePlayerBase>();
 
 	private GridView players_grid;
 
 	private PlayersGridAdapter mAdapter;
 
 	public PlayerFragment(GamePlayerBase player) {
-		// TODO Auto-generated constructor stub
+		mNameMap.put(player.mName, player);
+		mPlayers.add(player);
 	}
 
 	@Override
@@ -63,8 +64,6 @@ public class PlayerFragment extends Fragment {
 		players_grid.setSelector(new ColorDrawable(Color.TRANSPARENT));
 		mAdapter = new PlayersGridAdapter(mActivity);
 		players_grid.setAdapter(mAdapter);
-
-		playerAdd(mActivity.getUserName());
 	}
 
 	public int getJanKenPonImageResourceId(int value) {
@@ -123,17 +122,17 @@ public class PlayerFragment extends Fragment {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			Player player = mPlayers.get(position);
+			GamePlayerBase player = mPlayers.get(position);
 
-			holder.player_name.setText(player.name);
+			holder.player_name.setText(player.mName);
 
-			int resId = getJanKenPonImageResourceId(player.value);
+			int resId = getJanKenPonImageResourceId(player.mValue);
 			if (resId != 0) {
 				holder.player_card.setVisibility(View.VISIBLE);
 				holder.player_card.setImageResource(resId);
 			}
 
-			if (player.status == Player.READY) {
+			if (player.status == GamePlayerBase.READY) {
 				holder.player_status.setVisibility(View.VISIBLE);
 			}
 
@@ -148,9 +147,8 @@ public class PlayerFragment extends Fragment {
 		}
 	}
 
-	public void playerAdd(String name) {
-		Player player = new Player(name);
-		mNameMap.put(name, player);
+	public void playerAdd(GamePlayerBase player) {
+		mNameMap.put(player.mName, player);
 		mPlayers.add(player);
 		mAdapter.notifyDataSetChanged();
 	}
@@ -165,31 +163,13 @@ public class PlayerFragment extends Fragment {
 	}
 
 	public void playMakeChoice(String name, int value) {
-		mNameMap.get(name).value = value;
+		mNameMap.get(name).mValue = value;
 		mAdapter.notifyDataSetChanged();
 	}
 
 	public void playerReady(String name) {
-		mNameMap.get(name).status = Player.READY;
+		mNameMap.get(name).status = GamePlayerBase.READY;
 		mAdapter.notifyDataSetChanged();
-	}
-
-	public class Player {
-		public Player(String name) {
-			this.name = name;
-		}
-
-		public Player(String name, int value) {
-			this.name = name;
-			this.value = value;
-		}
-
-		public String name = "";
-		public int value = 0;
-		public int status = NOT_READY;
-
-		public final static int NOT_READY = 0;
-		public final static int READY = 1;
 	}
 
 }
