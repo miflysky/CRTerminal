@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.tieto.crterminal.R;
-import com.tieto.crterminal.model.player.GamePlayerBase;
+import com.tieto.crterminal.model.player.GamePlayer;
 import com.tieto.crterminal.model.player.GamePlayerGuest;
 import com.tieto.crterminal.model.player.JanKenPonValue;
 
@@ -29,9 +29,9 @@ public class PlayerFragment extends Fragment {
 
 	private BaseGameActivity mActivity;
 
-	private List<GamePlayerBase> mPlayers = new ArrayList<GamePlayerBase>();
+	private List<GamePlayer> mPlayers = new ArrayList<GamePlayer>();
 
-	private Map<String, GamePlayerBase> mNameMap = new HashMap<String, GamePlayerBase>();
+	private Map<String, GamePlayer> mNameMap = new HashMap<String, GamePlayer>();
 
 	private GridView players_grid;
 
@@ -39,7 +39,7 @@ public class PlayerFragment extends Fragment {
 
 	private boolean showResult = false;
 
-	public PlayerFragment(GamePlayerBase player) {
+	public PlayerFragment(GamePlayer player) {
 		mNameMap.put(player.mName, player);
 		mPlayers.add(player);
 	}
@@ -54,10 +54,8 @@ public class PlayerFragment extends Fragment {
 		mActivity.sendBroadcast(intent);
 	}
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_players, container,
-				false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_players, container, false);
 		initView(view);
 		return view;
 	}
@@ -105,6 +103,13 @@ public class PlayerFragment extends Fragment {
 			return position;
 		}
 
+		class ViewHolder {
+			ImageView player_icon;
+			TextView player_name;
+			ImageView player_card;
+			TextView player_status;
+		}
+
 		@SuppressLint("InflateParams")
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -112,25 +117,20 @@ public class PlayerFragment extends Fragment {
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = mInflater.inflate(R.layout.player, null);
-				holder.player_icon = (ImageView) convertView
-						.findViewById(R.id.player_icon);
-				holder.player_name = (TextView) convertView
-						.findViewById(R.id.player_name);
-				holder.player_card = (ImageView) convertView
-						.findViewById(R.id.player_card);
-				holder.player_status = (TextView) convertView
-						.findViewById(R.id.player_status);
+				holder.player_icon = (ImageView) convertView.findViewById(R.id.player_icon);
+				holder.player_name = (TextView) convertView.findViewById(R.id.player_name);
+				holder.player_card = (ImageView) convertView.findViewById(R.id.player_card);
+				holder.player_status = (TextView) convertView.findViewById(R.id.player_status);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			GamePlayerBase player = mPlayers.get(position);
+			GamePlayer player = mPlayers.get(position);
 
 			holder.player_name.setText(player.mName);
 
 			int resId = getJanKenPonImageResourceId(player.mValue);
-
 
 			if (player.mValue != 0 && (showResult || player.mName.equals(mActivity.mMyName)) && resId != 0) {
 				holder.player_card.setVisibility(View.VISIBLE);
@@ -139,49 +139,48 @@ public class PlayerFragment extends Fragment {
 					holder.player_status.setVisibility(View.VISIBLE);
 				}
 			} else if (player.mValue != 0 && !showResult) {
-				holder.player_status.setVisibility(View.VISIBLE);
+				if (player.status == GamePlayer.READY) {
+					holder.player_status.setVisibility(View.VISIBLE);
+				}
 			}
-
 			return convertView;
 		}
+	}
 
-		class ViewHolder {
-			ImageView player_icon;
-			TextView player_name;
-			ImageView player_card;
-			TextView player_status;
+		public void playerAdd(String name) {
+			GamePlayerGuest player = new GamePlayerGuest(name, null);
+			mNameMap.put(player.mName, player);
+			mPlayers.add(player);
+			mAdapter.notifyDataSetChanged();
 		}
-	}
 
-	public void playerAdd(String name) {
-		GamePlayerGuest player = new GamePlayerGuest(name, null);
-		mNameMap.put(player.mName, player);
-		mPlayers.add(player);
-		mAdapter.notifyDataSetChanged();
-	}
+		public void playerLeave(String name) {
+			mPlayers.remove(mNameMap.remove(name));
+			mAdapter.notifyDataSetChanged();
+		}
 
-	public void playerLeave(String name) {
-		mPlayers.remove(mNameMap.remove(name));
-		mAdapter.notifyDataSetChanged();
-	}
+		public void playerFailed(String name) {
+			mAdapter.notifyDataSetChanged();
+		}
 
-	public void playerFailed(String name) {
-		mAdapter.notifyDataSetChanged();
-	}
+		public void showResult() {
+			showResult = true;
+		}
 
-	public void playMakeChoice(String name, int value) {
-		mNameMap.get(name).mValue = value;
-		mAdapter.notifyDataSetChanged();
-	}
+		public void playerReady(String name) {
+			mNameMap.get(name).status = GamePlayer.READY;
+			mAdapter.notifyDataSetChanged();
+		}
 
-	public void showResult() {
-		showResult = true;
-		mAdapter.notifyDataSetChanged();
-	}
+		public void confirmChoose() {
+			mAdapter.notifyDataSetChanged();
+		}
 
-	public void confirmChoose(){
-		mAdapter.notifyDataSetChanged();
-	}
-	
+		public void playMakeChoice(String userName, int value) {
+			mNameMap.get(userName).mValue = value;
+			mAdapter.notifyDataSetChanged();
+
+		}
+
 	
 }

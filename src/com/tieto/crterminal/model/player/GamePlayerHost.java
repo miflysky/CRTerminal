@@ -1,5 +1,10 @@
 package com.tieto.crterminal.model.player;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,11 +17,12 @@ import com.tieto.crterminal.model.network.CRTServer2;
 import com.tieto.crterminal.model.network.CRTServer2.ServerConnectionCallBack;
 import com.tieto.crterminal.model.network.SocketConnectionBase;
 
-public class GamePlayerHost extends GamePlayerBase implements ServerConnectionCallBack{
+public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBack{
 
 	private static final String TAG = GamePlayerGuest.class.getSimpleName();
 	CRTServer2 mConnection;
 	private Handler mHandler;
+	private static int mCurrentRound = 0;
 	
 	public interface GameHostCallback{
 		void onUpdateUser();
@@ -44,8 +50,22 @@ public class GamePlayerHost extends GamePlayerBase implements ServerConnectionCa
 	@Override
 	public void sendJanKenPonValue(int value){
 		JsonCRTCommand command = JsonCommandBuilder
-				.buildJanKenPonValueCommand(value);
+				.buildJanKenPonValueCommand(mName,value);
 		mConnection.broadcastMessage(command.toString());
+	}
+	
+	public void newRound() {
+		//send the new round command
+		mCurrentRound ++;
+		JsonCRTCommand command = JsonCommandBuilder.buildNewRoundCommand(mCurrentRound);
+		mConnection.broadcastMessage(command.toString());
+		playersMap.put(mName, this);
+	}
+
+	public void endRound(ArrayList<GamePlayer> winers, ArrayList<GamePlayer> loser) {
+		JsonCRTCommand command = JsonCommandBuilder.buildEndRoundCommand(mCurrentRound,winers,loser);
+		mConnection.broadcastMessage(command.toString());
+		playersMap.clear();
 	}
 	
 	@Override
@@ -64,13 +84,19 @@ public class GamePlayerHost extends GamePlayerBase implements ServerConnectionCa
 		int event = command.getEvent();
 		switch (event) {
 		case JsonCommadConstant.EVENT_STR_JOIN:
-			mConnection.broadcastMessage(command.getStrData());
+			//send to all join
+			JsonCRTCommand playerListCommand = JsonCommandBuilder.buildPlayerListCommandplayersMap(playersMap);
+			mConnection.broadcastMessage(playerListCommand.toString());			
 			break;			
 		case JsonCommadConstant.EVENT_STR_LEAVE:
-			mConnection.broadcastMessage(command.getStrData()); 
+			mConnection.broadcastMessage(command.getStrData());
+			playersMap.remove(command.getValue());
 			break;
 		case JsonCommadConstant.EVENT_STR_CHOOSE:
 			mConnection.broadcastMessage(command.getStrData());
+			GamePlayer player1 = playersMap.get(command.getValue());
+			player1.status = GamePlayer.READY;
+			checkIsAllChiose();
 			break;
 		default:
 			Log.w(TAG, "no handle command: " + event);
@@ -81,6 +107,26 @@ public class GamePlayerHost extends GamePlayerBase implements ServerConnectionCa
 		sendMessageToUI(command);
 	}
 	
+	private void checkIsAllChiose() {
+		ArrayList<GamePlayer> players = new ArrayList<>();
+		Iterator<Entry<String, GamePlayer>> iterator = playersMap.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Map.Entry<String,GamePlayer> entry = iterator.next();
+			players.add(entry.getValue());
+			if(entry.getValue().status == GamePlayer.NOT_READY){
+				//still have some player not chiose
+				return;
+			}
+		}
+		//all player is set calculate
+		winArrayList.clear();
+		lostArrayList.clear();
+		JanKenPon.judgeCurrentMatchResult(players, winArrayList, lostArrayList);
+		endRound(winArrayList, lostArrayList);
+		JsonCRTCommand command = new JsonCRTCommand(JsonCommadConstant.EVENT_INT_ENDROUND);
+		sendMessageToUI(command);
+	}
+
 	private void sendMessageToUI(JsonCRTCommand command) {
 		Message message = mHandler.obtainMessage();
 		message.what = command.getEvent();
@@ -119,20 +165,7 @@ public class GamePlayerHost extends GamePlayerBase implements ServerConnectionCa
 
 	}
 
-	public void newRound() {
-		//send the new round command
-		mCurrentRound++;
-		JsonCRTCommand command = JsonCommandBuilder.buildNewRoundCommand(mCurrentRound);
-		mSocketServer.sendDataToAll(command.getByte());
-		
-		//update the status
-		mGameStatus = GameStatus.PLAYING;
-	}
 
-	public void endRound() {
-		JsonCRTCommand command = JsonCommandBuilder.buildEndRoundCommand(mCurrentRound);
-		mSocketServer.sendDataToAll(command.getByte());
-	}
 
 	public void registerCallBack(GameHostCallback callback) {
 		mCallbacks.add(callback);

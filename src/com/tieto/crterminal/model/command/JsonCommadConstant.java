@@ -8,6 +8,7 @@ public class JsonCommadConstant {
 	public static final String INTDATA = "intdata";
 	public static final String STRDATA = "strdata";
 	public static final String KEY_COMMAND_VALUE = "commandValue";
+	public static final String KEY_USER_NAME = "userName";
 
 	
 	/****************************** The event from server *****************************/
@@ -27,6 +28,7 @@ public class JsonCommadConstant {
 	public static final int EVENT_STR_JOIN = FROM_SERVER_EVENT_BASE + 12;
 	public static final int EVENT_STR_LEAVE = FROM_SERVER_EVENT_BASE + 13;
 	public static final int EVENT_STR_CHOOSE = FROM_SERVER_EVENT_BASE + 14;
+	public static final int EVENT_STR_PLAYER_LIST = FROM_SERVER_EVENT_BASE + 15;
 
 	
 }

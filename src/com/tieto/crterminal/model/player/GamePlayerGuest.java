@@ -17,7 +17,7 @@ import com.tieto.crterminal.model.network.SocketConnectionBase;
 import com.tieto.crterminal.model.network.SocketConnectionClient;
 import com.tieto.crterminal.model.wifi.WifiUtils;
 
-public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks , ClientConnectionCallback{
+public class GamePlayerGuest extends GamePlayer implements PlayerCallbacks , ClientConnectionCallback{
 
 	private static final String TAG = GamePlayerGuest.class.getSimpleName();
 
@@ -64,6 +64,7 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 	public void joinGame() {
 		JsonCRTCommand command = JsonCommandBuilder.buildJoinGameCommand(mName);
 		mConnection.sendMsgToServer(command.toString());
+		playersMap.put(mName, this);
 	}
 
 	public void leaveGame() {
@@ -71,6 +72,7 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 				.buildLeaveGameCommand(mName);
 		mConnection.sendMsgToServer(command.toString());
 		mConnection.closeConnection();
+		playersMap.clear();
 	}
 
 	
@@ -78,7 +80,7 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 		mValue = value;
 
 		JsonCRTCommand command = JsonCommandBuilder
-				.buildJanKenPonValueCommand(value);
+				.buildJanKenPonValueCommand(mName,value);
 		mConnection.sendMsgToServer(command.toString());
 	}
 
@@ -93,19 +95,44 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 		int event = command.getEvent();
 		switch (event) {
 		case JsonCommadConstant.EVENT_STR_JOIN:
-			if(command.getValue().endsWith(mName))
+			if(playersMap.containsKey(command.getValue())){
+				//aleady in the user list
 				return;
+			}
+			break;
+		case JsonCommadConstant.EVENT_STR_PLAYER_LIST:
+			ArrayList<JsonCRTCommand> commands = JsonCommandBuilder.getPalyerList(command.getValue());
+			for (JsonCRTCommand playerCommand : commands) {
+				sendMessageToUI(playerCommand);
+			}
+			break;
 		case JsonCommadConstant.EVENT_STR_LEAVE:
-			if(command.getValue().endsWith(mName))
+			if(command.getValue().equalsIgnoreCase(mName)){
 				return;
+			}
+			GamePlayer player = new GamePlayer(command.getValue());
+			playersMap.put(command.getValue(), player);
+			break;
 		case JsonCommadConstant.EVENT_STR_CHOOSE:
-			if(command.getValue().endsWith(mName))
-				return;
+			String userName = JsonCommandBuilder.getChooseName(command.getValue());
+			String value = JsonCommandBuilder.getChooseValue(command.getValue());
+			Message message = mHandler.obtainMessage();
+			message.what = command.getEvent();
+			Bundle bundle = message.getData();
+			bundle.putString(JsonCommadConstant.KEY_COMMAND_VALUE,value);
+			bundle.putString(JsonCommadConstant.KEY_USER_NAME,userName);
+			mHandler.sendMessage(message);
+			return;
 		case JsonCommadConstant.EVENT_INT_NEWROUND:
-			//TODO: set status 
+			playersMap.clear();
+			playersMap.put(mName, this);
 			break;
 		case JsonCommadConstant.EVENT_INT_ENDROUND:
-			//TODO: set status 
+			winArrayList.clear();
+			lostArrayList.clear();
+			JsonCommandBuilder.getResutlt(command.getValue(),playersMap,winArrayList,lostArrayList);
+			JsonCRTCommand endCommand = new JsonCRTCommand(JsonCommadConstant.EVENT_INT_ENDROUND);
+			sendMessageToUI(endCommand);
 			break;
 		default:
 			Log.w(TAG, "no handle command: " + event);
