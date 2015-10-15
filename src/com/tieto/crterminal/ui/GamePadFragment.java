@@ -27,39 +27,35 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 
 	private BaseGameActivity mActivity;
 	private Fragment mPlayerFragment;
-	
+
 	private int mJanKenPonValue = 0;
 
 	public static String GAME_READY_ACTION = "com.tieto.crterminal.game_ready";
 
 	GameReadyBroadcastReceiver mGameReadyBroadcastReceiver;
-	
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
-		mActivity = (BaseGameActivity)getActivity();
-		mPlayerFragment = mActivity.getFragmentManager().findFragmentById(
-				R.id.main_fragment);
+
+		mActivity = (BaseGameActivity) getActivity();
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(GAME_READY_ACTION);
 		mGameReadyBroadcastReceiver = new GameReadyBroadcastReceiver();
-		getActivity().registerReceiver(mGameReadyBroadcastReceiver, intentFilter);
+		getActivity().registerReceiver(mGameReadyBroadcastReceiver,
+				intentFilter);
 
 	}
 
-	
 	@Override
-	public void onDestroy(){
-		
+	public void onDestroy() {
+
 		super.onDestroy();
 		getActivity().unregisterReceiver(mGameReadyBroadcastReceiver);
-		
+
 	}
-	
-	
+
 	class GameReadyBroadcastReceiver extends BroadcastReceiver {
 
 		@Override
@@ -85,16 +81,16 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 
 		return view;
 	}
-	
+
 	private void initView(View view, boolean isHost) {
-		
+
 		btnStart = (Button) view.findViewById(R.id.start_Btn);
 		btnStop = (Button) view.findViewById(R.id.stop_Btn);
 		btnConfirm = (Button) view.findViewById(R.id.confirm_Btn);
 		btnPaper = (ImageButton) view.findViewById(R.id.gamepad_paper);
 		btnRock = (ImageButton) view.findViewById(R.id.gamepad_rock);
 		btnScissors = (ImageButton) view.findViewById(R.id.gamepad_scissors);
-		
+
 		btnPaper.setVisibility(View.INVISIBLE);
 		btnRock.setVisibility(View.INVISIBLE);
 		btnScissors.setVisibility(View.INVISIBLE);
@@ -106,11 +102,11 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 		btnPaper.setOnClickListener(this);
 		btnRock.setOnClickListener(this);
 		btnScissors.setOnClickListener(this);
-		
+
 		if (!isHost) {
 			btnStart.setVisibility(View.GONE);
 		}
-			
+
 	}
 
 	@Override
@@ -122,7 +118,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
-		//Intent intent;
+		// Intent intent;
 		switch (id) {
 		case R.id.btn_host:
 			// TODO: start the game
@@ -152,12 +148,16 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	private void btnConfirmOnClick() {
 		if (mJanKenPonValue != 0) {
 			mActivity.isReady = true;
+			mPlayerFragment = mActivity.getFragmentManager().findFragmentById(
+					R.id.main_fragment);
 			if (mPlayerFragment instanceof PlayerFragment) {
 				((PlayerFragment) mPlayerFragment).confirmChoose();
-				if (BaseGameActivity.isGameHost()) {
-					((GuestGameActivity)getActivity()).mGuestPlayer.sendJanKenPonValue(mJanKenPonValue);
+				if (!BaseGameActivity.isGameHost()) {
+					((GuestGameActivity) getActivity()).mGuestPlayer
+							.sendJanKenPonValue(mJanKenPonValue);
 				} else {
-					((HostGameActivity)getActivity()).mHostPlayer.sendJanKenPonValue(mJanKenPonValue);
+					((HostGameActivity) getActivity()).mHostPlayer
+							.sendJanKenPonValue(mJanKenPonValue);
 				}
 			}
 		}
@@ -176,10 +176,11 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	}
 
 	private void setMyChoice(int value) {
-		
+		mPlayerFragment = mActivity.getFragmentManager().findFragmentById(
+				R.id.main_fragment);
 		if (mPlayerFragment instanceof PlayerFragment) {
-			((PlayerFragment) mPlayerFragment).playMakeChoice(mActivity.getUserName(),
-					value);
+			((PlayerFragment) mPlayerFragment).playMakeChoice(
+					mActivity.getUserName(), value);
 		}
 		mJanKenPonValue = value;
 	}

@@ -179,7 +179,6 @@ public class PlayerFragment extends Fragment {
 		public void playMakeChoice(String userName, int value) {
 			mNameMap.get(userName).mValue = value;
 			mAdapter.notifyDataSetChanged();
-
 		}
 
 	

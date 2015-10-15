@@ -108,7 +108,7 @@ public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBa
 	}
 	
 	private void checkIsAllChiose() {
-		ArrayList<GamePlayer> players = new ArrayList<>();
+		ArrayList<GamePlayer> players = new ArrayList<GamePlayer>();
 		Iterator<Entry<String, GamePlayer>> iterator = playersMap.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Map.Entry<String,GamePlayer> entry = iterator.next();
