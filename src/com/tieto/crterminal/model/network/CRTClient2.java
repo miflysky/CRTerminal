@@ -86,7 +86,11 @@ public class CRTClient2 implements SocketConnectionClient {
 
     @Override
     public void sendMsgToServer(String msg) {
-        // TODO Auto-generated method stub
+        try {
+            sendMsg(msg);
+        } catch (Exception e) {
+            Log.e(TAG, "sendMsgToServer exception: " + e.getMessage());
+        }
         
     }     
     
