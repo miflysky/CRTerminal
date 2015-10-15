@@ -5,7 +5,6 @@ public class JsonCommadConstant {
 	
 	/*****************************The data type********************************************/
 	public static final String EVENTSTRING = "event";
-	public static final String INTDATA = "intdata";
 	public static final String STRDATA = "strdata";
 	public static final String KEY_COMMAND_VALUE = "commandValue";
 	public static final String KEY_USER_NAME = "userName";

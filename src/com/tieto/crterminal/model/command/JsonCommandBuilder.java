@@ -17,7 +17,7 @@ public class JsonCommandBuilder {
 	
 	public static JsonCRTCommand buildNewRoundCommand(int roundNumber) {
 		JsonCRTCommand command = new JsonCRTCommand(JsonCommadConstant.EVENT_INT_NEWROUND);
-		command.setValue(roundNumber);
+		command.setValue(String.valueOf(roundNumber));
 		return command;
 	}
 
@@ -43,7 +43,7 @@ public class JsonCommandBuilder {
 			
 			jsonObject.put("losers", winArray.toString());
 			
-			command.setValue(roundNumber);
+			command.setValue(String.valueOf(roundNumber));
 			return command;
 
 		}catch(Exception e){

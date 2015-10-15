@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.jar.Attributes.Name;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -85,15 +86,17 @@ public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBa
 		switch (event) {
 		case JsonCommadConstant.EVENT_STR_JOIN:
 			//send to all join
+			GamePlayer newPlayer = new GamePlayer(command.getValue());
+			playersMap.put(command.getValue(), newPlayer);
 			JsonCRTCommand playerListCommand = JsonCommandBuilder.buildPlayerListCommandplayersMap(playersMap);
-			mConnection.broadcastMessage(playerListCommand.toString());			
+			mConnection.broadcastMessage(playerListCommand.toString());	
 			break;			
 		case JsonCommadConstant.EVENT_STR_LEAVE:
-			mConnection.broadcastMessage(command.getStrData());
+			mConnection.broadcastMessage(command.toString());
 			playersMap.remove(command.getValue());
 			break;
 		case JsonCommadConstant.EVENT_STR_CHOOSE:
-			mConnection.broadcastMessage(command.getStrData());
+			mConnection.broadcastMessage(command.toString());
 			GamePlayer player1 = playersMap.get(command.getValue());
 			player1.status = GamePlayer.READY;
 			checkIsAllChiose();
