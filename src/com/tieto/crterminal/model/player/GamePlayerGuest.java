@@ -86,16 +86,19 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 	private void hanldeCommand(JsonCRTCommand command) {
 		int event = command.getEvent();
 		switch (event) {
-		case JsonCommadConstant.FROM_SERVER_EVENT_NULL_STARTGAME:
+		case JsonCommadConstant.EVENT_STR_JOIN:
 			//TODO: set status 
 			break;
-		case JsonCommadConstant.FROM_SERVER_EVENT_NULL_GAMERESULT:
+		case JsonCommadConstant.EVENT_STR_LEAVE:
 			//TODO: set status
 			break;			
-		case JsonCommadConstant.FROM_SERVER_EVENT_INT_NEWROUND:
+		case JsonCommadConstant.EVENT_INT_NEWROUND:
 			//TODO: set status 
 			break;
-		case JsonCommadConstant.FROM_SERVER_EVENT_INT_ENDROUND:
+		case JsonCommadConstant.EVENT_INT_ENDROUND:
+			//TODO: set status 
+			break;
+		case JsonCommadConstant.EVENT_STR_CHOOSE:
 			//TODO: set status 
 			break;
 		default:

@@ -56,7 +56,7 @@ public class HostGameActivity extends BaseGameActivity {
 
 			switch (msg.what) {
 			case JsonCommadConstant.FROM_CLIENT_EVENT_INT_CHOICE:
-
+                
 				break;
 
 			case JsonCommadConstant.FROM_CLIENT_EVENT_STR_JOIN:
