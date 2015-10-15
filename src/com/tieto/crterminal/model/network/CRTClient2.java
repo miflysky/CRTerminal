@@ -17,35 +17,37 @@ public class CRTClient2 implements SocketConnectionClient {
     private int hostListenningPort;
     
     private CRTClient2Thread clientConnectionThread = null;
+	private ClientConnectionCallback mCallback;
 
+    public interface ClientConnectionCallback{
+
+		void getStringByNetwork(String receivedString);
+    	
+    }
     /**
-     * ���캯��
      * @param HostIp
      * @param HostListenningPort
      * @throws IOException
      */
-	public CRTClient2(String HostIp) throws IOException {
+	public CRTClient2(String HostIp, ClientConnectionCallback callback ) throws IOException {
 		this.hostIp = HostIp;
 		this.hostListenningPort = SocketConnectionBase.CONNECTIONPORT;
-
-		//initialize();
+		mCallback = callback;
 	}
 	
 	
     /**
-     * ��ʼ��
      * @throws IOException
      */
     private void initialize() throws IOException{
         socketChannel=SocketChannel.open();
         socketChannel.configureBlocking(false);        
         selector = Selector.open();
-        clientConnectionThread = new CRTClient2Thread(selector, null, socketChannel, hostIp, hostListenningPort);
+        clientConnectionThread = new CRTClient2Thread(selector, mCallback, socketChannel, hostIp, hostListenningPort);
    	}
 
 
     /**
-     * �����ַ�������
      * @param message
      * @throws IOException
      */
@@ -58,7 +60,6 @@ public class CRTClient2 implements SocketConnectionClient {
     public void stopConnection()
     {
         clientConnectionThread.stop = true;        
-        
         try {
             socketChannel.close();
         } catch (IOException e) {

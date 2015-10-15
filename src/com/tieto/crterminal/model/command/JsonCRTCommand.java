@@ -66,6 +66,15 @@ public class JsonCRTCommand {
 		mMsgString = str;
 	}
 
+	public String getValue() {
+		if(mMsgType == JsonCommadConstant.INTDATA){
+			return String.valueOf(mMsgInt);
+		}
+		else {
+			return mMsgString;
+		}
+	}
+
 	public String toString() {
 		try {
 			mJSONObject = new JSONObject();
@@ -89,4 +98,5 @@ public class JsonCRTCommand {
 		}
 		return null;
 	}
+
 }
