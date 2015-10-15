@@ -87,18 +87,18 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 		int event = command.getEvent();
 		switch (event) {
 		case JsonCommadConstant.EVENT_STR_JOIN:
-			//TODO: set status 
-			break;
+			if(command.getValue().endsWith(mName))
+				return;
 		case JsonCommadConstant.EVENT_STR_LEAVE:
-			//TODO: set status
-			break;			
+			if(command.getValue().endsWith(mName))
+				return;
+		case JsonCommadConstant.EVENT_STR_CHOOSE:
+			if(command.getValue().endsWith(mName))
+				return;
 		case JsonCommadConstant.EVENT_INT_NEWROUND:
 			//TODO: set status 
 			break;
 		case JsonCommadConstant.EVENT_INT_ENDROUND:
-			//TODO: set status 
-			break;
-		case JsonCommadConstant.EVENT_STR_CHOOSE:
 			//TODO: set status 
 			break;
 		default:

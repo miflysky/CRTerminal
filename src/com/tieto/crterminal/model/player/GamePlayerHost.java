@@ -7,15 +7,15 @@ import android.util.Log;
 
 import com.tieto.crterminal.model.command.JsonCRTCommand;
 import com.tieto.crterminal.model.command.JsonCommadConstant;
+import com.tieto.crterminal.model.command.JsonCommandBuilder;
 import com.tieto.crterminal.model.network.CRTServer2;
 import com.tieto.crterminal.model.network.CRTServer2.ServerConnectionCallBack;
 import com.tieto.crterminal.model.network.SocketConnectionBase;
-import com.tieto.crterminal.model.network.SocketConnectionServer;
 
 public class GamePlayerHost extends GamePlayerBase implements ServerConnectionCallBack{
 
 	private static final String TAG = GamePlayerGuest.class.getSimpleName();
-	SocketConnectionServer mConnection;
+	CRTServer2 mConnection;
 	private Handler mHandler;
 	
 	public interface GameHostCallback{
@@ -43,7 +43,9 @@ public class GamePlayerHost extends GamePlayerBase implements ServerConnectionCa
 	
 	@Override
 	public void sendJanKenPonValue(int value){
-		//TODO: add to local list
+		JsonCRTCommand command = JsonCommandBuilder
+				.buildJanKenPonValueCommand(value);
+		mConnection.broadcastMessage(command.toString());
 	}
 	
 	@Override
@@ -61,14 +63,14 @@ public class GamePlayerHost extends GamePlayerBase implements ServerConnectionCa
 	private void hanldeCommand(JsonCRTCommand command) {
 		int event = command.getEvent();
 		switch (event) {
-		case JsonCommadConstant.EVENT_STR_CHOOSE:
-			//TODO: set status 
-			break;
 		case JsonCommadConstant.EVENT_STR_JOIN:
-			//TODO: set status
+			mConnection.broadcastMessage(command.getStrData());
 			break;			
 		case JsonCommadConstant.EVENT_STR_LEAVE:
-			//TODO: set status 
+			mConnection.broadcastMessage(command.getStrData()); 
+			break;
+		case JsonCommadConstant.EVENT_STR_CHOOSE:
+			mConnection.broadcastMessage(command.getStrData());
 			break;
 		default:
 			Log.w(TAG, "no handle command: " + event);
