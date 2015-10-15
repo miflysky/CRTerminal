@@ -7,7 +7,8 @@ public class JsonCommadConstant {
 	public static final String EVENTSTRING = "event";
 	public static final String INTDATA = "intdata";
 	public static final String STRDATA = "strdata";
-	
+	public static final String KEY_COMMAND_VALUE = "commandValue";
+
 	
 	/****************************** The event from server *****************************/
 	private static final int FROM_SERVER_EVENT_BASE = 1;

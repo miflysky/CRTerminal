@@ -1,44 +1,26 @@
 package com.tieto.crterminal.model.player;
 
-import java.util.ArrayList;
-
-import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 
 import com.tieto.crterminal.model.command.JsonCRTCommand;
-import com.tieto.crterminal.model.command.JsonCommandBuilder;
+import com.tieto.crterminal.model.command.JsonCommadConstant;
 import com.tieto.crterminal.model.network.CRTServer2;
+import com.tieto.crterminal.model.network.CRTServer2.ServerConnectionCallBack;
 import com.tieto.crterminal.model.network.SocketConnectionBase;
 import com.tieto.crterminal.model.network.SocketConnectionServer;
 
+public class GamePlayerHost extends GamePlayerBase implements ServerConnectionCallBack{
 
-
-
-public class GamePlayerHost extends GamePlayerBase{
-
-	
-	
+	private static final String TAG = GamePlayerGuest.class.getSimpleName();
 	SocketConnectionServer mConnection;
-	
-	
-	
+	private Handler mHandler;
 	
 	public interface GameHostCallback{
 		void onUpdateUser();
 		void OnError(String errorMessage);
-	}
-	
-	public GamePlayerHost(String name){
-		super(name);
-		
-		// added by lujun - begin
-		mConnection = new CRTServer2();
-		mConnection.openConnection();
-		// added by lujun - end	
-	}
-	
-	public void HostGamestart(){
-		
-		
 	}
 	
 	public enum GameStatus {
@@ -47,6 +29,17 @@ public class GamePlayerHost extends GamePlayerBase{
 		PLAYING
 	}
 	
+	public GamePlayerHost(String name,Handler handler){
+		super(name);
+		mHandler = handler;
+		mConnection = new CRTServer2(this);
+		mConnection.openConnection();
+	}
+	
+	public void HostGamestart(){
+		
+		
+	}
 	
 	@Override
 	public void sendJanKenPonValue(int value){
@@ -57,8 +50,42 @@ public class GamePlayerHost extends GamePlayerBase{
 	protected SocketConnectionBase getConnection() {
 		return mConnection;
 	}
+
+	@Override
+	public void onReceiveMessage(String receivedString) {
+		//get data from network
+		JsonCRTCommand command = new JsonCRTCommand(receivedString);
+		hanldeCommand(command);		
+	}
 	
+	private void hanldeCommand(JsonCRTCommand command) {
+		int event = command.getEvent();
+		switch (event) {
+		case JsonCommadConstant.FROM_CLIENT_EVENT_STR_JOIN:
+			//TODO: set status 
+			break;
+		case JsonCommadConstant.FROM_CLIENT_EVENT_INT_CHOICE:
+			//TODO: set status
+			break;			
+		case JsonCommadConstant.FROM_CLIENT_EVENT_STR_LEAVE:
+			//TODO: set status 
+			break;
+		default:
+			Log.w(TAG, "no handle command: " + event);
+			return;
+		}
+
+		//post message to UI
+		sendMessageToUI(command);
+	}
 	
+	private void sendMessageToUI(JsonCRTCommand command) {
+		Message message = mHandler.obtainMessage();
+		message.what = command.getEvent();
+		Bundle bundle = message.getData();
+		bundle.putString(JsonCommadConstant.KEY_COMMAND_VALUE,command.getValue());
+		mHandler.sendMessage(message);
+	}
 	
 	/*
     private GameStatus mGameStatus = GameStatus.NOT_START;

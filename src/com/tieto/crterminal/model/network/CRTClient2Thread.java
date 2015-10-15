@@ -113,7 +113,7 @@ public class CRTClient2Thread implements Runnable {
 					+ sc.socket().getRemoteSocketAddress() + " msg:"
 					+ receivedString);
 			if(mCallback != null){
-				mCallback.getStringByNetwork(receivedString);
+				mCallback.onReceiveMessage(receivedString);
 			}
 		} catch (CharacterCodingException e) {
 			e.printStackTrace();

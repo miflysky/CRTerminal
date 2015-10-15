@@ -21,7 +21,6 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 
 	private static final String TAG = GamePlayerGuest.class.getSimpleName();
 
-	private static final String KEY_COMMAND_VALUE = "commandValue";
 
 	@SuppressWarnings("unused")
 	private WifiUtils mWifiUtils;
@@ -75,7 +74,7 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 	}
 
 	@Override
-	public void getStringByNetwork(String receivedString) {
+	public void onReceiveMessage(String receivedString) {
 		//get data from network
 		JsonCRTCommand command = new JsonCRTCommand(receivedString);
 		hanldeCommand(command);		
@@ -109,7 +108,7 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 		Message message = mHandler.obtainMessage();
 		message.what = command.getEvent();
 		Bundle bundle = message.getData();
-		bundle.putString(KEY_COMMAND_VALUE,command.getValue());
+		bundle.putString(JsonCommadConstant.KEY_COMMAND_VALUE,command.getValue());
 		mHandler.sendMessage(message);
 	}
 

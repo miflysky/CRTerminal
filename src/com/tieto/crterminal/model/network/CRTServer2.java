@@ -1,28 +1,30 @@
 package com.tieto.crterminal.model.network;
 
-import android.R.bool;
-import android.R.string;
-import android.os.Handler;
 import android.util.Log;
 
 public class CRTServer2 implements SocketConnectionServer {
     private final String TAG = "CRTServer2";
 	private CRTServer2Thread serverThread = null;
 	private final int port = SocketConnectionBase.CONNECTIONPORT;
-	private boolean isServerRunning = false;
 
-	private Handler handler = null;
 	private TCPProtocol protocol = null;
+	private ServerConnectionCallBack mCallback;
 	private static final int BufferSize = 1024;
-	private static final int TimeOut = 3000;
 
-	public void startServer(Handler handler) {
+	public interface ServerConnectionCallBack{
+
+		void onReceiveMessage(String receivedString);
+		
+	}
+	
+	public CRTServer2(ServerConnectionCallBack callback) {
+		mCallback = callback;
+	}
+
+	public void startServer() {
 	    Log.d(TAG, "startServer on port:" + port);
-	    
-		this.handler = handler;
-		this.protocol = new TCPProtocolImpl(BufferSize, handler);
+		this.protocol = new TCPProtocolImpl(BufferSize, mCallback);
 		this.serverThread = new CRTServer2Thread(port, protocol);
-		this.isServerRunning = true;
 		this.serverThread.start();		
 	}
 
@@ -45,7 +47,7 @@ public class CRTServer2 implements SocketConnectionServer {
 
 	@Override
 	public void openConnection() {
-	    startServer(null);
+	    startServer();
 	}
 
 	@Override

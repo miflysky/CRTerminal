@@ -21,7 +21,7 @@ public class CRTClient2 implements SocketConnectionClient {
 
     public interface ClientConnectionCallback{
 
-		void getStringByNetwork(String receivedString);
+		void onReceiveMessage(String receivedString);
     	
     }
     /**
