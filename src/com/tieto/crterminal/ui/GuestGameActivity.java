@@ -21,7 +21,7 @@ public class GuestGameActivity extends BaseGameActivity {
 
 	private boolean mGuestFirstConnectted;
 	private NetworkConnectChangedReceiver mNetworkConnectChangedReceiver;
-	private GamePlayerGuest mGuestPlayer;
+	public GamePlayerGuest mGuestPlayer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +75,13 @@ public class GuestGameActivity extends BaseGameActivity {
 
 	
 	
-	public static Handler mGamePlayerHandler = new Handler() {
+	public Handler mGamePlayerHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 
 			switch (msg.what) {
 			case JsonCommadConstant.EVENT_NULL_STARTGAME:
-
+				sendBroadcast(new Intent(GamePadFragment.GAME_READY_ACTION));
 				break;
 
 			case JsonCommadConstant.EVENT_NULL_ENDGAME:
@@ -97,6 +97,8 @@ public class GuestGameActivity extends BaseGameActivity {
 				break;
 				
 			case JsonCommadConstant.EVENT_STR_JOIN:
+				Log.i(TAG, "Join game success.");
+				
 				
 				break;
 
@@ -132,6 +134,7 @@ public class GuestGameActivity extends BaseGameActivity {
 						
 						try {
 							mGuestPlayer.ConnectToHost(apaddr);
+							mGuestPlayer.joinGame();
 						} catch (Exception e) {
 							// TODO: handle exception
 							Log.e("GameActivity", e.getMessage());

@@ -35,7 +35,8 @@ public class BaseGameActivity extends Activity {
 
 
 	public String mMyName;
-	
+
+	public boolean isReady = false;
 	
 	CRTServer2 mCRTServer;
 	// CRTConnectionServer crtConnectionServer = null;

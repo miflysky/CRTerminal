@@ -36,8 +36,6 @@ public class GamePlayerGuest extends GamePlayerBase implements PlayerCallbacks ,
 		super(userName);
 
 		mHandler = handler;
-		
-
 
 	}
 	

@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.tieto.crterminal.R;
+import com.tieto.crterminal.model.player.GamePlayerBase;
+import com.tieto.crterminal.model.player.GamePlayerGuest;
+import com.tieto.crterminal.model.player.JanKenPonValue;
+
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
@@ -19,10 +24,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.tieto.crterminal.R;
-import com.tieto.crterminal.model.player.GamePlayerBase;
-import com.tieto.crterminal.model.player.JanKenPonValue;
 
 public class PlayerFragment extends Fragment {
 
@@ -129,14 +130,14 @@ public class PlayerFragment extends Fragment {
 			holder.player_name.setText(player.mName);
 
 			int resId = getJanKenPonImageResourceId(player.mValue);
-			if (resId != 0) {
-				holder.player_card.setVisibility(View.VISIBLE);
-				holder.player_card.setImageResource(resId);
-			}
 
-			if (player.mValue != 0 && showResult) {
+
+			if (player.mValue != 0 && (showResult || player.mName.equals(mActivity.mMyName)) && resId != 0) {
 				holder.player_card.setVisibility(View.VISIBLE);
 				holder.player_card.setImageResource(resId);
+				if (mActivity.isReady) {
+					holder.player_status.setVisibility(View.VISIBLE);
+				}
 			} else if (player.mValue != 0 && !showResult) {
 				holder.player_status.setVisibility(View.VISIBLE);
 			}
@@ -152,7 +153,8 @@ public class PlayerFragment extends Fragment {
 		}
 	}
 
-	public void playerAdd(GamePlayerBase player) {
+	public void playerAdd(String name) {
+		GamePlayerGuest player = new GamePlayerGuest(name, null);
 		mNameMap.put(player.mName, player);
 		mPlayers.add(player);
 		mAdapter.notifyDataSetChanged();
@@ -177,4 +179,9 @@ public class PlayerFragment extends Fragment {
 		mAdapter.notifyDataSetChanged();
 	}
 
+	public void confirmChoose(){
+		mAdapter.notifyDataSetChanged();
+	}
+	
+	
 }

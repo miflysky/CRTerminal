@@ -26,6 +26,9 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	private ImageButton btnScissors;
 
 	private BaseGameActivity mActivity;
+	private Fragment mPlayerFragment;
+	
+	private int mJanKenPonValue = 0;
 
 	public static String GAME_READY_ACTION = "com.tieto.crterminal.game_ready";
 
@@ -38,6 +41,8 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 		super.onCreate(savedInstanceState);
 		
 		mActivity = (BaseGameActivity)getActivity();
+		mPlayerFragment = mActivity.getFragmentManager().findFragmentById(
+				R.id.main_fragment);
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(GAME_READY_ACTION);
 		mGameReadyBroadcastReceiver = new GameReadyBroadcastReceiver();
@@ -145,7 +150,17 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	}
 
 	private void btnConfirmOnClick() {
-		
+		if (mJanKenPonValue != 0) {
+			mActivity.isReady = true;
+			if (mPlayerFragment instanceof PlayerFragment) {
+				((PlayerFragment) mPlayerFragment).confirmChoose();
+				if (BaseGameActivity.isGameHost()) {
+					((GuestGameActivity)getActivity()).mGuestPlayer.sendJanKenPonValue(mJanKenPonValue);
+				} else {
+					((HostGameActivity)getActivity()).mHostPlayer.sendJanKenPonValue(mJanKenPonValue);
+				}
+			}
+		}
 	}
 
 	private void btnPaperOnClick() {
@@ -161,11 +176,11 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 	}
 
 	private void setMyChoice(int value) {
-		Fragment fragment = mActivity.getFragmentManager().findFragmentById(
-				R.id.main_fragment);
-		if (fragment instanceof PlayerFragment) {
-			((PlayerFragment) fragment).playMakeChoice(mActivity.getUserName(),
+		
+		if (mPlayerFragment instanceof PlayerFragment) {
+			((PlayerFragment) mPlayerFragment).playMakeChoice(mActivity.getUserName(),
 					value);
 		}
+		mJanKenPonValue = value;
 	}
 }

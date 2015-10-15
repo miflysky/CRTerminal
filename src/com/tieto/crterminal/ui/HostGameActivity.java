@@ -13,7 +13,7 @@ public class HostGameActivity extends BaseGameActivity {
 
 	
 	public PlayerFragment mPlayerFragment;
-	private GamePlayerHost mHostPlayer;
+	public GamePlayerHost mHostPlayer;
 	
 	
 	@Override
@@ -44,13 +44,13 @@ public class HostGameActivity extends BaseGameActivity {
 	}
 	private void createGame() {
 		
-		mHostPlayer = new GamePlayerHost("", mGamePlayerHandler);
+		mHostPlayer = new GamePlayerHost(mMyName, mGamePlayerHandler);
 		mPlayerFragment = new PlayerFragment(mHostPlayer);
 		getTransaction().replace(R.id.main_fragment, mPlayerFragment);
 		getTransaction().commit();
 	}
 	
-	public static Handler mGamePlayerHandler = new Handler() {
+	public  Handler mGamePlayerHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 
@@ -60,11 +60,13 @@ public class HostGameActivity extends BaseGameActivity {
 				break;
 
 			case JsonCommadConstant.EVENT_STR_JOIN:
-
+				String nameAdd = msg.getData().getString(JsonCommadConstant.KEY_COMMAND_VALUE);
+				mPlayerFragment.playerAdd(nameAdd);
 				break;
 
 			case JsonCommadConstant.EVENT_STR_LEAVE:
-
+				String nameLeave = msg.getData().getString(JsonCommadConstant.KEY_COMMAND_VALUE);
+				mPlayerFragment.playerLeave(nameLeave);
 				break;
 							
 			}
