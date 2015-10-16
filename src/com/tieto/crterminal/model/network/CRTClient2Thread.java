@@ -10,7 +10,6 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 
-import android.inputmethodservice.Keyboard.Key;
 import android.util.Log;
 
 import com.tieto.crterminal.model.network.CRTClient2.ClientConnectionCallback;

@@ -6,8 +6,6 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +27,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.tieto.crterminal.R;
-import com.tieto.crterminal.model.player.GamePlayerGuest;
 import com.tieto.crterminal.model.wifi.WifiUtils;
 
 public class SearchFragment extends Fragment {

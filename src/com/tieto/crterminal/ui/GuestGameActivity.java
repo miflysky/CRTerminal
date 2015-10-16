@@ -1,8 +1,6 @@
 package com.tieto.crterminal.ui;
 
-import com.tieto.crterminal.R;
-import com.tieto.crterminal.model.command.JsonCommadConstant;
-import com.tieto.crterminal.model.player.GamePlayerGuest;
+import java.lang.ref.WeakReference;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -18,6 +16,10 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.tieto.crterminal.R;
+import com.tieto.crterminal.model.command.JsonCommadConstant;
+import com.tieto.crterminal.model.player.GamePlayerGuest;
+
 public class GuestGameActivity extends BaseGameActivity {
 
 	private boolean mGuestFirstConnectted;
@@ -25,11 +27,12 @@ public class GuestGameActivity extends BaseGameActivity {
 	public GamePlayerGuest mGuestPlayer;
 	private PlayerFragment mPlayerFragment;
 	private SearchFragment mSearchFragment;
-
+	public Handler mGamePlayerHandler;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		startGame();
+		mGamePlayerHandler = new GamePlayerHandler(this);
 	}
 
 	@Override
@@ -78,11 +81,25 @@ public class GuestGameActivity extends BaseGameActivity {
 		ft.commit();
 	}
 
-	public Handler mGamePlayerHandler = new Handler() {
+	
+	
+	public static class  GamePlayerHandler extends Handler {
+		
+		private WeakReference<GuestGameActivity> weakActivity;
+
+		public GamePlayerHandler(GuestGameActivity guestGameActivity) {
+ 			 weakActivity = new WeakReference<GuestGameActivity>(guestGameActivity);
+		}
+
 		@Override
 		public void handleMessage(Message msg) {
 
-			mPlayerFragment.notifyUIChange();
+			GuestGameActivity guestGameActivity = weakActivity.get();
+			if(guestGameActivity == null){
+				return;
+			}
+			
+			guestGameActivity.mPlayerFragment.notifyUIChange();
 			switch (msg.what) {
 			case JsonCommadConstant.EVENT_NULL_STARTGAME:
 				Log.i(TAG, "Game start.");
@@ -95,21 +112,21 @@ public class GuestGameActivity extends BaseGameActivity {
 
 			case JsonCommadConstant.EVENT_INT_NEWROUND:
 				Log.i(TAG, "Game new round.");
-				mGamePadFragment.showGamepad();
+				guestGameActivity.mGamePadFragment.showGamepad();
 				break;
 
 			case JsonCommadConstant.EVENT_INT_ENDROUND:
 				Log.i(TAG, "Game end round.");
 				String result = msg.getData().getString(
 						JsonCommadConstant.KEY_COMMAND_VALUE);
-				mPlayerFragment.notifyResult(result);
+				guestGameActivity.mPlayerFragment.notifyResult(result);
 				break;
 
 			case JsonCommadConstant.EVENT_STR_JOIN:
 				Log.i(TAG, "Join game success.");
 				String nameAdd = msg.getData().getString(
 						JsonCommadConstant.KEY_COMMAND_VALUE);
-				mPlayerFragment.playerAdd(nameAdd);
+				guestGameActivity.mPlayerFragment.playerAdd(nameAdd);
 
 				break;
 			case JsonCommadConstant.EVENT_STR_CHOOSE:
@@ -118,7 +135,7 @@ public class GuestGameActivity extends BaseGameActivity {
 				int value = Integer.decode(choose).intValue();
 				String userName = msg.getData().getString(
 						JsonCommadConstant.KEY_USER_NAME);
-				mPlayerFragment.playMakeChoice(userName, value);
+				guestGameActivity.mPlayerFragment.playMakeChoice(userName, value);
 				break;
 			}
 		}

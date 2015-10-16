@@ -5,15 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.tieto.crterminal.R;
-import com.tieto.crterminal.model.player.GamePlayer;
-import com.tieto.crterminal.model.player.GamePlayerGuest;
-import com.tieto.crterminal.model.player.JanKenPonValue;
-
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -24,6 +18,11 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.tieto.crterminal.R;
+import com.tieto.crterminal.model.player.GamePlayer;
+import com.tieto.crterminal.model.player.GamePlayerGuest;
+import com.tieto.crterminal.model.player.JanKenPonValue;
 
 public class PlayerFragment extends Fragment {
 
