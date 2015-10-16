@@ -24,6 +24,7 @@ public class GamePlayerGuest extends GamePlayer implements PlayerCallbacks , Cli
 
 	private static final int MSG_PLAYER_CONNECTED = 1000;
 
+	private boolean mJoinedFlag;
 
 	@SuppressWarnings("unused")
 	private WifiUtils mWifiUtils;
@@ -60,21 +61,25 @@ public class GamePlayerGuest extends GamePlayer implements PlayerCallbacks , Cli
 	protected SocketConnectionBase getConnection() {
 		return mConnection;
 	}
-
 	public void joinGame() {
 		JsonCRTCommand command = JsonCommandBuilder.buildJoinGameCommand(mName);
 		mConnection.sendMsgToServer(command.toString());
 		playersMap.put(mName, this);
+
+		mJoinedFlag = true;
 	}
 
 	public void leaveGame() {
-		JsonCRTCommand command = JsonCommandBuilder
-				.buildLeaveGameCommand(mName);
-		mConnection.sendMsgToServer(command.toString());
-		mConnection.closeConnection();
-		playersMap.clear();
+		if (mJoinedFlag) {
+			JsonCRTCommand command = JsonCommandBuilder
+					.buildLeaveGameCommand(mName);
+			mConnection.sendMsgToServer(command.toString());
+			mConnection.closeConnection();
+			playersMap.clear();
+			mJoinedFlag = false;
+		}
 	}
-
+	
 	
 	public void sendJanKenPonValue(int value){
 		mValue = value;
