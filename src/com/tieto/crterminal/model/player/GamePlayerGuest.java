@@ -107,19 +107,28 @@ public class GamePlayerGuest extends GamePlayer implements PlayerCallbacks , Cli
 			}
 			break;
 		case JsonCommadConstant.EVENT_STR_PLAYER_LIST:
-			ArrayList<JsonCRTCommand> commands = JsonCommandBuilder.getPalyerList(command.getValue());
+			ArrayList<JsonCRTCommand> commands = JsonCommandBuilder
+					.getPalyerList(command.getValue());
 			for (JsonCRTCommand playerCommand : commands) {
-				if(!playerCommand.getValue().equalsIgnoreCase(mName)){
-					sendMessageToUI(playerCommand);
+
+				String name = playerCommand.getValue();
+
+				if (!name.equals(mName)) {
+					if (!playersMap.containsKey(name)) {
+						sendMessageToUI(playerCommand);
+					}
+					GamePlayer player = new GamePlayer(name);
+					playersMap.put(command.getValue(), player);
 				}
 			}
 			break;
 		case JsonCommadConstant.EVENT_STR_LEAVE:
-			if(command.getValue().equalsIgnoreCase(mName)){
+			if (command.getValue().equalsIgnoreCase(mName)) {
 				return;
 			}
-			GamePlayer player = new GamePlayer(command.getValue());
-			playersMap.put(command.getValue(), player);
+			if (playersMap.containsKey(command.getValue())) {
+				playersMap.remove(command.getValue());
+			}
 			break;
 		case JsonCommadConstant.EVENT_STR_CHOOSE:
 			String userName = JsonCommandBuilder.getChooseName(command.getValue());
