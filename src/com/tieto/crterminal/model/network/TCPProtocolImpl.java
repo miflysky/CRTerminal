@@ -94,13 +94,7 @@ public final class TCPProtocolImpl implements TCPProtocol {
 		new Thread(){
 			public void run()
 			{				
-				Log.i(TAG, TAG2 + " , broadcast message:" + message);
-				try {
-					sleep(1000);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				Log.i(TAG, TAG2 + " , broadcast message:" + message);				
 				
 				for (int i = 0; i < mClientChannels.size(); ++i) {
 					SocketChannel clientChannel = (SocketChannel) mClientChannels
