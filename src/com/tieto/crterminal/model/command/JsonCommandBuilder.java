@@ -157,7 +157,7 @@ public class JsonCommandBuilder {
 	public static String getChooseValue(String value) {
 		try {
 			JSONObject jsonObject = new JSONObject(value);
-			return jsonObject.getString("username");
+			return jsonObject.getString("value");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -168,7 +168,7 @@ public class JsonCommandBuilder {
 	public static String getChooseName(String value) {
 		try {
 			JSONObject jsonObject = new JSONObject(value);
-			return jsonObject.getString("value");
+			return jsonObject.getString("username");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -109,7 +109,7 @@ public class GamePlayerGuest extends GamePlayer implements PlayerCallbacks , Cli
 		case JsonCommadConstant.EVENT_STR_PLAYER_LIST:
 			ArrayList<JsonCRTCommand> commands = JsonCommandBuilder.getPalyerList(command.getValue());
 			for (JsonCRTCommand playerCommand : commands) {
-				if(command.getValue().equalsIgnoreCase(mName)){
+				if(!playerCommand.getValue().equalsIgnoreCase(mName)){
 					sendMessageToUI(playerCommand);
 				}
 			}
@@ -124,12 +124,16 @@ public class GamePlayerGuest extends GamePlayer implements PlayerCallbacks , Cli
 		case JsonCommadConstant.EVENT_STR_CHOOSE:
 			String userName = JsonCommandBuilder.getChooseName(command.getValue());
 			String value = JsonCommandBuilder.getChooseValue(command.getValue());
+			if(userName.equals(mName)){
+				return;
+			}
 			Message message = mHandler.obtainMessage();
 			message.what = command.getEvent();
 			Bundle bundle = message.getData();
 			bundle.putString(JsonCommadConstant.KEY_COMMAND_VALUE,value);
 			bundle.putString(JsonCommadConstant.KEY_USER_NAME,userName);
 			mHandler.sendMessage(message);
+			
 			return;
 		case JsonCommadConstant.EVENT_INT_NEWROUND:
 			playersMap.clear();

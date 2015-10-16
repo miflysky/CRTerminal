@@ -108,10 +108,23 @@ public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBa
 			break;
 		case JsonCommadConstant.EVENT_STR_CHOOSE:
 			mConnection.broadcastMessage(command.toString());
-			GamePlayer player1 = playersMap.get(command.getValue());
-			player1.status = GamePlayer.READY;
-			checkIsAllChiose();
-			break;
+			String userName = JsonCommandBuilder.getChooseName(command.getValue());
+			String value = JsonCommandBuilder.getChooseValue(command.getValue());
+			GamePlayer player1 = playersMap.get(userName);
+			if(player1 != null){
+				Message message = mHandler.obtainMessage();
+				message.what = command.getEvent();
+				Bundle bundle = message.getData();
+				bundle.putString(JsonCommadConstant.KEY_COMMAND_VALUE,value);
+				bundle.putString(JsonCommadConstant.KEY_USER_NAME,userName);
+				mHandler.sendMessage(message);
+
+				player1.mValue = Integer.parseInt(value);
+				player1.status = GamePlayer.READY;
+				checkIsAllChiose();
+				
+			}
+			return;
 		default:
 			Log.w(TAG, "no handle command: " + event);
 			return;

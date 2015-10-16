@@ -89,19 +89,19 @@ public class CRTClient2Thread implements Runnable {
 						handleRead(sk);
 					}
 					
-					if( sk.isConnectable())
-					{
-						// do re-connect
-						while (!socketChannel.finishConnect()) {
-							// wait for connected;
-						}
-
-						
-						Log.i(TAG, TAG2 + ", IP:" + hostIpAddress + ", Port:" + hostPort
-								+ " connected finished");
-						socketChannel.register(selector, SelectionKey.OP_READ);
-
-					}
+//					if( sk.isConnectable())
+//					{
+//						// do re-connect
+//						while (!socketChannel.finishConnect()) {
+//							// wait for connected;
+//						}
+//
+//						
+//						Log.i(TAG, TAG2 + ", IP:" + hostIpAddress + ", Port:" + hostPort
+//								+ " connected finished");
+//						socketChannel.register(selector, SelectionKey.OP_READ);
+//
+//					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					
