@@ -49,6 +49,7 @@ public final class TCPProtocolImpl implements TCPProtocol {
 		clientChannel.configureBlocking(false);
 		clientChannel.register(key.selector(), SelectionKey.OP_READ,
 				ByteBuffer.allocate(mBufferSize));
+		clientChannel.socket().setTcpNoDelay(true);
 		mClientChannels.add(clientChannel);
 	}
 
@@ -92,9 +93,15 @@ public final class TCPProtocolImpl implements TCPProtocol {
 		final String message = originalMessage;
 		new Thread(){
 			public void run()
-			{
+			{				
 				Log.i(TAG, TAG2 + " , broadcast message:" + message);
-
+				try {
+					sleep(1000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				for (int i = 0; i < mClientChannels.size(); ++i) {
 					SocketChannel clientChannel = (SocketChannel) mClientChannels
 							.get(i);
