@@ -151,12 +151,35 @@ public class CRTClient2Thread implements Runnable {
 			Log.i(TAG, "Client receive message from: "
 					+ sc.socket().getRemoteSocketAddress() + " msg:"
 					+ receivedString);
+			
 			if(receivedString.length() != 0 && mCallback != null){
-				mCallback.onReceiveMessage(receivedString);
-			}
+				handleReceivedMessageFromServer(receivedString);				
+			}	
+			
 		} catch (CharacterCodingException e) {
 			e.printStackTrace();
 		}
-		//sk.interestOps(SelectionKey.OP_READ);
+		
+	}
+	
+	private void handleReceivedMessageFromServer(String receivedMessage)
+	{		
+		String tocken = "}{";
+		String subMessage = "";
+		int pos = receivedMessage.indexOf(tocken);
+		int start = 0;
+		while( pos != -1)
+		{
+			// there are multiple messages in the received content			
+			subMessage = receivedMessage.substring(start, pos +  1);				
+			mCallback.onReceiveMessage(subMessage);
+			
+			start = pos + 1;
+			pos = receivedMessage.indexOf(tocken, start);
+		}
+		
+		// 最后一条消息
+		subMessage = receivedMessage.substring(start);
+		mCallback.onReceiveMessage(subMessage);
 	}
 }
