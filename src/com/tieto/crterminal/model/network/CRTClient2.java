@@ -54,12 +54,24 @@ public class CRTClient2 implements SocketConnectionClient {
      * @throws IOException
      */
     public void sendMsg(String message) throws IOException{   
-        ByteBuffer writeBuffer=ByteBuffer.wrap(message.getBytes("UTF-8"));        
-        socketChannel.write(writeBuffer);
+    	final String sendMessage = message;
+//    	ByteBuffer writeBuffer=ByteBuffer.wrap(sendMessage.getBytes("UTF-8"));
+//		socketChannel.write(writeBuffer);
+        new Thread(){
+        	public void run() {
+        		        
+                try {
+                	ByteBuffer writeBuffer=ByteBuffer.wrap(sendMessage.getBytes("UTF-8"));
+					socketChannel.write(writeBuffer);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+        }.start();
     }
 
 
-    public void stopConnection()
+    private void stopConnection()
     {    
         clientConnectionThread.stop = true; 
         try {
@@ -96,8 +108,8 @@ public class CRTClient2 implements SocketConnectionClient {
                 sendMsg(msg);
             }
         } catch (Exception e) {
-            //e.printStackTrace();
-            //Log.e(TAG, "sendMsgToServer exception: " + e.toString());
+            e.printStackTrace();
+            Log.e(TAG, "sendMsgToServer exception: " + e.toString());
         }        
     }     
     

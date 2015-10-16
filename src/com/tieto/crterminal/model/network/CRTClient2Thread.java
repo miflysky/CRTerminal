@@ -10,6 +10,7 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 
+import android.inputmethodservice.Keyboard.Key;
 import android.util.Log;
 
 import com.tieto.crterminal.model.network.CRTClient2.ClientConnectionCallback;
@@ -87,8 +88,41 @@ public class CRTClient2Thread implements Runnable {
 					if (sk.isValid() && sk.isReadable()) {
 						handleRead(sk);
 					}
+					
+					if( sk.isConnectable())
+					{
+						// do re-connect
+						while (!socketChannel.finishConnect()) {
+							// wait for connected;
+						}
+
+						
+						Log.i(TAG, TAG2 + ", IP:" + hostIpAddress + ", Port:" + hostPort
+								+ " connected finished");
+						socketChannel.register(selector, SelectionKey.OP_READ);
+
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
+					
+					// do re-connect
+					try {
+						socketChannel = SocketChannel.open();
+						socketChannel.connect(new InetSocketAddress(
+								hostIpAddress, hostPort));
+						while (!socketChannel.finishConnect()) {
+							// wait for connected;
+						}
+						socketChannel.register(selector, SelectionKey.OP_READ);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					
+					Log.i(TAG, TAG2 + ", IP:" + hostIpAddress + ", Port:" + hostPort
+							+ " connected finished");
+					
 				}
 
 				keyIter.remove();
@@ -100,7 +134,11 @@ public class CRTClient2Thread implements Runnable {
 		SocketChannel sc = (SocketChannel) sk.channel();
 		ByteBuffer buffer = ByteBuffer.allocate(1024);
 		try {
-			sc.read(buffer);
+			int size = sc.read(buffer);
+			if( size < 0){
+				sc.close();
+				sk.cancel();
+			}
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage());
 		}
@@ -120,7 +158,6 @@ public class CRTClient2Thread implements Runnable {
 		} catch (CharacterCodingException e) {
 			e.printStackTrace();
 		}
-
-		sk.interestOps(SelectionKey.OP_READ);
+		//sk.interestOps(SelectionKey.OP_READ);
 	}
 }

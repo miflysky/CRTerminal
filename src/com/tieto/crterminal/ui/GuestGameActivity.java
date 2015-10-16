@@ -43,7 +43,7 @@ public class GuestGameActivity extends BaseGameActivity {
 		mGuestFirstConnectted = false;
 		unregisterReceiver(mNetworkConnectChangedReceiver);
 
-		getWifiUtils().disableWifi();
+		//getWifiUtils().disableWifi();
 	}
 
 	public void startGame() {
@@ -157,7 +157,7 @@ public class GuestGameActivity extends BaseGameActivity {
 							// TODO: handle exception
 							Log.e("GameActivity", e.getMessage());
 						}
-						mGuestPlayer.joinGame();
+						//mGuestPlayer.joinGame();
 					}
 				} else {
 					mGuestFirstConnectted = false;
