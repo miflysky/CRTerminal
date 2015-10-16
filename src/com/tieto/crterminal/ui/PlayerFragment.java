@@ -48,15 +48,19 @@ public class PlayerFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mActivity = (BaseGameActivity) getActivity();
-		mPlayers.clear();
-		mNameMap.clear();
-		
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_players, container, false);
 		initView(view);
 		return view;
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		mPlayers.clear();
+		mNameMap.clear();
 	}
 
 	private void initView(View parentView) {
