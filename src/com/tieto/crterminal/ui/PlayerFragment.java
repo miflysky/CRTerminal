@@ -48,6 +48,9 @@ public class PlayerFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mActivity = (BaseGameActivity) getActivity();
+		mPlayers.clear();
+		mNameMap.clear();
+		
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
