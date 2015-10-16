@@ -28,7 +28,7 @@ public class PlayerFragment extends Fragment {
 
 	private BaseGameActivity mActivity;
 
-	private List<GamePlayer> mPlayers = new ArrayList<GamePlayer>();
+	public List<GamePlayer> mPlayers = new ArrayList<GamePlayer>();
 
 	private Map<String, GamePlayer> mNameMap = new HashMap<String, GamePlayer>();
 
@@ -184,8 +184,14 @@ public class PlayerFragment extends Fragment {
 			mAdapter.notifyDataSetChanged();
 		}
 		
-		public void notifyResult(String result){
-			//TODO 
+		public void notifyResult(ArrayList<GamePlayer> winList, ArrayList<GamePlayer> lostList){
+			for (int i=0; i < winList.size();i++) {
+				mPlayers.add(winList.get(i));
+			}
+			for (int i=0; i < lostList.size();i++) {
+				mPlayers.add(lostList.get(i));
+			}
+			mAdapter.notifyDataSetChanged();
 		}
 
 	

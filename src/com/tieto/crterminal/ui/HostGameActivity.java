@@ -5,8 +5,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import com.tieto.crterminal.R;
 import com.tieto.crterminal.model.command.JsonCommadConstant;
+import com.tieto.crterminal.model.player.GamePlayer;
 import com.tieto.crterminal.model.player.GamePlayerHost;
 
 public class HostGameActivity extends BaseGameActivity {
@@ -77,7 +80,9 @@ public class HostGameActivity extends BaseGameActivity {
 			case JsonCommadConstant.EVENT_INT_ENDROUND:
 				Log.i(TAG, "Game end round.");
 				String result = msg.getData().getString(JsonCommadConstant.KEY_COMMAND_VALUE);
-				mPlayerFragment.notifyResult(result);
+				ArrayList<GamePlayer> winList = mHostPlayer.winArrayList;
+				ArrayList<GamePlayer> lostList = mHostPlayer.winArrayList;
+				mPlayerFragment.notifyResult(winList, lostList);
 				break;
 							
 			}
