@@ -52,7 +52,13 @@ public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBa
 	public void sendJanKenPonValue(int value){
 		JsonCRTCommand command = JsonCommandBuilder
 				.buildJanKenPonValueCommand(mName,value);
-		mConnection.broadcastMessage(command.toString());
+		mConnection.broadcastMessage(command.toString());		
+		GamePlayer player = playersMap.get(mName);
+		if(player != null){
+			player.mValue = value;
+			player.status = GamePlayer.READY;
+			checkIsAllChiose();
+		}
 	}
 	
 	public void newRound() {
