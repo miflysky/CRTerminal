@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.jar.Attributes.Name;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -90,6 +89,11 @@ public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBa
 			playersMap.put(command.getValue(), newPlayer);
 			JsonCRTCommand playerListCommand = JsonCommandBuilder.buildPlayerListCommandplayersMap(playersMap);
 			mConnection.broadcastMessage(playerListCommand.toString());	
+
+			if(playersMap.containsKey(command.getValue())){
+				//aleady in the user list
+				return;
+			}
 			break;			
 		case JsonCommadConstant.EVENT_STR_LEAVE:
 			mConnection.broadcastMessage(command.toString());
