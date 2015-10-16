@@ -31,8 +31,8 @@ public class GuestGameActivity extends BaseGameActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		startGame();
 		mGamePlayerHandler = new GamePlayerHandler(this);
+		startGame();
 	}
 
 	@Override
