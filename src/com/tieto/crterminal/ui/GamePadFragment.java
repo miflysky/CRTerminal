@@ -66,9 +66,9 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 		btnRock = (ImageButton) view.findViewById(R.id.gamepad_rock);
 		btnScissors = (ImageButton) view.findViewById(R.id.gamepad_scissors);
 
-		btnPaper.setVisibility(View.INVISIBLE);
-		btnRock.setVisibility(View.INVISIBLE);
-		btnScissors.setVisibility(View.INVISIBLE);
+//		btnPaper.setVisibility(View.INVISIBLE);
+//		btnRock.setVisibility(View.INVISIBLE);
+//		btnScissors.setVisibility(View.INVISIBLE);
 
 		btnStart.setOnClickListener(this);
 		btnStop.setOnClickListener(this);
