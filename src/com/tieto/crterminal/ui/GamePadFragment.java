@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.tieto.crterminal.R;
+import com.tieto.crterminal.model.player.GamePlayerGuest;
 import com.tieto.crterminal.model.player.JanKenPonValue;
 
 public class GamePadFragment extends Fragment implements View.OnClickListener {
@@ -98,7 +99,8 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 			((HostGameActivity) getActivity()).mHostPlayer.newRound();
 			break;
 		case R.id.stop_Btn:
-			((GuestGameActivity) getActivity()).mGuestPlayer.leaveGame();
+			GamePlayerGuest player =((GuestGameActivity) getActivity()).mGuestPlayer; 
+			player.leaveGame();
 			getActivity().finish();
 			break;
 		case R.id.confirm_Btn:

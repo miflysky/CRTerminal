@@ -40,6 +40,7 @@ public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBa
 		mHandler = handler;
 		mConnection = new CRTServer2(this);
 		mConnection.openConnection();
+		playersMap.put(mName, this);
 	}
 	
 	public void HostGamestart(){
@@ -59,13 +60,18 @@ public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBa
 		mCurrentRound ++;
 		JsonCRTCommand command = JsonCommandBuilder.buildNewRoundCommand(mCurrentRound);
 		mConnection.broadcastMessage(command.toString());
-		playersMap.put(mName, this);
+
+		//set to not ready
+		Iterator<Entry<String, GamePlayer>> iterator = playersMap.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Map.Entry<String,GamePlayer> entry = iterator.next();
+			entry.getValue().status = GamePlayer.NOT_READY;
+		}
 	}
 
 	public void endRound(ArrayList<GamePlayer> winers, ArrayList<GamePlayer> loser) {
 		JsonCRTCommand command = JsonCommandBuilder.buildEndRoundCommand(mCurrentRound,winers,loser);
 		mConnection.broadcastMessage(command.toString());
-		playersMap.clear();
 	}
 	
 	@Override
@@ -84,16 +90,17 @@ public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBa
 		int event = command.getEvent();
 		switch (event) {
 		case JsonCommadConstant.EVENT_STR_JOIN:
+			if(playersMap.containsKey(command.getValue())){
+				//aleady in the user list
+				return;
+			}
+
 			//send to all join
 			GamePlayer newPlayer = new GamePlayer(command.getValue());
 			playersMap.put(command.getValue(), newPlayer);
 			JsonCRTCommand playerListCommand = JsonCommandBuilder.buildPlayerListCommandplayersMap(playersMap);
 			mConnection.broadcastMessage(playerListCommand.toString());	
 
-			if(playersMap.containsKey(command.getValue())){
-				//aleady in the user list
-				return;
-			}
 			break;			
 		case JsonCommadConstant.EVENT_STR_LEAVE:
 			mConnection.broadcastMessage(command.toString());
