@@ -74,9 +74,7 @@ public class GamePadFragment extends Fragment implements View.OnClickListener {
 		btnRock.setOnClickListener(this);
 		btnScissors.setOnClickListener(this);
 
-		if (!isHost) {
-			btnStart.setVisibility(View.GONE);
-		}
+		btnStart.setVisibility(View.GONE);
 
 	}
 

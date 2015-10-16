@@ -55,7 +55,7 @@ public class PlayerFragment extends Fragment {
 		initView(view);
 		return view;
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -134,21 +134,27 @@ public class PlayerFragment extends Fragment {
 			holder.player_name.setText(player.mName);
 
 			int resId = getJanKenPonImageResourceId(player.mValue);
-			
+
 			if (player.status == GamePlayer.WIN) {
-				
+
 				holder.player_status.setVisibility(View.VISIBLE);
 				holder.player_status.setText("Winner");
 				holder.player_icon.setImageResource(R.drawable.winner);
-				
-			} else if (player.status == GamePlayer.LOSE){
-				
+				holder.player_card.setVisibility(View.VISIBLE);
+				holder.player_card.setImageResource(resId);
+
+			} else if (player.status == GamePlayer.LOSE) {
+
 				holder.player_status.setVisibility(View.VISIBLE);
 				holder.player_status.setText("Loser");
-				
+				holder.player_card.setVisibility(View.VISIBLE);
+				holder.player_card.setImageResource(resId);
+
 			} else if (player.status == GamePlayer.DRAW) {
-				
+
 				holder.player_status.setText("Draw");
+				holder.player_card.setVisibility(View.VISIBLE);
+				holder.player_card.setImageResource(resId);
 			}
 
 			if (player.mValue != 0 && (showResult || player.mName.equals(mActivity.mMyName)) && resId != 0) {
@@ -166,80 +172,75 @@ public class PlayerFragment extends Fragment {
 		}
 	}
 
-		public void playerAdd(String name) {
-			if (mNameMap.get(name) != null) {
-				return;
+	public void playerAdd(String name) {
+		if (mNameMap.get(name) != null) {
+			return;
+		}
+		GamePlayerGuest player = new GamePlayerGuest(name, null);
+		mNameMap.put(player.mName, player);
+		mPlayers.add(player);
+		mAdapter.notifyDataSetChanged();
+	}
+
+	public void playerLeave(String name) {
+		mPlayers.remove(mNameMap.remove(name));
+		mAdapter.notifyDataSetChanged();
+	}
+
+	public void playerFailed(String name) {
+		mAdapter.notifyDataSetChanged();
+	}
+
+	public void showResult() {
+		showResult = true;
+	}
+
+	public void playerReady(String name) {
+		mNameMap.get(name).status = GamePlayer.READY;
+		mAdapter.notifyDataSetChanged();
+	}
+
+	public void confirmChoose() {
+		mAdapter.notifyDataSetChanged();
+	}
+
+	public void playMakeChoice(String userName, int value) {
+		mNameMap.get(userName).mValue = value;
+		mAdapter.notifyDataSetChanged();
+	}
+
+	public void notifyUIChange() {
+		mAdapter.notifyDataSetChanged();
+	}
+
+	public void notifyResult(ArrayList<GamePlayer> winList, ArrayList<GamePlayer> lostList) {
+
+		if (winList.size() > 0 && lostList.size() > 0) {
+
+			for (int winner = 0; winner < winList.size(); winner++) {
+				playerUpdateResult(winList.get(winner).mName, GamePlayer.WIN);
 			}
-			GamePlayerGuest player = new GamePlayerGuest(name, null);
-			mNameMap.put(player.mName, player);
-			mPlayers.add(player);
-			mAdapter.notifyDataSetChanged();
-		}
 
-		public void playerLeave(String name) {
-			mPlayers.remove(mNameMap.remove(name));
-			mAdapter.notifyDataSetChanged();
-		}
-
-		public void playerFailed(String name) {
-			mAdapter.notifyDataSetChanged();
-		}
-
-		public void showResult() {
-			showResult = true;
-		}
-
-		public void playerReady(String name) {
-			mNameMap.get(name).status = GamePlayer.READY;
-			mAdapter.notifyDataSetChanged();
-		}
-
-		public void confirmChoose() {
-			mAdapter.notifyDataSetChanged();
-		}
-
-		public void playMakeChoice(String userName, int value) {
-			mNameMap.get(userName).mValue = value;
-			mAdapter.notifyDataSetChanged();
-		}
-		
-		public void notifyUIChange() {
-			mAdapter.notifyDataSetChanged();
-		}
-		
-		public void notifyResult(ArrayList<GamePlayer> winList, ArrayList<GamePlayer> lostList){
-			
-			if (winList.size()>0 && lostList.size()>0) {
-				
-				for (int winner=0; winner < winList.size(); winner++) {
-					playerUpdateResult(winList.get(winner).mName, GamePlayer.WIN);
-				}
-				
-				for (int loser=0; loser < lostList.size();loser++) {
-					playerUpdateResult(lostList.get(loser).mName, GamePlayer.LOSE);
-				}
-				
-			} else if(winList.size() == 0) {
-				playerUpdateResult(null, GamePlayer.DRAW);
+			for (int loser = 0; loser < lostList.size(); loser++) {
+				playerUpdateResult(lostList.get(loser).mName, GamePlayer.LOSE);
 			}
-				
-			mAdapter.notifyDataSetChanged();
+
+		} else if (winList.size() == 0) {
+			playerUpdateResult(null, GamePlayer.DRAW);
 		}
-		
-		public void playerUpdateResult(String name, int status) {
-			if (name == null) {
-				for (int i = 0; i< mPlayers.size(); i++) {
-					mPlayers.get(i).status = status;
-				}		
+
+		mAdapter.notifyDataSetChanged();
+	}
+
+	public void playerUpdateResult(String name, int status) {
+		if (name == null) {
+			for (int i = 0; i < mPlayers.size(); i++) {
+				mPlayers.get(i).status = status;
 			}
-			else {
+		} else {
 			GamePlayer player = mNameMap.get(name);
-			if (player == null) {
-				return;
-			}
 			player.status = status;
-			}
 		}
+	}
 
-	
 }
