@@ -97,7 +97,7 @@ public class CRTClient2 implements SocketConnectionClient {
             }
         } catch (Exception e) {
             //e.printStackTrace();
-            Log.e(TAG, "sendMsgToServer exception: " + e.toString());
+            //Log.e(TAG, "sendMsgToServer exception: " + e.toString());
         }        
     }     
     

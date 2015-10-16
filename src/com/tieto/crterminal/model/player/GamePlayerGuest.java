@@ -108,7 +108,9 @@ public class GamePlayerGuest extends GamePlayer implements PlayerCallbacks , Cli
 		case JsonCommadConstant.EVENT_STR_PLAYER_LIST:
 			ArrayList<JsonCRTCommand> commands = JsonCommandBuilder.getPalyerList(command.getValue());
 			for (JsonCRTCommand playerCommand : commands) {
-				sendMessageToUI(playerCommand);
+				if(command.getValue().equalsIgnoreCase(mName)){
+					sendMessageToUI(playerCommand);
+				}
 			}
 			break;
 		case JsonCommadConstant.EVENT_STR_LEAVE:
