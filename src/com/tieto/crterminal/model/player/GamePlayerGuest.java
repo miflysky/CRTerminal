@@ -61,6 +61,7 @@ public class GamePlayerGuest extends GamePlayer implements PlayerCallbacks , Cli
 	protected SocketConnectionBase getConnection() {
 		return mConnection;
 	}
+
 	public void joinGame() {
 		JsonCRTCommand command = JsonCommandBuilder.buildJoinGameCommand(mName);
 		mConnection.sendMsgToServer(command.toString());
@@ -70,14 +71,14 @@ public class GamePlayerGuest extends GamePlayer implements PlayerCallbacks , Cli
 	}
 
 	public void leaveGame() {
-		if (mJoinedFlag) {
+//		if (mJoinedFlag) {
 			JsonCRTCommand command = JsonCommandBuilder
 					.buildLeaveGameCommand(mName);
 			mConnection.sendMsgToServer(command.toString());
-			mConnection.closeConnection();
+			//mConnection.closeConnection();
 			playersMap.clear();
 			mJoinedFlag = false;
-		}
+//		}
 	}
 	
 	
@@ -160,13 +161,8 @@ public class GamePlayerGuest extends GamePlayer implements PlayerCallbacks , Cli
 
 	@Override
 	public void onConnect() {
-		//TODO: status on connect
-		
 		//send UI on connect
 		mHandler.sendEmptyMessage(MSG_PLAYER_CONNECTED);
-		
-		//send to server name
-		JsonCRTCommand command = JsonCommandBuilder.buildJoinGameCommand(mName);
-		mConnection.sendMsgToServer(command.toString());
+		joinGame();
 	}
 }

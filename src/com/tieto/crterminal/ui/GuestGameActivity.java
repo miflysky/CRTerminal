@@ -157,7 +157,6 @@ public class GuestGameActivity extends BaseGameActivity {
 							// TODO: handle exception
 							Log.e("GameActivity", e.getMessage());
 						}
-						//mGuestPlayer.joinGame();
 					}
 				} else {
 					mGuestFirstConnectted = false;
