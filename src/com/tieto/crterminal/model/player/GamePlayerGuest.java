@@ -71,14 +71,14 @@ public class GamePlayerGuest extends GamePlayer implements PlayerCallbacks , Cli
 	}
 
 	public void leaveGame() {
-//		if (mJoinedFlag) {
+		if (mJoinedFlag) {
 			JsonCRTCommand command = JsonCommandBuilder
 					.buildLeaveGameCommand(mName);
 			mConnection.sendMsgToServer(command.toString());
 			//mConnection.closeConnection();
 			playersMap.clear();
 			mJoinedFlag = false;
-//		}
+		}
 	}
 	
 	
