@@ -74,7 +74,9 @@ public class WifiUtils {
 			}
 		}
 
-		// mWifiManager.setWifiEnabled(true);
+		if (!mWifiManager.isScanAlwaysAvailable()) {
+			mWifiManager.setWifiEnabled(true);
+		}
 		mWifiManager.startScan();
 	}
 
