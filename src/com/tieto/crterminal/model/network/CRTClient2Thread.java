@@ -62,7 +62,7 @@ public class CRTClient2Thread implements Runnable {
 		} catch (IOException ex) {
 			Log.i(TAG, TAG2 + " connected exception");
 			Log.i(TAG, TAG2 + " " + ex.getMessage());
-			;
+			// TODO: do re-connect
 		}
 
 		while (!stop) {
@@ -72,6 +72,7 @@ public class CRTClient2Thread implements Runnable {
 				iselect = selector.select(TimeOut);
 			} catch (IOException e) {
 				e.printStackTrace();
+				// TODO: do what?
 			}
 
 			if (iselect == 0) {
@@ -87,41 +88,9 @@ public class CRTClient2Thread implements Runnable {
 					if (sk.isValid() && sk.isReadable()) {
 						handleRead(sk);
 					}
-					
-//					if( sk.isConnectable())
-//					{
-//						// do re-connect
-//						while (!socketChannel.finishConnect()) {
-//							// wait for connected;
-//						}
-//
-//						
-//						Log.i(TAG, TAG2 + ", IP:" + hostIpAddress + ", Port:" + hostPort
-//								+ " connected finished");
-//						socketChannel.register(selector, SelectionKey.OP_READ);
-//
-//					}
 				} catch (Exception e) {
 					e.printStackTrace();
-					
-					// do re-connect
-					try {
-						socketChannel = SocketChannel.open();
-						socketChannel.connect(new InetSocketAddress(
-								hostIpAddress, hostPort));
-						while (!socketChannel.finishConnect()) {
-							// wait for connected;
-						}
-						socketChannel.register(selector, SelectionKey.OP_READ);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-					
-					Log.i(TAG, TAG2 + ", IP:" + hostIpAddress + ", Port:" + hostPort
-							+ " connected finished");
-					
+					// TODO: do what?
 				}
 
 				keyIter.remove();
@@ -140,6 +109,7 @@ public class CRTClient2Thread implements Runnable {
 			}
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage());
+			// TODO: do what
 		}
 
 		buffer.flip();
@@ -178,7 +148,7 @@ public class CRTClient2Thread implements Runnable {
 			pos = receivedMessage.indexOf(tocken, start);
 		}
 		
-		// 最后一条消息
+		// the last message (or the first message if there is only one)
 		subMessage = receivedMessage.substring(start);
 		mCallback.onReceiveMessage(subMessage);
 	}
