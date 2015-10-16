@@ -144,6 +144,9 @@ public class PlayerFragment extends Fragment {
 	}
 
 		public void playerAdd(String name) {
+			if (mNameMap.get(name) != null) {
+				return;
+			}
 			GamePlayerGuest player = new GamePlayerGuest(name, null);
 			mNameMap.put(player.mName, player);
 			mPlayers.add(player);
