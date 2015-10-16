@@ -40,7 +40,8 @@ public class CRTServer2 implements SocketConnectionServer {
 		try {
 			this.protocol.handleBroadcast(message);
 		} catch (Exception e) {
-			Log.e(TAG, "Exception:" + e.getMessage());
+			e.printStackTrace();
+			Log.e(TAG, "Exception:" + e);
 		}
 
 	}

@@ -1,6 +1,7 @@
 package com.tieto.crterminal.model.network;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
@@ -87,15 +88,28 @@ public final class TCPProtocolImpl implements TCPProtocol {
 	}
 
 	@Override
-	public void handleBroadcast(String message) throws IOException {
-		Log.i(TAG, TAG2 + " , broadcast message:" + message);
+	public void handleBroadcast(String originalMessage) throws IOException {
+		final String message = originalMessage;
+		new Thread(){
+			public void run()
+			{
+				Log.i(TAG, TAG2 + " , broadcast message:" + message);
 
-		for (int i = 0; i < mClientChannels.size(); ++i) {
-			SocketChannel clientChannel = (SocketChannel) mClientChannels
-					.get(i);
-			ByteBuffer writeBuffer = ByteBuffer.wrap(message.getBytes("UTF-8"));
-			clientChannel.write(writeBuffer);
-		}
+				for (int i = 0; i < mClientChannels.size(); ++i) {
+					SocketChannel clientChannel = (SocketChannel) mClientChannels
+							.get(i);
+					ByteBuffer writeBuffer;
+					try {
+						writeBuffer = ByteBuffer.wrap(message.getBytes("UTF-8"));
+						clientChannel.write(writeBuffer);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+			}
+		}.start();
 	}
 
 }
