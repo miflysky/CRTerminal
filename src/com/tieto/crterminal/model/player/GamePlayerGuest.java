@@ -118,7 +118,7 @@ public class GamePlayerGuest extends GamePlayer implements PlayerCallbacks , Cli
 						sendMessageToUI(playerCommand);
 					}
 					GamePlayer player = new GamePlayer(name);
-					playersMap.put(command.getValue(), player);
+					playersMap.put(name, player);
 				}
 			}
 			break;
