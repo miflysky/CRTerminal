@@ -21,11 +21,13 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".controler.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".ui.StartupActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,11 +36,13 @@
         </activity>
         <activity
             android:name="com.tieto.crterminal.ui.GuestGameActivity"
-            android:label="@string/title_activity_guest_game" >
+            android:label="@string/title_activity_guest_game"
+            android:screenOrientation="portrait" >
         </activity>
-        
-        <activity android:name="com.tieto.crterminal.ui.HostGameActivity"
-            android:label="@string/title_activity_host_game" >
+        <activity
+            android:name="com.tieto.crterminal.ui.HostGameActivity"
+            android:label="@string/title_activity_host_game"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
