@@ -79,9 +79,9 @@ public class HostGameActivity extends BaseGameActivity {
 			
 			case JsonCommadConstant.EVENT_INT_ENDROUND:
 				Log.i(TAG, "Game end round.");
-				String result = msg.getData().getString(JsonCommadConstant.KEY_COMMAND_VALUE);
+				
 				ArrayList<GamePlayer> winList = mHostPlayer.winArrayList;
-				ArrayList<GamePlayer> lostList = mHostPlayer.winArrayList;
+				ArrayList<GamePlayer> lostList = mHostPlayer.lostArrayList;
 				mPlayerFragment.notifyResult(winList, lostList);
 				break;
 							

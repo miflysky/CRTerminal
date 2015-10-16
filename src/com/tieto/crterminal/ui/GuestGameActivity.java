@@ -1,6 +1,7 @@
 package com.tieto.crterminal.ui;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -18,6 +19,7 @@ import android.util.Log;
 
 import com.tieto.crterminal.R;
 import com.tieto.crterminal.model.command.JsonCommadConstant;
+import com.tieto.crterminal.model.player.GamePlayer;
 import com.tieto.crterminal.model.player.GamePlayerGuest;
 
 public class GuestGameActivity extends BaseGameActivity {
@@ -83,7 +85,7 @@ public class GuestGameActivity extends BaseGameActivity {
 
 	
 	
-	public static class  GamePlayerHandler extends Handler {
+	public class  GamePlayerHandler extends Handler {
 		
 		private WeakReference<GuestGameActivity> weakActivity;
 
@@ -117,9 +119,10 @@ public class GuestGameActivity extends BaseGameActivity {
 
 			case JsonCommadConstant.EVENT_INT_ENDROUND:
 				Log.i(TAG, "Game end round.");
-				String result = msg.getData().getString(
-						JsonCommadConstant.KEY_COMMAND_VALUE);
-				guestGameActivity.mPlayerFragment.notifyResult(result);
+				ArrayList<GamePlayer> winList = mGuestPlayer.winArrayList;
+				ArrayList<GamePlayer> lostList = mGuestPlayer.lostArrayList;
+				mPlayerFragment.notifyResult(winList, lostList);
+				
 				break;
 
 			case JsonCommadConstant.EVENT_STR_JOIN:
