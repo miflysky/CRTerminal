@@ -154,17 +154,12 @@ public class GamePlayerHost extends GamePlayer implements ServerConnectionCallBa
 		//all player is set calculate
 		winArrayList.clear();
 		lostArrayList.clear();
+		@SuppressWarnings("unused")
 		JanKenPonResult result = JanKenPon.judgeCurrentMatchResult(players, winArrayList, lostArrayList);
-		if(result == JanKenPonResult.Draw){
-			//new round
-			newRound();
-		}
-		else {
 			//send winer and loster
-			endRound(winArrayList, lostArrayList);
-			JsonCRTCommand command = new JsonCRTCommand(JsonCommadConstant.EVENT_INT_ENDROUND);
-			sendMessageToUI(command);
-		}
+		endRound(winArrayList, lostArrayList);
+		JsonCRTCommand command = new JsonCRTCommand(JsonCommadConstant.EVENT_INT_ENDROUND);
+		sendMessageToUI(command);
 	}
 
 	private void sendMessageToUI(JsonCRTCommand command) {

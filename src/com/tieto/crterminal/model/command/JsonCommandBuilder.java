@@ -27,7 +27,6 @@ public class JsonCommandBuilder {
 			
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("numbers", roundNumber);
-			command.setValue(jsonObject.toString());
 			
 			JSONArray winArray = new JSONArray();
 			for (GamePlayer gamePlayer : winers) {
@@ -41,9 +40,9 @@ public class JsonCommandBuilder {
 				loserArray.put(gamePlayer.mName);
 			}
 			
-			jsonObject.put("losers", winArray.toString());
+			jsonObject.put("losers", loserArray.toString());
 			
-			command.setValue(String.valueOf(roundNumber));
+			command.setValue(jsonObject.toString());
 			return command;
 
 		}catch(Exception e){
