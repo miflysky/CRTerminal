@@ -118,8 +118,8 @@ public class CRTClient2Thread implements Runnable {
 		try {
 			receivedString = Charset.forName("UTF-8").newDecoder()
 					.decode(buffer).toString();
-			Log.i(TAG, "Client receive message from: "
-					+ sc.socket().getRemoteSocketAddress() + " msg:"
+			Log.i(TAG, "====> Client receive message from: "
+					+ sc.socket().getRemoteSocketAddress() + " ,msg:"
 					+ receivedString);
 			
 			if(receivedString.length() != 0 && mCallback != null){
@@ -146,10 +146,13 @@ public class CRTClient2Thread implements Runnable {
 			
 			start = pos + 1;
 			pos = receivedMessage.indexOf(tocken, start);
+			
+			Log.i(TAG, "====>====> handling message: " + subMessage);
 		}
 		
 		// the last message (or the first message if there is only one)
 		subMessage = receivedMessage.substring(start);
 		mCallback.onReceiveMessage(subMessage);
+		Log.i(TAG, "====>====> handling message: " + subMessage);
 	}
 }
